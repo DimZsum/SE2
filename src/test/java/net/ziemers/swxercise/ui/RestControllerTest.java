@@ -1,6 +1,6 @@
 package net.ziemers.swxercise.ui;
 
-import net.ziemers.swxercise.ui.RestController;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,7 +14,12 @@ public class RestControllerTest {
 
     @Test
     public void test() {
-        
+        final String name = "Tom";
+        final String expected = "Hello " + name;
+        String actual;
+
+        actual = underTest.helloPath(name);
+        Assert.assertEquals(expected, actual);
     }
 
 }

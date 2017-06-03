@@ -27,7 +27,6 @@ import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.ext.mysql.MySqlMetadataHandler;
 import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.internal.SessionImpl;
-import org.junit.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -252,17 +251,6 @@ public class JpaTestUtils {
 
     public String getTruncateStatement(String schema, String table) {
         return String.format("DELETE FROM %s.%s;", schema, table);
-    }
-
-    /**
-     * Rollt eine jetzt noch aktive Transaktion zurück.
-     */
-    @After
-    public void tearDown() {
-        EntityTransaction transaction = getEm().getTransaction();
-        if (transaction.isActive()) {
-            transaction.rollback();
-        }
     }
 
 }
