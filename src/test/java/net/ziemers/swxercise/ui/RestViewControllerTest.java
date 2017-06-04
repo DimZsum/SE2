@@ -7,10 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RestControllerTest {
+public class RestViewControllerTest {
     
     @InjectMocks
-    private RestController underTest;
+    private RestViewController underTest;
 
     @Test
     public void test() {
