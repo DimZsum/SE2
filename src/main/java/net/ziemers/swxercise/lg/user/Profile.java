@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import net.ziemers.swxercise.db.BaseEntity;
+import net.ziemers.swxercise.lg.user.enums.PasswordHashType;
 
 @Entity
 public class Profile extends BaseEntity {
@@ -13,6 +14,9 @@ public class Profile extends BaseEntity {
 
     @NotNull
     private String passwordHash;
+
+    @NotNull
+    private PasswordHashType passwordHashType = PasswordHashType.Unknown;
 
     private String mailaddress;
 
@@ -34,12 +38,20 @@ public class Profile extends BaseEntity {
         this.username = username;
     }
 
-    public String getPasswordHash() {
+    private String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPasswordHash(String passwordHash) {
+    private void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    private PasswordHashType getPasswordHashType() {
+        return passwordHashType;
+    }
+
+    private void setPasswordHashType(PasswordHashType passwordHashType) {
+        this.passwordHashType = passwordHashType;
     }
 
     public String getMailaddress() {

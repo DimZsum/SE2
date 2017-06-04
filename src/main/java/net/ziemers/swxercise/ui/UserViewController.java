@@ -13,8 +13,8 @@ import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 
 @ApplicationScoped
-@Path(RestViewController.webContextPath)
-public class RestViewController {
+@Path(UserViewController.webContextPath)
+public class UserViewController {
 
     static final String webContextPath = "/users";
 
@@ -53,12 +53,7 @@ public class RestViewController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.TEXT_PLAIN})
     public String postUser(UserDto userDto) throws Exception {
-        final User user = new User(userDto.getFirstname(), userDto.getLastname());
-        final Profile profile = new Profile(userDto.getUsername(), userDto.getPassword());
-
-        // TODO hierfür benötigen wir einen Mapper
-        user.setProfile(profile);
-        userService.saveUser(user);
+        userService.saveUser(userDto);
 
         return "Ok";
     }

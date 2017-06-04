@@ -51,4 +51,9 @@ public class User extends BaseEntity {
         this.profile = profile;
     }
 
+    public User withProfile(final Profile profile) {
+        setProfile(profile);
+        return this;
+    }
+
 }
