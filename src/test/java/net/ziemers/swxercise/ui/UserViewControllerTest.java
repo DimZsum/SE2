@@ -7,19 +7,14 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RestViewControllerTest {
-    
+public class UserViewControllerTest {
+
     @InjectMocks
     private UserViewController underTest;
 
     @Test
     public void test() {
-        final String name = "Tom";
-        final String expected = "Hello " + name;
-        String actual;
-
-        actual = underTest.helloPath(name);
-        Assert.assertEquals(expected, actual);
+        // TODO noch zu implementieren
     }
 
 }

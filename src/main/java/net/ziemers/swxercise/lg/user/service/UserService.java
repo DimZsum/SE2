@@ -5,7 +5,6 @@ import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import net.ziemers.swxercise.db.dao.GenericDao;
 import net.ziemers.swxercise.db.dao.user.UserDao;
 import net.ziemers.swxercise.lg.model.user.Profile;
 import net.ziemers.swxercise.lg.model.user.User;
@@ -25,7 +24,7 @@ public class UserService {
         return dao.findAll(User.class);
     }
 
-    public Long saveUser(final UserDto userDto) {
+    public Long createUser(final UserDto userDto) {
         final Profile profile = new Profile(userDto.getUsername(), userDto.getPassword());
 
         // wir füllen das User-Objekt mit Method Chaining
@@ -33,6 +32,10 @@ public class UserService {
                 .withProfile(profile);
 
         return dao.save(user);
+    }
+
+    public void deleteUser(final Long id) {
+        dao.remove(User.class, id);
     }
 
 }

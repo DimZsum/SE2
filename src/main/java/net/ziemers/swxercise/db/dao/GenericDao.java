@@ -35,6 +35,13 @@ public class GenericDao {
         return entityManager.merge(entity);
     }
 
+    public <T extends BaseEntity> T remove(Class<T> entityType, Long primaryKey) {
+        final T entity = findById(entityType, primaryKey);
+
+        entityManager.remove(entity);
+        return entity;
+    }
+
     /**
      * @param entityType Entity-Typ.
      * @param primaryKey Id
