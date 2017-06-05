@@ -46,7 +46,7 @@ public class Profile extends BaseEntity {
         this();
 
         setUsername(username);
-        setPasswordHash(password);
+        setPassword(password);
     }
 
     /*
@@ -138,13 +138,19 @@ public class Profile extends BaseEntity {
         return passwordHash;
     }
 
-    private void setPasswordHash(String password) {
+    private void setPassword(String password) {
         // das Klartextkennwort wird niemals gespeichert!
         this.passwordHash = cryptString(password);
     }
 
+    private void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
     public boolean isValidPassword(final String password) {
-        return getPasswordHash().equals(cryptString(password));
+        final String passwordHash = cryptString(password);
+
+        return getPasswordHash().equals(passwordHash);
     }
 
     @Enumerated(EnumType.STRING)
