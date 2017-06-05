@@ -24,7 +24,17 @@ public class UserDto {
         return username;
     }
 
+    public UserDto withUsername(final String username) {
+        this.username = username;
+        return this;
+    }
+
     public String getPassword() { return password; }
+
+    public UserDto withPassword(final String password) {
+        this.password = password;
+        return this;
+    }
 
     public String getFirstname() {
         return firstname;
