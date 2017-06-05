@@ -12,6 +12,10 @@ import javax.persistence.criteria.Root;
 
 import net.ziemers.swxercise.db.BaseEntity;
 
+/**
+ * Stellt generische Persistenz-Funktionalität zur Verfügung. Wird normalerweise von den
+ * spazialisierten Data Access Objects geerbt.
+ */
 @Stateless
 public class GenericDao {
 

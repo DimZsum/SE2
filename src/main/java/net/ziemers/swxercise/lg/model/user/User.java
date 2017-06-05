@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import net.ziemers.swxercise.db.BaseEntity;
 
+/**
+ *  Stellt die Stammdaten eines Benutzers zur Verfügung. Nutzt hierbei verschiedene Subklassen.
+ */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),

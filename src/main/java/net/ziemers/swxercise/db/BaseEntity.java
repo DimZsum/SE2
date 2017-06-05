@@ -4,6 +4,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+/**
+ * Diese Basisklasse wird von allen Entitäten verwendet.
+ */
 @MappedSuperclass
 public class BaseEntity {
 

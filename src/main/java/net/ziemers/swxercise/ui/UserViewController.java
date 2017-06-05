@@ -11,6 +11,9 @@ import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 
+/**
+ * REST-Methoden für die Benutzerverwaltung.
+ */
 @ApplicationScoped
 @Path(UserViewController.webContextPath)
 public class UserViewController {

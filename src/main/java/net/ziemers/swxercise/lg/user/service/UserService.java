@@ -11,6 +11,9 @@ import net.ziemers.swxercise.lg.model.user.Session;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 
+/**
+ * Diese Klasse stellt alle Dienste im Kontext einer Benutzerverwaltung zur Verfügung.
+ */
 @Stateless
 public class UserService {
 

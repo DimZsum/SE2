@@ -1,5 +1,8 @@
 package net.ziemers.swxercise.lg.user.enums;
 
+/**
+ * Eine Enumeration aller jemals verwendeten Algorithmen zum Verhashen des Kennworts.
+ */
 public enum PasswordHashAlgorithm {
 
     SHA512("SHA-512"),

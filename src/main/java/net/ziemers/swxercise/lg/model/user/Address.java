@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 
 import net.ziemers.swxercise.db.BaseEntity;
 
+/**
+ * Verwaltet die Adressdaten eines Benutzers.
+ */
 @Entity
 public class Address extends BaseEntity {
 

@@ -13,6 +13,10 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Random;
 
+/**
+ * Verwaltet die Anmeldedaten eines anmeldefähigen Benutzers. Das Kennwort wird niemals im Klartext
+ * gespeichert, sondern stets nur in seiner verhashten Form.
+ */
 @Entity
 public class Profile extends BaseEntity {
 

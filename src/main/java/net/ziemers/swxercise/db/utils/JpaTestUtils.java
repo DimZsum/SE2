@@ -30,11 +30,14 @@ import org.hibernate.internal.SessionImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Stellt nützliche Funktionalität für JUnit-Tests zur Verfügung.
+ */
 public class JpaTestUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JpaTestUtils.class.getName());
 
-    private static final String PERSISTENCE_UNIT_TEST = "swxercise_test";
+    private static final String PERSISTENCE_UNIT_TEST = "swXerciseTestPU";
 
     private static final String NET_ZIEMERS_SWXERCISE_PKG = "net/ziemers/swxercise/";
 
