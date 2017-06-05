@@ -60,6 +60,16 @@ public class UserService {
         dao.remove(User.class, id);
     }
 
+    public boolean deleteUser() {
+        final User user = session.getUser();
+
+        if (user != null) {
+            dao.remove(User.class, user.getId());
+            return true;
+        }
+        return false;
+    }
+
     public User getSessionUser() {
         return session.getUser();
     }

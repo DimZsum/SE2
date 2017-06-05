@@ -90,6 +90,9 @@ public class UserViewController {
     /**
      * Löscht das User-Objekt mit der gewünschten Id.
      *
+     * Aufruf:
+     * DELETE http://localhost:8080/swxercise/rest/users/42
+     *
      * @param id die Id des gewünschten User-Objekts
      * @return "Ok", wenn die Erstellung des User-Objekts erfolgreich war.
      */
@@ -102,7 +105,27 @@ public class UserViewController {
     }
 
     /**
+     * Löscht das User-Objekt des zurzeit angemeldeten Benutzers.
+     *
+     * Aufruf:
+     * DELETE http://localhost:8080/swxercise/rest/users
+     *
+     * @return "Ok", wenn das Löschen des User-Objekts erfolgreich war.
+     */
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deleteUser() {
+        if (userService.deleteUser()) {
+            return "Ok";
+        }
+        return "Failed";
+    }
+
+    /**
      * Meldet einen Benutzer durch übergebenen username und password mit einer neuen User-{@link net.ziemers.swxercise.lg.model.user.Session} an.
+     *
+     * Aufruf:
+     * POST http://localhost:8080/swxercise/rest/users/login
      *
      * @param dto das mittels der als JSON-Objekt übergebenenen Eigenschaften zu füllende {@link UserDto}
      * @return "Ok", wenn die Erstellung des User-Objekts erfolgreich war.
@@ -121,6 +144,9 @@ public class UserViewController {
 
     /**
      * Meldet den angemeldeten Benutzer von seiner User-{@link net.ziemers.swxercise.lg.model.user.Session} ab.
+     *
+     * Aufruf:
+     * POST http://localhost:8080/swxercise/rest/users/logout
      *
      * @return "Ok", wenn die Erstellung des User-Objekts erfolgreich war.
      */
