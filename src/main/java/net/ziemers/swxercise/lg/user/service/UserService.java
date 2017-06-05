@@ -6,20 +6,23 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import net.ziemers.swxercise.db.dao.GenericDao;
-import net.ziemers.swxercise.lg.user.Profile;
-import net.ziemers.swxercise.lg.user.User;
+import net.ziemers.swxercise.db.dao.user.UserDao;
+import net.ziemers.swxercise.lg.model.user.Profile;
+import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 
 @Stateless
 public class UserService {
 
     @Inject
-    private GenericDao genericDao;
+    private UserDao dao;
 
-    public User findUser(final Long id) { return genericDao.findById(User.class, id); }
+    public User findUser(final Long id) {
+        return dao.findById(id);
+    }
 
     public Collection<User> findAllUsers() {
-        return genericDao.findAll(User.class);
+        return dao.findAll(User.class);
     }
 
     public Long saveUser(final UserDto userDto) {
@@ -29,7 +32,7 @@ public class UserService {
         final User user = new User(userDto.getFirstname(), userDto.getLastname())
                 .withProfile(profile);
 
-        return genericDao.save(user);
+        return dao.save(user);
     }
 
 }

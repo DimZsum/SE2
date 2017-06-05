@@ -16,7 +16,7 @@ import net.ziemers.swxercise.db.BaseEntity;
 public class GenericDao {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     /**
      * Speichert die gegebene Entität.

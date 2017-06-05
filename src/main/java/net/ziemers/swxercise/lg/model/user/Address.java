@@ -1,4 +1,4 @@
-package net.ziemers.swxercise.lg.user;
+package net.ziemers.swxercise.lg.model.user;
 
 import javax.persistence.Entity;
 

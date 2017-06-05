@@ -1,13 +1,14 @@
-package net.ziemers.swxercise.lg.user;
+package net.ziemers.swxercise.lg.model.user;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import net.ziemers.swxercise.db.BaseEntity;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
+        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
 public class User extends BaseEntity {
 
     private String firstname;
@@ -16,6 +17,8 @@ public class User extends BaseEntity {
 
     @NotNull
     private Profile profile;
+
+    private Address address;
 
     public User() {
         super();
@@ -54,6 +57,15 @@ public class User extends BaseEntity {
     public User withProfile(final Profile profile) {
         setProfile(profile);
         return this;
+    }
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }

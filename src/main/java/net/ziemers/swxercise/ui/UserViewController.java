@@ -7,8 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import net.ziemers.swxercise.lg.user.Profile;
-import net.ziemers.swxercise.lg.user.User;
+import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 
@@ -54,7 +53,6 @@ public class UserViewController {
     @Produces({MediaType.TEXT_PLAIN})
     public String postUser(UserDto userDto) throws Exception {
         userService.saveUser(userDto);
-
         return "Ok";
     }
 
