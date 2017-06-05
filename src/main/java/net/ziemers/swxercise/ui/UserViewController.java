@@ -59,10 +59,10 @@ public class UserViewController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.TEXT_PLAIN})
+    @Produces(MediaType.TEXT_PLAIN)
     public String createUser(UserDto dto) throws Exception {
-        userService.createUser(dto);
-        return "Ok";
+        final Long id = userService.createUser(dto);
+        return String.format("Ok (#%d)", id);
     }
 
     /**
@@ -78,7 +78,7 @@ public class UserViewController {
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.TEXT_PLAIN})
+    @Produces(MediaType.TEXT_PLAIN)
     public String updateUser(@PathParam("id") Long id) throws Exception {
         // TODO noch zu implementieren
         return "Ok";
@@ -92,10 +92,44 @@ public class UserViewController {
      */
     @DELETE
     @Path("{id}")
-    @Produces({MediaType.TEXT_PLAIN})
+    @Produces(MediaType.TEXT_PLAIN)
     public String deleteUser(@PathParam("id") Long id) {
         userService.deleteUser(id);
         return "Ok";
+    }
+
+    /**
+     * Meldet einen Benutzer durch übergebenen username und password mit einer neuen User-{@link net.ziemers.swxercise.lg.model.user.Session} an.
+     *
+     * @param dto das mittels der als JSON-Objekt übergebenenen Eigenschaften zu füllende {@link UserDto}
+     * @return "Ok", wenn die Erstellung des User-Objekts erfolgreich war.
+     */
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String loginUser(UserDto dto) {
+        if (userService.loginUser(dto)) {
+            final User user = userService.getSessionUser();
+            return String.format("Ok (%s %s)", user.getFirstname(), user.getLastname());
+        }
+        return "Failed";
+    }
+
+    /**
+     * Meldet den angemeldeten Benutzer von seiner User-{@link net.ziemers.swxercise.lg.model.user.Session} ab.
+     *
+     * @return "Ok", wenn die Erstellung des User-Objekts erfolgreich war.
+     */
+    @POST
+    @Path("/logout")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String logoutUser() {
+        if (userService.logoutUser()) {
+            return "Ok";
+        }
+        return "Failed";
     }
 
 }

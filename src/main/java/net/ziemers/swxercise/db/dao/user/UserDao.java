@@ -20,4 +20,16 @@ public class UserDao extends GenericDao {
         return user;
     }
 
+    public User findByUsername(final String username) {
+        User user = null;
+
+        try {
+            // ermittelt den ersten Datensatz mit dem gesuchten Benutzernamen, auch wenn er sich nicht im Persistence Context befindet
+            user = (User) entityManager.createNamedQuery("User.findByUsername").setParameter("username", username).getSingleResult();
+        } catch(Exception e) {
+			/* nix */
+        }
+        return user;
+    }
+
 }

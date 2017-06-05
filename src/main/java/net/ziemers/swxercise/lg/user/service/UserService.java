@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import net.ziemers.swxercise.db.dao.user.UserDao;
 import net.ziemers.swxercise.lg.model.user.Profile;
+import net.ziemers.swxercise.lg.model.user.Session;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 
@@ -15,6 +16,24 @@ public class UserService {
 
     @Inject
     private UserDao dao;
+
+    @Inject
+    private Session session;
+
+    public boolean loginUser(UserDto dto) {
+        final User user = dao.findByUsername(dto.getUsername());
+
+        if (user != null && user.getProfile().isValidPassword(dto.getPassword())) {
+            session.setUser(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean logoutUser() {
+        session.setUser(null);
+        return session.getUser() == null;
+    }
 
     public User findUser(final Long id) {
         return dao.findById(id);
@@ -36,6 +55,10 @@ public class UserService {
 
     public void deleteUser(final Long id) {
         dao.remove(User.class, id);
+    }
+
+    public User getSessionUser() {
+        return session.getUser();
     }
 
 }
