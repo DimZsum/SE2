@@ -1,5 +1,24 @@
 # Ein Java-Beispielprojekt für die Lehrveranstaltungen "Software Engineering 2" (SE2) und "Softwarequalität und Test" (SwQT).
 
+## Projekt-Voraussetzungen
+
+- Versionsverwaltungswerkzeug "Git"
+- installiertes Java 8 JDK (mit Dokumentation)
+- eine Java-Entwicklungsumgebung ("Eclipse", "JetBrains IntelliJ IDEA", "NetBeans" o.ä.)
+- JEE-Application Server "JBoss WildFly Version 8.2.1-final"
+- Plugin "JBoss Tools" (nur für Eclipse)
+- Build-System "maven"
+- ein relationales Datenbankverwaltungssystem ("MySQL" empfohlen, oder "MariaDB", "PostgreSQL", "Oracle Express" etc.)
+- ein REST-Client (empfohlen "Advanced Rest Client Application" für Chrome)
+
+## Java-Projekt herunterladen
+
+In einem beliebigen Verzeichnis ausführen:
+
+> git clone https://git.ziemers.de/edu/swXercise.git
+
+Danach das entstandene Projektverzeichnis swXercise in der Entwicklungsumgebung als existierendes Maven-Projekt importieren.
+
 ## MySQL konfigurieren
 
 Zunächst muss das MySQL-Datenbanksystem installiert werden. Dies ist betriebssystemspezifisch. Während der Installation wird ein temporäres Root-Kennwort generiert.
