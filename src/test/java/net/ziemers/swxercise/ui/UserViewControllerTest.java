@@ -25,7 +25,7 @@ public class UserViewControllerTest {
 
     private User user;
 
-    private String actualString;
+    private RestResponse actual;
 
     @Test
     public void testJUnitFrameworkReturnsTrue() {
@@ -117,7 +117,7 @@ public class UserViewControllerTest {
         when(userService.loginUser(userDto)).thenReturn(true);
         when(userService.getSessionUser()).thenReturn(user);
 
-        actualString = underTest.loginUser(userDto);
+        actual = underTest.loginUser(userDto);
     }
 
     // then
@@ -127,8 +127,8 @@ public class UserViewControllerTest {
     }
 
     private void assertLoginSuccess() {
-        final String expected = String.format("Ok (%s %s)", user.getFirstname(), user.getLastname());
-        assertEquals(expected, actualString);
+        final RestResponse expected = new RestResponse();
+        assertEquals(expected, actual);
     }
 
 }

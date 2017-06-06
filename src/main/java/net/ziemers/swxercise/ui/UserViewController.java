@@ -10,9 +10,7 @@ import javax.ws.rs.core.MediaType;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
-
-import net.ziemers.swxercise.ui.RestResponse;
-import net.ziemers.swxercise.ui.enums.ResponseState.FAILED;
+import net.ziemers.swxercise.ui.enums.ResponseState;
 
 /**
  * REST-Methoden für die Benutzerverwaltung.
@@ -70,7 +68,7 @@ public class UserViewController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public RestResponse createUser(UserDto dto) throws Exception {
-        final Long id = userService.createUser(dto);
+        userService.createUser(dto);
         return new RestResponse();
     }
 
