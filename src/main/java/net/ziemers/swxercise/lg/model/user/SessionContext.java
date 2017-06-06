@@ -3,10 +3,10 @@ package net.ziemers.swxercise.lg.model.user;
 import javax.enterprise.context.SessionScoped;
 
 /**
- * Verwaltet die Session des zurzeit angemeldeten Benutzers.
+ * Verwaltet den SessionContext des zurzeit angemeldeten Benutzers.
  */
 @SessionScoped
-public class Session implements java.io.Serializable {
+public class SessionContext implements java.io.Serializable {
 
     private User user = null;
 

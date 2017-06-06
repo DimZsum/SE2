@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import net.ziemers.swxercise.lg.model.user.SessionContext;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
@@ -126,7 +127,7 @@ public class UserViewController {
     }
 
     /**
-     * Meldet einen Benutzer durch übergebenen username und password mit einer neuen User-{@link net.ziemers.swxercise.lg.model.user.Session} an.
+     * Meldet einen Benutzer durch übergebenen username und password mit einem neuen User-{@link SessionContext} an.
      *
      * Aufruf:
      * POST http://localhost:8080/swxercise/rest/users/login
@@ -146,7 +147,7 @@ public class UserViewController {
     }
 
     /**
-     * Meldet den angemeldeten Benutzer von seiner User-{@link net.ziemers.swxercise.lg.model.user.Session} ab.
+     * Meldet den angemeldeten Benutzer von seinem User-{@link SessionContext} ab.
      *
      * Aufruf:
      * POST http://localhost:8080/swxercise/rest/users/logout
