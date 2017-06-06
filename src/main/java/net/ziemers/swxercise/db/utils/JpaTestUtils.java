@@ -97,7 +97,8 @@ public class JpaTestUtils {
             overrideProperties.load(fis);
             emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_TEST, overrideProperties);
         } catch (Exception e) {
-            logger.info("Persistence properties will not be overriden because of following error:", e);
+            // logger.info("Persistence properties will not be overriden because of following error:", e);
+            logger.info("Persistence properties will not be overriden");
         } finally {
             if (fis != null) {
                 try {

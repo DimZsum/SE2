@@ -10,24 +10,4 @@
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
-
-    <persistence-unit name="swXerciseTestPU" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
-        <properties>
-            <!-- Property for WildFly to ignore this -->
-            <property name="jboss.as.jpa.managed" value="false" />
-            <!-- Properties for Hibernate -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://${swxercise.test.host}:${swxercise.test.port}/${swxercise.test.schema}" />
-            <property name="javax.persistence.jdbc.user" value="${swxercise.test.user}" />
-            <property name="javax.persistence.jdbc.password" value="${swxercise.test.password}" />
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="hibernate.show_sql" value="false" />
-            <property name="hibernate.format_sql" value="false" />
-            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop" / -->
-            <property name="hibernate.connection.useUnicode" value="true" />
-            <property name="hibernate.connection.characterEncoding" value="UTF-8" />
-            <property name="hibernate.ejb.entitymanager_factory_name" value="swXerciseTestPU" />
-        </properties>
-    </persistence-unit>
 </persistence>

@@ -20,13 +20,7 @@
 		<slf4j-version>1.7.25</slf4j-version>
 		<jackson-version>2.8.8.1</jackson-version>
 
-		<swxercise.schema>swxercise</swxercise.schema>
-		<swxercise.host>localhost</swxercise.host>
-		<swxercise.user>root</swxercise.user>
-		<swxercise.password>root</swxercise.password>
-		<swxercise.port>3306</swxercise.port>
-
-		<!-- Legacy compatiblity -->
+		<!-- Substituiert die Platzhalter in der testenden "persistence.xml" -->
 		<TEST_SCHEMA_NAME>swxercise_test</TEST_SCHEMA_NAME>
 		<swxercise.test.schema>${TEST_SCHEMA_NAME}</swxercise.test.schema>
 		<swxercise.test.host>localhost</swxercise.test.host>
@@ -51,11 +45,16 @@
 			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j-version}</version>
-		</dependency>
+		</dependency-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
@@ -67,11 +66,11 @@
 			<artifactId>dbunit</artifactId>
 			<version>${dbunit-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate-version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-version}</version>
+        </dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -85,6 +84,14 @@
     </dependencies>
 	<build>
 		<finalName>swXercise</finalName>
+
+        <testResources>
+            <!-- Sorgt dafür, dass Properties-Filtering von hier in die testende "persistence.xml" funktioniert -->
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
 
 		<plugins>
 			<plugin>
