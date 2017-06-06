@@ -11,6 +11,9 @@ import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 
+import net.ziemers.swxercise.ui.RestResponse;
+import net.ziemers.swxercise.ui.enums.ResponseState.FAILED;
+
 /**
  * REST-Methoden für die Benutzerverwaltung.
  */
@@ -25,6 +28,9 @@ public class UserViewController {
 
     /**
      * Liefert alle User-Objekte zurück.
+     *
+     * Aufruf:
+     * GET http://localhost:8080/swxercise/rest/users
      *
      * @return die User-Objekte.
      */
@@ -62,10 +68,10 @@ public class UserViewController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String createUser(UserDto dto) throws Exception {
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse createUser(UserDto dto) throws Exception {
         final Long id = userService.createUser(dto);
-        return String.format("Ok (#%d)", id);
+        return new RestResponse();
     }
 
     /**
@@ -81,10 +87,10 @@ public class UserViewController {
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String updateUser(@PathParam("id") Long id) throws Exception {
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse updateUser(@PathParam("id") Long id) throws Exception {
         // TODO noch zu implementieren
-        return "Ok";
+        return new RestResponse(ResponseState.FAILED);
     }
 
     /**
@@ -98,10 +104,10 @@ public class UserViewController {
      */
     @DELETE
     @Path("{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String deleteUser(@PathParam("id") Long id) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse deleteUser(@PathParam("id") Long id) {
         userService.deleteUser(id);
-        return "Ok";
+        return new RestResponse();
     }
 
     /**
@@ -113,12 +119,12 @@ public class UserViewController {
      * @return "Ok", wenn das Löschen des User-Objekts erfolgreich war.
      */
     @DELETE
-    @Produces(MediaType.TEXT_PLAIN)
-    public String deleteUser() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse deleteUser() {
         if (userService.deleteUser()) {
-            return "Ok";
+            return new RestResponse();
         }
-        return "Failed";
+        return new RestResponse(ResponseState.FAILED);
     }
 
     /**
@@ -133,13 +139,12 @@ public class UserViewController {
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String loginUser(UserDto dto) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse loginUser(UserDto dto) {
         if (userService.loginUser(dto)) {
-            final User user = userService.getSessionUser();
-            return String.format("Ok (%s %s)", user.getFirstname(), user.getLastname());
+            return new RestResponse();
         }
-        return "Failed";
+        return new RestResponse(ResponseState.FAILED);
     }
 
     /**
@@ -153,12 +158,12 @@ public class UserViewController {
     @POST
     @Path("/logout")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String logoutUser() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse logoutUser() {
         if (userService.logoutUser()) {
-            return "Ok";
+            return new RestResponse();
         }
-        return "Failed";
+        return new RestResponse(ResponseState.FAILED);
     }
 
 }
