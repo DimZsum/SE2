@@ -40,12 +40,27 @@ public class UserDto {
         return firstname;
     }
 
+    public UserDto withFirstname(final String firstname) {
+        this.firstname = firstname;
+        return this;
+    }
+
     public String getLastname() {
         return lastname;
     }
 
+    public UserDto withLastname(final String lastname) {
+        this.lastname = lastname;
+        return this;
+    }
+
     public String getMailaddress() {
         return mailaddress;
+    }
+
+    public UserDto withMailaddress(final String mailaddress) {
+        this.mailaddress = mailaddress;
+        return this;
     }
 
 }
