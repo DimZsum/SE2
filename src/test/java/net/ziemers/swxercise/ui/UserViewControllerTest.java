@@ -115,7 +115,7 @@ public class UserViewControllerTest {
         // wir simulieren den Erfolg des userService (der hier nicht getestet werden soll),
         // sofern das korrekte userDto an ihn übergeben wurde
         when(userService.loginUser(userDto)).thenReturn(true);
-        when(userService.getSessionUser()).thenReturn(user);
+        //when(userService.getSessionUser()).thenReturn(user);
 
         actual = underTest.loginUser(userDto);
     }
