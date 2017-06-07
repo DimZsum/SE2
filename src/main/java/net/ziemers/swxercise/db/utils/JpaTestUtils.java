@@ -80,7 +80,7 @@ public class JpaTestUtils {
      * Private Methode, die eine EntityManagerFactory erzeugen kann. Verwendet eine im Home-Verzeichnis des
      * aktuellen Benutzers abgelegte Datei persistence.properties, um die Defaults aus der persistence.xml
      * zu überschreiben.
-     * 
+     *
      * @return neu erstellte {@link EntityManagerFactory}
      */
     private static EntityManagerFactory createEntityManagerFactory() {
@@ -131,7 +131,7 @@ public class JpaTestUtils {
 
     /**
      * Hilfsmethode, um ein als XML vorliegendes Dataset zu laden.
-     * 
+     *
      * @param resourceName Dateiname, welches als Ressource gesucht wird
      * @return das geladene Dataset
      * @throws Exception wenn beim Behandeln der Dateien eine Exception aufgetreten ist
@@ -164,7 +164,7 @@ public class JpaTestUtils {
 
     /**
      * Initialisiert die Datenbank aus einer XML-Beschreibung heraus.
-     * 
+     *
      * @param resourceName der Name der XML-Datei
      * @throws Exception wenn dabei etwas schiefläuft
      */
@@ -235,12 +235,12 @@ public class JpaTestUtils {
 
     /**
      * Verschiedene Tabellen sollen ignoriert werden.
-     * 
+     *
      * @return eine Liste der zu ignorierenden Tabellen
      */
     public List<String> getSkippingTables() {
         return Arrays.asList(
-                "status",
+                "hibernate_sequence",
                 "schema_version"); // FlywayDB Metatable
     }
 
