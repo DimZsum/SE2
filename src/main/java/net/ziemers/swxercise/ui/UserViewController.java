@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import net.ziemers.swxercise.lg.model.user.SessionContext;
+import net.ziemers.swxercise.lg.user.service.SessionContext;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;

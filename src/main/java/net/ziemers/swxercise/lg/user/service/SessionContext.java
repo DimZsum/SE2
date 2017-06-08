@@ -1,6 +1,8 @@
-package net.ziemers.swxercise.lg.model.user;
+package net.ziemers.swxercise.lg.user.service;
 
 import javax.enterprise.context.SessionScoped;
+
+import net.ziemers.swxercise.lg.model.user.User;
 
 /**
  * Verwaltet den SessionContext des zurzeit angemeldeten Benutzers.

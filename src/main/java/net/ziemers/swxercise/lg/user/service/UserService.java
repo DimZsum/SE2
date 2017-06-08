@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import net.ziemers.swxercise.db.dao.user.UserDao;
 import net.ziemers.swxercise.lg.model.user.Profile;
-import net.ziemers.swxercise.lg.model.user.SessionContext;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 
