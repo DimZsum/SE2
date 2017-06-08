@@ -15,9 +15,17 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UserViewControllerTest {
 
+    /*
+     * You have the @InjectMocks annotation which tries to do constructor,
+     * method and field dependency injection based on the type.
+     */
     @InjectMocks
     private UserViewController underTest;
 
+    /*
+     * Mockito allows to configure the return values of its mocks via a fluent API.
+     * Unspecified method calls return "empty" values
+     */
     @Mock
     private UserService userService;
 
@@ -112,10 +120,11 @@ public class UserViewControllerTest {
     }
 
     private void loginUser() {
-        // wir simulieren den Erfolg des userService (der hier nicht getestet werden soll),
-        // sofern das korrekte userDto an ihn übergeben wurde
+        /*
+         * The when().thenReturn() method chain is used to specify
+         * a return value for a method call with pre-defined parameters.
+         */
         when(userService.loginUser(userDto)).thenReturn(true);
-        //when(userService.getSessionUser()).thenReturn(user);
 
         actual = underTest.loginUser(userDto);
     }

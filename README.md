@@ -31,11 +31,15 @@ Dann kann/muss das Kennwort geändert werden, beispielsweise in 'root':
 
 > ALTER USER 'root'@'localhost' IDENTIFIED BY ‘root‘;
 
-Dann muss eine projektspezifische Datenbank erstellt und mit den nötigen Rechten versehen werden:
+Dann müssen die beiden projektspezifischen Datenbanken (für Test und "Produktion") erstellt und mit den nötigen Rechten versehen werden:
 
 > create database swxercise;
 
+> create database swxercise_test;
+
 > grant all privileges on swxercise.* to 'root'@'localhost' identified by 'root';
+
+> grant all privileges on swxercise_test.* to 'root'@'localhost' identified by 'root';
 
 ## MySQL-Datenbank im WildFly einbinden
 

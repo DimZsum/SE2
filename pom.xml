@@ -19,6 +19,7 @@
 		<mockito-version>2.7.22</mockito-version>
 		<dbunit-version>2.5.1</dbunit-version>
 		<slf4j-version>1.7.25</slf4j-version>
+        <jglue-version>3.1.4</jglue-version>
 		<jackson-version>2.8.8.1</jackson-version>
 
 		<!-- Substituiert die Platzhalter in der "persistence.xml" -->
@@ -67,8 +68,7 @@
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
 			<version>${dbunit-version}</version>
-			<!--scope>test</scope-->
-			<!-- TODO Wie koennen wir es erreichen, dass dies nur noch im Testkontext abhängig ist? -->
+            <scope>test</scope>
 		</dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -80,6 +80,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.jglue.cdi-unit</groupId>
+            <artifactId>cdi-unit</artifactId>
+            <version>${jglue-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Sorgt für eine schnellere Verwaltung der JSON-Umwandlung im REST-Kontext -->
 		<!-- dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
