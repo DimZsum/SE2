@@ -3,8 +3,8 @@ package net.ziemers.swxercise.db.dao;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,7 +19,11 @@ import net.ziemers.swxercise.db.BaseEntity;
 @Stateless
 public class GenericDao {
 
-    @PersistenceContext
+    /*
+     * Der Entity Manager wird per CDI injiziert, damit er auch im Testkontext mit dem CDI-Runner funktioniert.
+     * Im JEE-Container "zieht" dann die Produktion des Entity Managers in der Klasse "EntityMangerProducer".
+     */
+    @Inject
     protected EntityManager entityManager;
 
     /**

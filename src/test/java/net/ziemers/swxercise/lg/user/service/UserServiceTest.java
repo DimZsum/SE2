@@ -46,7 +46,7 @@ public class UserServiceTest extends JpaTestUtils {
                 .withUsername("tziemer")
                 .withPassword("secret");
 
-        //underTest.createUser(dto);
+        underTest.createUser(dto);
 
         txCommit();
     }

@@ -27,6 +27,7 @@ import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.ext.mysql.MySqlMetadataHandler;
 import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.internal.SessionImpl;
+import org.jglue.cdiunit.ProducesAlternative;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,7 @@ public class JpaTestUtils {
      * @return EntityManager der erzeugt wurde
      */
     @Produces
+    @ProducesAlternative
     public EntityManager getEm() {
         if (emf == null) {
             synchronized (EntityManagerFactory.class) {
