@@ -101,3 +101,33 @@ Aufgepasst bei der Version des MySQL-Konnektors in der module.xml!
   </statement>
 </datasource>
 ```
+
+## JBoss WildFly in Eclipse einbinden
+
+### JBoss Tools-Plugin installieren (nur für Eclipse)
+
+- Auswählen "Help -> Eclipse Marketplace..."
+- Find: "JBoss Tools (Neon)" (oder was halt gerade aktuell ist)
+- "Install" klicken
+- Auswählen "JBoss AS, Wildfly & EAP Server Tools"
+
+Quelle: https://tools.jboss.org/downloads/jbosstools/neon/4.4.3.Final.html
+
+### JBoss WildFly Server in Eclipse einbinden (nur für Eclipse)
+
+- Auswählen "File -> New -> Other..."
+- Auswählen "Server -> Server" (Next >)
+- WildFly 8.x
+  - Server's host name: localhost
+  - Server name: WildFly 8.x beliebig wählen (Next >)
+- Create a new Server Adapter
+  - The server is: Local
+  - Controlled by: Filesystem and shell Operations
+  - Create new runtime (next page) (Next >)
+- New Server
+  - Name WildFly 8.x Runtime
+  - Home Directory /home/<user>/wildfly-8.2.1.Final/ (oder das Verzeichnis, das Sie gewählt haben)
+  - Execution Environment: JavaSE-1.8
+  - Server base directory: standalone
+  - Configuration file: standalone.xml (Next >)
+  - Add and Remove, ohne existierende Resources kann hier nichts konfiguriert werden (Finish)
