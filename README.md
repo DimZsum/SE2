@@ -120,14 +120,31 @@ Quelle: https://tools.jboss.org/downloads/jbosstools/neon/4.4.3.Final.html
 - WildFly 8.x
   - Server's host name: localhost
   - Server name: WildFly 8.x beliebig wählen (Next >)
-- Create a new Server Adapter
+- "Create a new Server Adapter"
   - The server is: Local
   - Controlled by: Filesystem and shell Operations
   - Create new runtime (next page) (Next >)
-- New Server
+- "New Server"
   - Name WildFly 8.x Runtime
   - Home Directory /home/<user>/wildfly-8.2.1.Final/ (oder das Verzeichnis, das Sie gewählt haben)
   - Execution Environment: JavaSE-1.8
   - Server base directory: standalone
   - Configuration file: standalone.xml (Next >)
-  - Add and Remove, ohne existierende Resources kann hier nichts konfiguriert werden (Finish)
+  - "Add and Remove", das gewünschte Maven-Artefakt "swXercise" auswählen (Finish)
+
+## JBoss WildFly in IntelliJ IDEA einbinden
+
+### JBoss WildFly-Server initial bekanntmachen (nur für IntelliJ IDEA)
+
+- IDE-Menü "Run -> Edit Configurations..."
+  - "Defaults -> JBoss Server -> Local" und Reiter "Server"
+    - "Configure..." und einen neuen JBoss Server mittels seines JBoss Home-Verzeichnisses angeben
+
+### Run Configuration erstellen (nur für IntelliJ IDEA)
+
+- Wiederum IDE-Menü "Run -> Edit Configurations..."
+  - Plus-Symbol, um eine neue WildFly-Run Configuration zu definieren
+  - "JBoss Server -> Local" auswählen
+    - Reiter "Server" und den zuvor bekanntgemachten JBoss-Server wählen
+    - Reiter "Deployment"
+      - Selected artifacts will be deployed at server startup -> das gewünschte Maven-Artefakt "swXercise" auswählen, und zwar das mit "exploded" markierte; deployt als ausgepackte Ordnerstruktur und nicht als "WAR-Datei" (vorteilhaft beim Hot-Deployment)
