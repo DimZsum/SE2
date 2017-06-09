@@ -1,8 +1,11 @@
-package net.ziemers.swxercise.lg.model.testdata.testdatabuilder;
+package net.ziemers.swxercise.lg.testdata.testdatabuilder.user;
 
 import net.ziemers.swxercise.lg.model.user.Address;
 import net.ziemers.swxercise.lg.model.user.Profile;
 import net.ziemers.swxercise.lg.model.user.User;
+import net.ziemers.swxercise.lg.testdata.testdatabuilder.AbstractTestDataBuilder;
+
+import javax.persistence.EntityManager;
 
 public class UserTestDataBuilder extends AbstractTestDataBuilder<User> {
 
@@ -14,7 +17,7 @@ public class UserTestDataBuilder extends AbstractTestDataBuilder<User> {
 
     private Address address = null;
 
-    public UserTestDataBuilder(final EntityManger em) {
+    public UserTestDataBuilder(final EntityManager em) {
         super(em);
         profile = new ProfileTestDataBuilder(em).build();
     }
@@ -36,7 +39,7 @@ public class UserTestDataBuilder extends AbstractTestDataBuilder<User> {
         return this;
     }
 
-    public UserTestDataBuidler withProfile(final Profile profile) {
+    public UserTestDataBuilder withProfile(final Profile profile) {
         this.profile = profile;
         return this;
     }
