@@ -16,8 +16,23 @@ public class SessionContext implements java.io.Serializable {
         return user;
     }
 
-    public void setUser(User user) {
+    private void setUser(User user) {
         this.user = user;
     }
 
+    public boolean login(final User user) {
+        if (getUser() == null) {
+            setUser(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean logout() {
+        if (getUser() != null) {
+            setUser(null);
+            return true;
+        }
+        return false;
+    }
 }
