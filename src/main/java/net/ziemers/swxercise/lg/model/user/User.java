@@ -71,4 +71,9 @@ public class User extends BaseEntity {
         this.address = address;
     }
 
+    public User withAddress(final Address address) {
+        setAddress(address);
+        return this;
+    }
+
 }

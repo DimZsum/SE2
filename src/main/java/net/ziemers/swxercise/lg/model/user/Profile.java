@@ -133,7 +133,7 @@ public class Profile extends BaseEntity {
         return username;
     }
 
-    public void setUsername(String username) {
+    private void setUsername(String username) {
         this.username = username;
     }
 
@@ -181,6 +181,11 @@ public class Profile extends BaseEntity {
 
     public void setMailaddress(String mailaddress) {
         this.mailaddress = mailaddress;
+    }
+
+    public Profile withMailaddress(final String mailaddress) {
+        setMailaddress(mailaddress);
+        return this;
     }
 
 }
