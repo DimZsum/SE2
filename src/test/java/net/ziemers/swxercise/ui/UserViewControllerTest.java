@@ -93,7 +93,12 @@ public class UserViewControllerTest {
 
     @Test
     public void testLogoutUserReturnsSuccess() {
-        // TODO Test ist noch zu implementieren
+
+        doing()
+                .logoutUser();
+
+        then()
+                .assertLogoutSuccess();
     }
 
     // given
@@ -128,6 +133,12 @@ public class UserViewControllerTest {
         actual = underTest.loginUser(userDto);
     }
 
+    private void logoutUser() {
+        when(userService.logoutUser()).thenReturn(true);
+
+        actual = underTest.logoutUser();
+    }
+
     // then
 
     private UserViewControllerTest then() {
@@ -135,6 +146,11 @@ public class UserViewControllerTest {
     }
 
     private void assertLoginSuccess() {
+        final RestResponse expected = new RestResponse();
+        assertEquals(expected, actual);
+    }
+
+    private void assertLogoutSuccess() {
         final RestResponse expected = new RestResponse();
         assertEquals(expected, actual);
     }

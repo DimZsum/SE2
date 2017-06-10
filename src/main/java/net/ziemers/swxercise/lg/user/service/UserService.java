@@ -24,17 +24,11 @@ public class UserService {
 
     public boolean loginUser(UserDto dto) {
         final User user = dao.findByUsername(dto.getUsername());
-
-        if (user != null && user.getProfile().isValidPassword(dto.getPassword())) {
-            sessionContext.setUser(user);
-            return true;
-        }
-        return false;
+        return user != null && user.getProfile().isValidPassword(dto.getPassword()) && sessionContext.login(user);
     }
 
     public boolean logoutUser() {
-        sessionContext.setUser(null);
-        return sessionContext.getUser() == null;
+       return sessionContext.logout();
     }
 
     public User findUser(final Long id) {
