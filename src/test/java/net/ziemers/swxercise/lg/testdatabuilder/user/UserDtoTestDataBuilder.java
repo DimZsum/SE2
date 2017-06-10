@@ -1,6 +1,6 @@
-package net.ziemers.swxercise.lg.testdata.testdatabuilder.user;
+package net.ziemers.swxercise.lg.testdatabuilder.user;
 
-import net.ziemers.swxercise.lg.testdata.testdatabuilder.AbstractTestDataBuilder;
+import net.ziemers.swxercise.lg.testdatabuilder.AbstractTestDataBuilder;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 
 import javax.persistence.EntityManager;

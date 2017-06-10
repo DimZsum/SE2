@@ -1,7 +1,7 @@
-package net.ziemers.swxercise.lg.testdata.testdatabuilder.user;
+package net.ziemers.swxercise.lg.testdatabuilder.user;
 
 import net.ziemers.swxercise.lg.model.user.Profile;
-import net.ziemers.swxercise.lg.testdata.testdatabuilder.AbstractTestDataBuilder;
+import net.ziemers.swxercise.lg.testdatabuilder.AbstractTestDataBuilder;
 
 import javax.persistence.EntityManager;
 

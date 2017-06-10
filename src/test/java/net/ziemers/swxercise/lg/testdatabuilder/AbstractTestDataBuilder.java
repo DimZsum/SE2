@@ -1,4 +1,4 @@
-package net.ziemers.swxercise.lg.testdata.testdatabuilder;
+package net.ziemers.swxercise.lg.testdatabuilder;
 
 import javax.persistence.EntityManager;
 

@@ -40,13 +40,17 @@ public class UserService {
     }
 
     public Long createUser(final UserDto userDto) {
-        final Profile profile = new Profile(userDto.getUsername(), userDto.getPassword());
+        User user = dao.findByUsername(userDto.getUsername());
+        if (user == null) {
+            final Profile profile = new Profile(userDto.getUsername(), userDto.getPassword());
 
-        // wir füllen das User-Objekt mit Method Chaining
-        final User user = new User(userDto.getFirstname(), userDto.getLastname())
-                .withProfile(profile);
+            // wir füllen das User-Objekt mit Method Chaining
+            user = new User(userDto.getFirstname(), userDto.getLastname())
+                    .withProfile(profile);
 
-        return dao.save(user);
+            return dao.save(user);
+        }
+        return null;
     }
 
     public void deleteUser(final Long id) {

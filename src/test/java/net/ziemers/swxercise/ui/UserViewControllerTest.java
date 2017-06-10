@@ -1,8 +1,8 @@
 package net.ziemers.swxercise.ui;
 
 import net.ziemers.swxercise.lg.model.user.User;
-import net.ziemers.swxercise.lg.testdata.testdatabuilder.user.UserDtoTestDataBuilder;
-import net.ziemers.swxercise.lg.testdata.testdatabuilder.user.UserTestDataBuilder;
+import net.ziemers.swxercise.lg.testdatabuilder.user.UserDtoTestDataBuilder;
+import net.ziemers.swxercise.lg.testdatabuilder.user.UserTestDataBuilder;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 import org.junit.Test;

@@ -40,7 +40,7 @@ public class JpaTestUtils {
 
     private static final String PERSISTENCE_UNIT_TEST = "swXerciseTestPU";
 
-    private static final String NET_ZIEMERS_SWXERCISE_PKG = "net/ziemers/swxercise/";
+    private static final String NET_ZIEMERS_SWXERCISE_PKG = "net/ziemers/swxercise/testdata/";
 
     private static EntityManagerFactory emf = null;
 
