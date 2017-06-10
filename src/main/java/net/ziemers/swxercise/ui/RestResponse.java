@@ -6,12 +6,19 @@ public class RestResponse {
 
     private ResponseState responseState;
 
+    private String message;
+
     public RestResponse() {
         this(ResponseState.SUCCESS);
     }
 
     public RestResponse(final ResponseState responseState) {
         this.responseState = responseState;        
+    }
+
+    public RestResponse(final ResponseState responseState, final String message) {
+        this(responseState);
+        this.message = message;
     }
 
     public int getResponseCode() {
@@ -21,6 +28,8 @@ public class RestResponse {
     public String getResponseText() {
         return responseState.getResponseText();
     }
+
+    public String getMessage() { return message; }
 
     @Override
     public boolean equals(Object o) {

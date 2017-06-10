@@ -4,6 +4,7 @@ public enum ResponseState {
 
     SUCCESS(0, "Success"),
     FAILED(1, "Failed"),
+    ALREADY_EXISTING(2, "Already existing"),
     ;
 
     private final int responseCode;

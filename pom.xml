@@ -43,6 +43,7 @@
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>${jaxrs-version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -81,6 +82,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-version}</version>
+			<scope>provided</scope>
 		</dependency>
         <dependency>
             <groupId>org.jglue.cdi-unit</groupId>

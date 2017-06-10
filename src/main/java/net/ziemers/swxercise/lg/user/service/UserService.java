@@ -58,11 +58,10 @@ public class UserService {
     }
 
     public boolean deleteUser() {
+        // ist zurzeit ein Benutzer angemeldet, können wir ihn löschen
         final User user = sessionContext.getUser();
-
         if (user != null) {
-            dao.remove(User.class, user.getId());
-            return true;
+            return dao.remove(User.class, user.getId()) != null;
         }
         return false;
     }
