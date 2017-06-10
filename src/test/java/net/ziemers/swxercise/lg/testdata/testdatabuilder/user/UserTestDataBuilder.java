@@ -11,7 +11,7 @@ public class UserTestDataBuilder extends AbstractTestDataBuilder<User> {
 
     private String firstname = "Hein";
 
-    private String lastname = "Bloed";
+    private String lastname = "Blöd";
 
     private Profile profile;
 
@@ -20,6 +20,10 @@ public class UserTestDataBuilder extends AbstractTestDataBuilder<User> {
     public UserTestDataBuilder(final EntityManager em) {
         super(em);
         profile = new ProfileTestDataBuilder(em).build();
+    }
+
+    public UserTestDataBuilder() {
+        this(null);
     }
 
     @Override

@@ -9,6 +9,8 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 		<mvn-compiler-plugin-version>3.3</mvn-compiler-plugin-version>
 		<jee-version>7.0</jee-version>
 		<java-version>1.8</java-version>

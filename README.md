@@ -3,13 +3,12 @@
 ## Projekt-Voraussetzungen
 
 - Versionsverwaltungswerkzeug "Git"
-- installiertes Java 8 JDK (mit Dokumentation)
-- eine Java-Entwicklungsumgebung ("Eclipse", "JetBrains IntelliJ IDEA", "NetBeans" o.ä.)
+- Installiertes Java 8 JDK (mit Dokumentation)
+- Eine Java-Entwicklungsumgebung ("Eclipse", "JetBrains IntelliJ IDEA", "NetBeans" o.ä.)
 - JEE-Application Server "JBoss WildFly Version 8.2.1-final"
-- Plugin "JBoss Tools" (nur für Eclipse)
-- Build-System "maven"
-- ein relationales Datenbankverwaltungssystem ("MySQL" empfohlen, oder "MariaDB", "PostgreSQL", "Oracle Express" etc.)
-- ein REST-Client (empfohlen "Advanced Rest Client Application" für Chrome)
+- Build-System "maven" (optional)
+- Ein relationales Datenbankverwaltungssystem mit JDBC-Anbindung ("MySQL" empfohlen, oder "MariaDB", "PostgreSQL", "Oracle Express" etc.)
+- Ein REST-Client (empfohlen "Advanced Rest Client Application" für Chrome)
 
 ## Java-Projekt herunterladen
 

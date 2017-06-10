@@ -7,11 +7,11 @@ import javax.persistence.EntityManager;
 
 public class ProfileTestDataBuilder extends AbstractTestDataBuilder {
 
-    private String username = "tziemer";
+    private String username = "hbloed";
 
     private String password = "secret";
 
-    private String mailaddress = "tziemer@ziemers.net";
+    private String mailaddress = "hbloed@ziemers.net";
 
     public ProfileTestDataBuilder(final EntityManager em) {
         super(em);

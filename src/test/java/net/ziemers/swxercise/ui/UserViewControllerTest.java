@@ -1,6 +1,8 @@
 package net.ziemers.swxercise.ui;
 
 import net.ziemers.swxercise.lg.model.user.User;
+import net.ziemers.swxercise.lg.testdata.testdatabuilder.user.UserDtoTestDataBuilder;
+import net.ziemers.swxercise.lg.testdata.testdatabuilder.user.UserTestDataBuilder;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 import org.junit.Test;
@@ -101,15 +103,12 @@ public class UserViewControllerTest {
     }
 
     private UserViewControllerTest userDto() {
-        userDto = new UserDto()
-                .withUsername("hbloed")
-                .withPassword("secret");
-
+        userDto = new UserDtoTestDataBuilder().build();
         return this;
     }
 
     private UserViewControllerTest user() {
-        user = new User("Hein", "Blöd");
+        user = new UserTestDataBuilder().build();
         return this;
     }
 
