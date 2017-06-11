@@ -2,6 +2,7 @@ package net.ziemers.swxercise.ui;
 
 import java.util.Collection;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -70,6 +71,7 @@ public class UserViewController {
     @Path("v1/user")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMIN")
     public RestResponse createUser(UserDto dto) {
         final Long id = userService.createUser(dto);
         if (id != null) {
@@ -94,6 +96,7 @@ public class UserViewController {
     @Path("v1/user/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMIN")
     public RestResponse updateUser(@PathParam("id") Long id, UserDto dto) {
         // TODO noch zu implementieren
         return new RestResponse(ResponseState.FAILED);
@@ -111,6 +114,7 @@ public class UserViewController {
     @DELETE
     @Path("v1/user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMIN")
     public RestResponse deleteUser(@PathParam("id") Long id) {
         userService.deleteUser(id);
         return new RestResponse();
