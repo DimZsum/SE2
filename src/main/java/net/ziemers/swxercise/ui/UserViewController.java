@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import net.ziemers.swxercise.lg.user.enums.RightState;
 import net.ziemers.swxercise.lg.user.service.SessionContext;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
@@ -28,7 +29,7 @@ public class UserViewController {
 
     /**
      * Liefert alle User-Objekte zurück.
-     *
+     * <p>
      * Aufruf:
      * GET http://localhost:8080/swxercise/rest/v1/users
      *
@@ -37,13 +38,14 @@ public class UserViewController {
     @GET
     @Path("v1/users")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.SUPERADMIN)
     public Collection<User> getAllUsers() {
         return userService.findAllUsers();
     }
 
     /**
      * Liefert das User-Objekt mit der gewünschten Id zurück.
-     *
+     * <p>
      * Aufruf:
      * GET http://localhost:8080/swxercise/rest/v1/user/42
      *
@@ -53,25 +55,39 @@ public class UserViewController {
     @GET
     @Path("v1/user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getById(@PathParam("id") Long id) {
+    @RolesAllowed(RightState.Constants.SUPERADMIN)
+    public User getUser(@PathParam("id") Long id) {
         return userService.findUser(id);
     }
 
     /**
-     * Erstellt ein neues User-Objekt mit den gewünschten Eigenschaften, welche mittels {@link UserDto} definiert werden.
+     * Liefert das User-Objekt des zurzeit angemeldeten Benutzers zurück.
+     * <p>
+     * Aufruf:
+     * GET http://localhost:8080/swxercise/rest/v1/user
      *
+     * @return das User-Objekt als JSON, oder <code>null</code>, falls keines existiert.
+     */
+    @GET
+    @Path("v1/user")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.LOGGED_IN)
+    public User getUser() { return userService.findUser(); }
+
+    /**
+     * Erstellt ein neues User-Objekt mit den gewünschten Eigenschaften, welche mittels {@link UserDto} definiert werden.
+     * <p>
      * Aufruf:
      * POST http://localhost:8080/swxercise/rest/v1/user
      *
      * @param dto das mittels der als JSON-Objekt übergebenenen Eigenschaften zu füllende {@link UserDto}
      * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
-
      */
     @POST
     @Path("v1/user")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("ADMIN")
+    @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse createUser(UserDto dto) {
         final Long id = userService.createUser(dto);
         if (id != null) {
@@ -84,11 +100,11 @@ public class UserViewController {
      * Aktualisiert das User-Objekt mit der gewünschten Id mit den Eigenschaften,
      * welche mittels {@link UserDto} definiert werden. Der Pfadparameter wird
      * als erstes ge'marshal't, das DTO im Post-Content danach (REST-Konvention).
-     *
+     * <p>
      * Aufruf:
      * PUT http://localhost:8080/swxercise/rest/v1/user/42
      *
-     * @param id die Id des zu aktualisierenden User-Objekts
+     * @param id  die Id des zu aktualisierenden User-Objekts
      * @param dto das mittels der als JSON-Objekt übergebenenen Eigenschaften zu füllende {@link UserDto}
      * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
      */
@@ -96,15 +112,41 @@ public class UserViewController {
     @Path("v1/user/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("ADMIN")
+    @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse updateUser(@PathParam("id") Long id, UserDto dto) {
-        // TODO noch zu implementieren
+        if (userService.updateUser(id, dto)) {
+            return new RestResponse();
+        }
+        return new RestResponse(ResponseState.FAILED);
+    }
+
+    /**
+     * Aktualisiert das User-Objekt des zurzeit angemeldeten Benutzers mit den
+     * Eigenschaften, welche mittels {@link UserDto} definiert werden. Der
+     * Pfadparameter wird als erstes ge'marshal't, das DTO im Post-Content
+     * danach (REST-Konvention).
+     * <p>
+     * Aufruf:
+     * PUT http://localhost:8080/swxercise/rest/v1/user
+     *
+     * @param dto das mittels der als JSON-Objekt übergebenenen Eigenschaften zu füllende {@link UserDto}
+     * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
+     */
+    @PUT
+    @Path("v1/user")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.LOGGED_IN)
+    public RestResponse updateUser(UserDto dto) {
+        if (userService.updateUser(dto)) {
+            return new RestResponse();
+        }
         return new RestResponse(ResponseState.FAILED);
     }
 
     /**
      * Löscht das User-Objekt mit der gewünschten Id.
-     *
+     * <p>
      * Aufruf:
      * DELETE http://localhost:8080/swxercise/rest/v1/user/42
      *
@@ -114,7 +156,7 @@ public class UserViewController {
     @DELETE
     @Path("v1/user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("ADMIN")
+    @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse deleteUser(@PathParam("id") Long id) {
         userService.deleteUser(id);
         return new RestResponse();
@@ -122,7 +164,7 @@ public class UserViewController {
 
     /**
      * Löscht das User-Objekt des zurzeit angemeldeten Benutzers.
-     *
+     * <p>
      * Aufruf:
      * DELETE http://localhost:8080/swxercise/rest/v1/user
      *
@@ -131,6 +173,7 @@ public class UserViewController {
     @DELETE
     @Path("v1/user")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.LOGGED_IN)
     public RestResponse deleteUser() {
         if (userService.deleteUser()) {
             return new RestResponse();
@@ -140,7 +183,7 @@ public class UserViewController {
 
     /**
      * Meldet einen Benutzer durch übergebenen username und password mit einem neuen User-{@link SessionContext} an.
-     *
+     * <p>
      * Aufruf:
      * POST http://localhost:8080/swxercise/rest/v1/user/login
      *
@@ -151,6 +194,7 @@ public class UserViewController {
     @Path("v1/user/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.NOT_LOGGED_IN)
     public RestResponse loginUser(UserDto dto) {
         if (userService.loginUser(dto)) {
             return new RestResponse();
@@ -160,7 +204,7 @@ public class UserViewController {
 
     /**
      * Meldet den angemeldeten Benutzer von seinem User-{@link SessionContext} ab.
-     *
+     * <p>
      * Aufruf:
      * POST http://localhost:8080/swxercise/rest/v1/user/logout
      *
@@ -169,6 +213,7 @@ public class UserViewController {
     @POST
     @Path("v1/user/logout")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.LOGGED_IN)
     public RestResponse logoutUser() {
         if (userService.logoutUser()) {
             return new RestResponse();

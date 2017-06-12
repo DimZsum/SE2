@@ -10,6 +10,7 @@ import net.ziemers.swxercise.db.dao.user.UserDao;
 import net.ziemers.swxercise.lg.model.user.Profile;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
+import net.ziemers.swxercise.lg.user.enums.RightState;
 
 /**
  * Diese Klasse stellt alle Dienste im Kontext einer Benutzerverwaltung zur Verfügung.
@@ -54,7 +55,21 @@ public class UserService {
     }
 
     /**
+     * Findet den zurzeit angemeldeten Benutzer.
+     *
+     * @return den gesuchten Benutzer, oder <code>null</code>, falls ein solcher nicht existiert.
+     */
+    public User findUser() {
+        final User user = sessionContext.getUser();
+        if (user != null) {
+            return dao.findById(user.getId());
+        }
+        return null;
+    }
+
+    /**
      * Findet alle existierenden Benutzer.
+     *
      * @return alle Benutzer, oder eine leere Collection, falls keine existieren.
      */
     public Collection<User> findAllUsers() {
@@ -64,21 +79,53 @@ public class UserService {
     /**
      * Erstellt einen neuen Benutzer, sofern noch keiner mit dem selben Benutzernamen existiert.
      *
-     * @param userDto das {@link UserDto} enthält die Eigenschaften des zu erstellenden Benutzers
+     * @param dto das {@link UserDto} enthält die Eigenschaften des zu erstellenden Benutzers
      * @return die Id des neuen Benutzers, wenn die Erstellung erfolgreich war.
      */
-    public Long createUser(final UserDto userDto) {
-        User user = dao.findByUsername(userDto.getUsername());
+    public Long createUser(final UserDto dto) {
+        User user = dao.findByUsername(dto.getUsername());
         if (user == null) {
-            final Profile profile = new Profile(userDto.getUsername(), userDto.getPassword());
+            final Profile profile = new Profile(dto.getUsername(), dto.getPassword());
 
             // wir füllen das User-Objekt mit Method Chaining
-            user = new User(userDto.getFirstname(), userDto.getLastname())
+            user = new User(dto.getFirstname(), dto.getLastname())
                     .withProfile(profile);
 
             return dao.save(user);
         }
         return null;
+    }
+
+    /**
+     * Aktualisiert den Benutzer mit der übergebenen Id.
+     *
+     * @param id  die Id des zu aktualisierenden Benutzers
+     * @param dto das {@link UserDto} enthält die Eigenschaften des zu aktualisierenden Benutzers
+     * @return <code>true</code>, wenn das Aktualisieren des Benutzers erfolgreich war.
+     */
+    public boolean updateUser(final Long id, final UserDto dto) {
+        final User user = dao.findById(id);
+        if (user != null) {
+            // TODO noch zu implementieren
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Aktualisiert den zurzeit angemeldeten Benutzer.
+     *
+     * @param dto das {@link UserDto} enthält die Eigenschaften des zu aktualisierenden Benutzers
+     * @return <code>true</code>, wenn das Aktualisieren des Benutzers erfolgreich war.
+     */
+    public boolean updateUser(final UserDto dto) {
+        // ist zurzeit ein Benutzer angemeldet, können wir ihn aktualisieren
+        final User user = sessionContext.getUser();
+        if (user != null) {
+            // TODO noch zu implementieren
+            return false;
+        }
+        return false;
     }
 
     /**
@@ -102,26 +149,44 @@ public class UserService {
     }
 
     /**
-     * Liefert das {@link User}-Objekt des zurzeit angemeldeten Benutzers zurück.
+     * Liefert das {@link User}-Objekt des zurzeit angemeldeten Benutzers zurück. Das ist derjenige
+     * Benutzer, der im {@link SessionContext}-Objekt hinterlegt ist.
+     *
      * @return das User-Objekt des zurzeit angemeldeten Benutzers.
      */
-    public User getSessionUser() {
+    public User getSessionContextUser() {
         return sessionContext.getUser();
     }
 
     /**
-     * Prüft, ob der zurzeit angemeldete Benutzer eine Rolle aus der Liste der übergebenen Rollen besitzt.
+     * Prüft, ob der Benutzer des {@link SessionContext}s ein Recht aus der Liste der übergebenen Rechte besitzt.
      *
-     * @param rolesSet die Rollenliste
-     * @return <code>true</code>, falls der zurzeit angemeldete Benutzer eine der übergebenen Rollen besitzt.
+     * @param rightsSet die Rechteliste
+     * @return <code>true</code>, falls der Benutzer eines der übergebenen Rechte besitzt.
      */
-    public boolean isUserAllowed(final Set<String> rolesSet) {
-        final User user = getSessionUser();
+    public boolean isUserAllowed(final Set<String> rightsSet) {
+        final User user = getSessionContextUser();
 
-        // ist überhaupt ein Benutzer angemeldet?
-        if (user != null) {
-            // TODO muss noch implementiert werden
-            return true;
+        // Rechte, die nur ein nicht-angemeldeter Benutzer besitzen kann
+        if (user == null) {
+            if (rightsSet.contains(RightState.Constants.NOT_LOGGED_IN)) {
+                return true;
+            }
+        }
+
+        // Rechte, die nur ein angemeldeter Benutzer besitzen kann
+        else {
+            if (rightsSet.contains(RightState.Constants.LOGGED_IN)) {
+                return true;
+            }
+            if (rightsSet.contains(RightState.Constants.ADMIN)) {
+                // TODO muss noch implementiert werden
+                return true;
+            }
+            if (rightsSet.contains(RightState.Constants.SUPERADMIN)) {
+                // TODO muss noch implementiert werden
+                return true;
+            }
         }
         return false;
     }
