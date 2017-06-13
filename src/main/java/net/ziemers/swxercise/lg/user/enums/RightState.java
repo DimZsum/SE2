@@ -9,12 +9,14 @@ public enum RightState {
     NOT_LOGGED_IN(Constants.NOT_LOGGED_IN),
     LOGGED_IN(Constants.LOGGED_IN),
     ADMIN(Constants.ADMIN),
-    SUPERADMIN(Constants.SUPERADMIN),
     ;
 
     private String name;
 
     RightState(final String name) {
+        if (!this.name().equals(name)) {
+          throw new ExceptionInInitializerError("Constant string didn't match enum name");
+        }
         this.name = name;
     }
 
@@ -33,7 +35,6 @@ public enum RightState {
         public static final String NOT_LOGGED_IN = "NOT_LOGGED_IN";
         public static final String LOGGED_IN = "LOGGED_IN";
         public static final String ADMIN = "ADMIN";
-        public static final String SUPERADMIN = "SUPERADMIN";
     }
 
 }

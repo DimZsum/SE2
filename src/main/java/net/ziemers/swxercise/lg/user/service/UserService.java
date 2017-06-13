@@ -183,10 +183,6 @@ public class UserService {
                 // TODO muss noch implementiert werden
                 return true;
             }
-            if (rightsSet.contains(RightState.Constants.SUPERADMIN)) {
-                // TODO muss noch implementiert werden
-                return true;
-            }
         }
         return false;
     }

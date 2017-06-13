@@ -38,7 +38,7 @@ public class UserViewController {
     @GET
     @Path("v1/users")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(RightState.Constants.SUPERADMIN)
+    @RolesAllowed(RightState.Constants.ADMIN)
     public Collection<User> getAllUsers() {
         return userService.findAllUsers();
     }
@@ -55,7 +55,7 @@ public class UserViewController {
     @GET
     @Path("v1/user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(RightState.Constants.SUPERADMIN)
+    @RolesAllowed(RightState.Constants.ADMIN)
     public User getUser(@PathParam("id") Long id) {
         return userService.findUser(id);
     }
