@@ -6,8 +6,8 @@
 		<jta-data-source>java:jboss/datasources/swXerciseDS</jta-data-source>
 		<properties>
       <property name="wildfly.jpa.default-unit" value="true"/>
-			<!-- property name="hibernate.hbm2ddl.auto" value="create-drop" / -->
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.hbm2ddl.import_files" value="/bootstrap_data.sql"/>
 		</properties>
 	</persistence-unit>
 
