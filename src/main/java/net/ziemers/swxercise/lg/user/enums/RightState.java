@@ -20,6 +20,15 @@ public enum RightState {
         this.name = name;
     }
 
+    public static RightState getByName(final String name) {
+        for (RightState value : values()) {
+            if (value.name().equals(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }

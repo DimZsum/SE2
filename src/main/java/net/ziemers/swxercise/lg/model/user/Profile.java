@@ -3,6 +3,7 @@ package net.ziemers.swxercise.lg.model.user;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.DatatypeConverter;
 
@@ -33,6 +34,8 @@ public class Profile extends BaseEntity {
     private String salt;
 
     private String mailaddress;
+
+    private Role role;
 
     /*
 	 * *****************************************************************************************************************************
@@ -186,6 +189,15 @@ public class Profile extends BaseEntity {
     public Profile withMailaddress(final String mailaddress) {
         setMailaddress(mailaddress);
         return this;
+    }
+
+    @ManyToOne
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
 }

@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import net.ziemers.swxercise.db.dao.user.UserDao;
 import net.ziemers.swxercise.lg.model.user.Profile;
+import net.ziemers.swxercise.lg.model.user.Role;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.enums.RightState;
@@ -83,6 +84,7 @@ public class UserService {
      * @return die Id des neuen Benutzers, wenn die Erstellung erfolgreich war.
      */
     public Long createUser(final UserDto dto) {
+        // der Benutzer darf natürlich noch nicht existieren :)
         User user = dao.findByUsername(dto.getUsername());
         if (user == null) {
             final Profile profile = new Profile(dto.getUsername(), dto.getPassword());
@@ -179,11 +181,20 @@ public class UserService {
             if (rightsSet.contains(RightState.Constants.LOGGED_IN)) {
                 return true;
             }
-            if (rightsSet.contains(RightState.Constants.ADMIN)) {
-                // TODO muss noch implementiert werden
-                return true;
+            // besitzt dieser Benutzer eine zugewiesene Rolle?
+            final Role role = user.getProfile().getRole();
+            if (role != null) {
+                // sämtliche Rechte iterieren, die den Benutzer berechtigen würden, um zu ermitteln,
+                // ob der Benutzer eines dieser Rechte besitzt
+                for (String right : rightsSet) {
+                    // besitzt der Benutzer das betrachtete Recht?
+                    if (role.hasRight(RightState.getByName(right))) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
+
 }

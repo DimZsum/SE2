@@ -3,6 +3,7 @@ package net.ziemers.swxercise.db.dao;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -17,6 +18,9 @@ import net.ziemers.swxercise.db.BaseEntity;
  * spazialisierten Data Access Objects geerbt.
  */
 @Stateless
+// diese Bean ist nur die Alternative zur Ermittlung des Entity Managers
+// Quelle: https://stackoverflow.com/questions/10185976/cdi-ambiguous-dependencies
+@Alternative
 public class GenericDao {
 
     /*
