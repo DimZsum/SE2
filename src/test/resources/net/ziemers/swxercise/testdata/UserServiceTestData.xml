@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <profile id="1" username="username_profile" passwordHash="passwordHash_profile" hashAlgorithm="hashAlgorithm_profile" salt="salt_profile"/>
-    <user id="2" firstname="firstname_user" lastname="lastname_user" profile_id="1"/>
+    <!-- die Grosz-/Kleinschreibung scheint unter bestimmten Bedingungen von Bedeutung zu sein! -->
+    <Profile id="1" username="username_profile" passwordHash="passwordHash_profile" hashAlgorithm="hashAlgorithm_profile" salt="salt_profile"/>
+    <User id="2" firstname="firstname_user" lastname="lastname_user" profile_id="1"/>
 </dataset>
