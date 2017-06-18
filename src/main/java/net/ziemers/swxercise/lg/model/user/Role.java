@@ -13,6 +13,7 @@ import java.util.HashSet;
  * Eine Rolle kann von einer Vaterrolle erben. Somit umfasst diese Rolle auch alle Rechte der Vaterrolle.
  */
 @Entity
+@NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE lower(r.name) = lower(:name)")
 public class Role extends BaseEntity {
 
     @NotNull

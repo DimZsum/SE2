@@ -11,7 +11,7 @@ import net.ziemers.swxercise.db.BaseEntity;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
-        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.profile.username = :username")})
+        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE lower(u.profile.username) = lower(:username)")})
 public class User extends BaseEntity {
 
     private String firstname;

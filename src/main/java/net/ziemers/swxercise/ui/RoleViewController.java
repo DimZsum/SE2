@@ -4,6 +4,7 @@ import net.ziemers.swxercise.lg.model.user.Role;
 import net.ziemers.swxercise.lg.user.dto.RoleDto;
 import net.ziemers.swxercise.lg.user.enums.RightState;
 import net.ziemers.swxercise.lg.user.service.RoleService;
+import net.ziemers.swxercise.ui.enums.ResponseState;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
@@ -41,10 +42,13 @@ public class RoleViewController {
     }
 
     /**
-     * Erstellt eine neue Rolle.
+     * Erstellt ein neues Role-Objekt mit den gewünschten Eigenschaften, welche mittels {@link RoleDto} definiert werden.
+     * <p>
+     * Aufruf:
+     * POST http://localhost:8080/swxercise/rest/v1/role
      *
-     * @param dto
-     * @return
+     * @param dto das mittels der als JSON-Objekt übergebenenen Eigenschaften zu füllende {@link RoleDto}
+     * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
      */
     @POST
     @Path("v1/role")
@@ -52,8 +56,11 @@ public class RoleViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse createRole(RoleDto dto) {
-        Long id = roleService.createRole(dto);
-        return new RestResponse();
+        final Long id = roleService.createRole(dto);
+        if (id != null) {
+            return new RestResponse(ResponseState.SUCCESS, String.valueOf(id));
+        }
+        return new RestResponse(ResponseState.ALREADY_EXISTING);
     }
 
 }

@@ -79,6 +79,7 @@ public class UserService {
 
     /**
      * Erstellt einen neuen Benutzer, sofern noch keiner mit dem selben Benutzernamen existiert.
+     * Zwischen der Groß- und Kleinschreibung wird nicht unterschieden.
      *
      * @param dto das {@link UserDto} enthält die Eigenschaften des zu erstellenden Benutzers
      * @return die Id des neuen Benutzers, wenn die Erstellung erfolgreich war.

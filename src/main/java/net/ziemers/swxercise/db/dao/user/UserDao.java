@@ -16,7 +16,7 @@ public class UserDao extends GenericDao {
      * Findet einen {@link User} aufgrund seiner Id.
      *
      * @param id die Id des gewünschten Users
-     * @return den User oder null, falls es keinen gibt.
+     * @return den User oder <code>null</code>, falls es keinen gibt.
      */
     public User findById(final Long id) {
         User user = null;
@@ -33,10 +33,10 @@ public class UserDao extends GenericDao {
     }
 
     /**
-     * Findet einen {@link User} aufgrund seiner Id.
+     * Findet einen {@link User} aufgrund seines Benutzernamens.
      *
-     * @param username der username des gewünschten Users
-     * @return den User oder null, falls es keinen gibt.
+     * @param username der username des gewünschten Benutzers
+     * @return den User oder <code>null</code>, falls es keinen gibt.
      */
     public User findByUsername(final String username) {
         User user = null;
