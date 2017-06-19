@@ -63,4 +63,20 @@ public class RoleViewController {
         return new RestResponse(ResponseState.ALREADY_EXISTING);
     }
 
+    /**
+     * Verknüpft eine Rolle (die "Kindrolle") mit einer anderen Rolle (der "Vaterrolle").
+     *
+     * @param childName die Kindrolle, welche mit der Vaterrolle verknüpft werden soll
+     * @param parentName die Vaterrolle, welche mit der Kindrolle verknüpft werden soll.
+     * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
+     */
+    @PUT
+    @Path("v1/role/link/{childname}/{parentname}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.ADMIN)
+    public RestResponse linkRoles(@PathParam("childname") String childName, @PathParam("parentname") String parentName) {
+        // TODO noch zu implementieren
+        return null;
+    }
+
 }
