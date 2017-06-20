@@ -14,6 +14,26 @@ import javax.ejb.Stateless;
 public class RoleDao extends GenericDao {
 
     /**
+     * Findet eine {@link Role} aufgrund ihrer Id.
+     *
+     * @param id die Id der gewünschten Rolle
+     * @return die Rolle oder <code>null</code>, falls es keine gibt.
+     */
+    public Role findById(final Long id) {
+        Role role = null;
+
+        try {
+            // ermittelt den ersten Datensatz mit der gesuchten Id, auch wenn
+            // er sich nicht im Persistence Context befindet
+            role = (Role) entityManager.createNamedQuery("Role.findById")
+                    .setParameter("id", id).getSingleResult();
+        } catch (Exception e) {
+            /* nix */
+        }
+        return role;
+    }
+
+    /**
      * Findet eine {@link Role} aufgrund ihres Rollennamens.
      *
      * @param name der name der gewünschten Rolle

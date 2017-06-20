@@ -28,9 +28,9 @@ Unter Windows muss der Git-Installer aus dem Internet heruntergeladen und instal
 
 In einem beliebigen Verzeichnis ausführen:
 
-> git clone https://git.ziemers.de/edu/swXercise.git
+> git -c http.sslVerify=false clone https://git.ziemers.de/edu/swXercise.git
 
-Es wird hierbei ein neues Verzeichnis namens "swXercise" erstellt, in dem sich nun das Projekt befindet.
+Es wird hierbei ein neues Verzeichnis namens "swXercise" erstellt, in dem sich nun das Projekt befindet. Beim Klonen werden etwaige Zertifikatsfehler ignoriert (dies tritt trotz korrekten Zertifikats gelegentlich unter Windows auf).
 
 ## Projekt in die Entwicklungsumgebung integrieren
 
@@ -200,3 +200,7 @@ Quelle: https://tools.jboss.org/downloads/jbosstools/neon/4.4.3.Final.html
     - Reiter "Server" und den zuvor bekanntgemachten JBoss-Server wählen
     - Reiter "Deployment"
       - Selected artifacts will be deployed at server startup -> das gewünschte Maven-Artefakt "swXercise" auswählen, und zwar das mit "exploded" markierte; deployt als ausgepackte Ordnerstruktur und nicht als "WAR-Datei" (vorteilhaft beim Hot-Deployment)
+
+## Projekt verwenden
+
+Beim Deployen des Projekts auf den Application Server wird automatisch der Benutzer "admin" mit dem Kennwort "admin" erstellt und diesem die Rolle "Adminrolle" zugewiesen. Mit ihm kann man sich anmelden und erste Übungen vornehmen.

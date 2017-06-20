@@ -54,10 +54,8 @@ public class RoleViewController {
     @Path("v1/role/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.ADMIN)
-    public User getRole(@PathParam("id") Long id) {
-        // TODO noch zu implementieren
-        //return roleService.findRole(id);
-        return null;
+    public Role getRole(@PathParam("id") Long id) {
+        return roleService.findRole(id);
     }
 
     /**
@@ -72,10 +70,8 @@ public class RoleViewController {
     @Path("v1/role")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.LOGGED_IN)
-    public User getRole() {
-      // TODO noch zu implmentieren
-      //return userService.findUser();
-      return null;
+    public Role getRole() {
+      return roleService.findRole();
     }
 
     /**
@@ -118,10 +114,9 @@ public class RoleViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse updateRole(@PathParam("id") Long id, RoleDto dto) {
-        // TODO noch zu implementieren
-        //if (roleService.updateRole(id, dto)) {
-        //    return new RestResponse();
-        //}
+        if (roleService.updateRole(id, dto)) {
+            return new RestResponse();
+        }
         return new RestResponse(ResponseState.FAILED);
     }
 
@@ -143,10 +138,9 @@ public class RoleViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.LOGGED_IN)
     public RestResponse updateRole(RoleDto dto) {
-        // TODO noch zu implementieren
-        //if (roleService.updateRole(dto)) {
-        //    return new RestResponse();
-        //}
+        if (roleService.updateRole(dto)) {
+            return new RestResponse();
+        }
         return new RestResponse(ResponseState.FAILED);
     }
 
@@ -164,8 +158,7 @@ public class RoleViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse deletetRole(@PathParam("id") Long id) {
-        // TODO noch zu implementieren
-        //roleService.deleteRole(id);
+        roleService.deleteRole(id);
         return new RestResponse();
     }
 
@@ -182,10 +175,9 @@ public class RoleViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.LOGGED_IN)
     public RestResponse deleteRole() {
-        // TODO noch zu implementieren
-        //if (roleService.deleteRole()) {
-        //    return new RestResponse();
-        //}
+        if (roleService.deleteRole()) {
+            return new RestResponse();
+        }
         return new RestResponse(ResponseState.FAILED);
     }
 

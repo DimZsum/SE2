@@ -60,13 +60,7 @@ public class UserService {
      *
      * @return den gesuchten Benutzer, oder <code>null</code>, falls ein solcher nicht existiert.
      */
-    public User findUser() {
-        final User user = sessionContext.getUser();
-        if (user != null) {
-            return dao.findById(user.getId());
-        }
-        return null;
-    }
+    public User findUser() { return sessionContext.getUser(); }
 
     /**
      * Findet alle existierenden Benutzer.

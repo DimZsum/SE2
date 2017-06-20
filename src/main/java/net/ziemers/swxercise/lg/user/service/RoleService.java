@@ -2,6 +2,7 @@ package net.ziemers.swxercise.lg.user.service;
 
 import net.ziemers.swxercise.db.dao.user.RoleDao;
 import net.ziemers.swxercise.lg.model.user.Role;
+import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.RoleDto;
 
 import javax.ejb.Stateless;
@@ -17,12 +18,38 @@ public class RoleService {
     @Inject
     private RoleDao dao;
 
+    @Inject
+    private SessionContext sessionContext;
+
     /**
      * Findet alle existierenden Rollen.
      *
      * @return alle Rollen, oder eine leere Collection, falls keine existieren.
      */
     public Collection<Role> findAllRoles() { return dao.findAll(Role.class); }
+
+    /**
+     * Findet die Rolle mit der übergebenen Id.
+     *
+     * @param id die Id der gesuchten Rolle.
+     * @return die gesuchte Rolle, oder <code>null</code>, falls eine solche nicht existiert.
+     */
+    public Role findRole(final Long id) {
+        return dao.findById(id);
+    }
+
+    /**
+     * Findet die Rolle des zurzeit angemeldeten Benutzers.
+     *
+     * @return die gesuchte Rolle, oder <code>null</code>, falls eine solche nicht existiert.
+     */
+    public Role findRole() {
+        final User user = sessionContext.getUser();
+        if (user != null && user.getProfile() != null) {
+            return user.getProfile().getRole();
+        }
+        return null;
+    }
 
     /**
      * Erstellt eine neue Rolle, sofern noch keine mit dem selben Namen existiert.
@@ -39,6 +66,67 @@ public class RoleService {
             return dao.save(role);
         }
         return null;
+    }
+
+    /**
+     * Aktualisiert die Rolle mit der übergebenen Id.
+     *
+     * @param id  die Id der zu aktualisierenden Rolle
+     * @param dto das {@link RoleDto} enthält die Eigenschaften der zu aktualisierenden Rolle
+     * @return <code>true</code>, wenn das Aktualisieren der Rolle erfolgreich war.
+     */
+    public boolean updateRole(final Long id, final RoleDto dto) {
+        final Role role = dao.findById(id);
+        if (role != null) {
+            // TODO noch zu implementieren
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Aktualisiert die Rolle des zurzeit angemeldeten Benutzers.
+     *
+     * @param dto das {@link RoleDto} enthält die Eigenschaften der zu aktualisierenden Rolle
+     * @return <code>true</code>, wenn das Aktualisieren der Rolle erfolgreich war.
+     */
+    public boolean updateRole(final RoleDto dto) {
+        // ist zurzeit ein Benutzer angemeldet, können wir dessen Rolle aktualisieren
+        final User user = sessionContext.getUser();
+        if (user != null) {
+            // TODO noch zu implementieren
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Löscht die Rolle mit der übergebenen Id.
+     *
+     * @param id die Id der zu löschenden Rolle.
+     */
+    public Role deleteRole(final Long id) {
+        return dao.remove(Role.class, id);
+    }
+
+    /**
+     * Löscht die Rolle des zurzeit angemeldeten Benutzers.
+     *
+     * @return <code>true</code>, wenn das Löschen der Rolle des angemeldeten Benutzers erfolgreich war.
+     */
+    public boolean deleteRole() {
+        // ist zurzeit ein Benutzer angemeldet, können wir dessen Rolle löschen
+        final User user = sessionContext.getUser();
+        if (user != null && user.getProfile() != null) {
+            final Role role = user.getProfile().getRole();
+            if (role != null) {
+                user.getProfile().setRole(null);
+                dao.save(user);
+                dao.remove(Role.class, role.getId());
+                return true;
+            }
+        }
+        return false;
     }
 
 }
