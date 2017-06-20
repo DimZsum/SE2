@@ -22,7 +22,8 @@ public enum RightState {
 
     public static RightState getByName(final String name) {
         for (RightState value : values()) {
-            if (value.name().equals(name)) {
+            // die Groß-/Kleinschreibung soll beim Vergleich keine Rolle spielen
+            if (value.name().equalsIgnoreCase(name)) {
                 return value;
             }
         }

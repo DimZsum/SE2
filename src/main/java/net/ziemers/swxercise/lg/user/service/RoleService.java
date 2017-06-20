@@ -1,9 +1,11 @@
 package net.ziemers.swxercise.lg.user.service;
 
+import com.sun.mail.imap.Rights;
 import net.ziemers.swxercise.db.dao.user.RoleDao;
 import net.ziemers.swxercise.lg.model.user.Role;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.RoleDto;
+import net.ziemers.swxercise.lg.user.enums.RightState;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -26,7 +28,9 @@ public class RoleService {
      *
      * @return alle Rollen, oder eine leere Collection, falls keine existieren.
      */
-    public Collection<Role> findAllRoles() { return dao.findAll(Role.class); }
+    public Collection<Role> findAllRoles() {
+        return dao.findAll(Role.class);
+    }
 
     /**
      * Findet die Rolle mit der übergebenen Id.
@@ -124,6 +128,43 @@ public class RoleService {
                 dao.save(user);
                 dao.remove(Role.class, role.getId());
                 return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verknüpft zwei Rollen in einer Vater-/Kindbeziehung.
+     *
+     * @param childName der Name der gewünschten Kindrolle
+     * @param parentName der Name der gewünschten Vaterrolle
+     * @return <code>true</code>, wenn die Verknüpfung erfolgreich durchgeführt werden konnte.
+     */
+    public boolean linkRoles(final String childName, final String parentName) {
+        final Role childRole = dao.findByName(childName);
+        if (childRole != null) {
+            final Role parentRole = dao.findByName(parentName);
+            if (parentRole != null) {
+                childRole.setParent(parentRole);
+                return dao.saveOrUpdate(childRole) != null;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Fügt einer Rolle ein neues Recht hinzu.
+     *
+     * @param id die Id der gewünschten Rolle
+     * @param rightName der Name des gewünschten Rechts
+     * @return <code>true</code>, wenn das Hinzufügen erfolgreich durchgeführt werden konnte.
+     */
+    public boolean addRight(final Long id, final String rightName) {
+        final Role role = dao.findById(id);
+        if (role != null) {
+            final RightState right = RightState.getByName(rightName);
+            if (right != null) {
+                return role.addRight(right);
             }
         }
         return false;

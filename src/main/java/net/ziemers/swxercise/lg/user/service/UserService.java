@@ -176,18 +176,28 @@ public class UserService {
             if (rightsSet.contains(RightState.Constants.LOGGED_IN)) {
                 return true;
             }
-            // besitzt dieser Benutzer eine zugewiesene Rolle?
+            // besitzt dieser Benutzer eine zugewiesene Rolle, in der eines der gewünschten Rechte enthalten ist?
             final Role role = user.getProfile().getRole();
             if (role != null) {
-                // sämtliche Rechte iterieren, die den Benutzer berechtigen würden, um zu ermitteln,
-                // ob der Benutzer eines dieser Rechte besitzt
-                for (String right : rightsSet) {
-                    // besitzt der Benutzer das betrachtete Recht?
-                    if (role.hasRight(RightState.getByName(right))) {
-                        return true;
-                    }
-                }
+                return isUserAllowed(role, rightsSet);
             }
+        }
+        return false;
+    }
+
+    private boolean isUserAllowed(final Role role, final Set<String> rightsSet) {
+        // sämtliche Rechte iterieren, die den Benutzer berechtigen würden, um zu ermitteln,
+        // ob der Benutzer eines dieser Rechte besitzt
+        for (String right : rightsSet) {
+            // besitzt der Benutzer das betrachtete Recht?
+            if (role.hasRight(RightState.getByName(right))) {
+                return true;
+            }
+        }
+        // wenn diese Rolle von einer Vaterrolle erbt, prüfen wir dessen Rechte ebenfalls
+        if (role.getParent() != null) {
+            // TODO Zyklen werden hier noch nicht erkannt!
+            return isUserAllowed(role.getParent(), rightsSet);
         }
         return false;
     }

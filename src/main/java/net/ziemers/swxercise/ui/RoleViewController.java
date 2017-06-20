@@ -120,6 +120,26 @@ public class RoleViewController {
         return new RestResponse(ResponseState.FAILED);
     }
 
+    /** Fügt der angegebenen Rolle das angegebene Recht hinzu.
+     * <p>
+     * Aufruf:
+     * PUT http://localhost:8080/swxercise/rest/v1/role/add/42/admin
+     *
+     * @param id die Id der gewünschen Rolle
+     * @param rightName der Name des gewünschten Rechts
+     * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
+     */
+    @PUT
+    @Path("v1/role/add/{id}/{rightname}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.ADMIN)
+    public RestResponse addRight(@PathParam("id") Long id, @PathParam("rightname") String rightName) {
+        if (roleService.addRight(id, rightName)) {
+            return new RestResponse();
+        }
+        return new RestResponse(ResponseState.FAILED);
+    }
+
     /**
      * Aktualisiert das Role-Objekt des zurzeit angemeldeten Benutzers mit den
      * Eigenschaften, welche mittels {@link RoleDto} definiert werden. Der
@@ -136,9 +156,30 @@ public class RoleViewController {
     @Path("v1/role")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(RightState.Constants.LOGGED_IN)
+    @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse updateRole(RoleDto dto) {
         if (roleService.updateRole(dto)) {
+            return new RestResponse();
+        }
+        return new RestResponse(ResponseState.FAILED);
+    }
+
+    /**
+     * Verknüpft eine Rolle (die "Kindrolle") mit einer anderen Rolle (der "Vaterrolle").
+     * <p>
+     * Aufruf:
+     * PUT http://localhost:8080/swxercise/rest/v1/role/childname/parentname
+     *
+     * @param childName die Kindrolle, welche mit der Vaterrolle verknüpft werden soll
+     * @param parentName die Vaterrolle, welche mit der Kindrolle verknüpft werden soll.
+     * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
+     */
+    @PUT
+    @Path("v1/role/link/{childname}/{parentname}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed(RightState.Constants.ADMIN)
+    public RestResponse linkRoles(@PathParam("childname") String childName, @PathParam("parentname") String parentName) {
+        if (roleService.linkRoles(childName, parentName)) {
             return new RestResponse();
         }
         return new RestResponse(ResponseState.FAILED);
@@ -173,28 +214,12 @@ public class RoleViewController {
     @DELETE
     @Path("v1/role")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(RightState.Constants.LOGGED_IN)
+    @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse deleteRole() {
         if (roleService.deleteRole()) {
             return new RestResponse();
         }
         return new RestResponse(ResponseState.FAILED);
-    }
-
-    /**
-     * Verknüpft eine Rolle (die "Kindrolle") mit einer anderen Rolle (der "Vaterrolle").
-     *
-     * @param childName die Kindrolle, welche mit der Vaterrolle verknüpft werden soll
-     * @param parentName die Vaterrolle, welche mit der Kindrolle verknüpft werden soll.
-     * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
-     */
-    @PUT
-    @Path("v1/role/link/{childname}/{parentname}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(RightState.Constants.ADMIN)
-    public RestResponse linkRoles(@PathParam("childname") String childName, @PathParam("parentname") String parentName) {
-        // TODO noch zu implementieren
-        return null;
     }
 
 }

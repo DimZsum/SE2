@@ -69,6 +69,12 @@ public class Role extends BaseEntity {
         this.rights = rights;
     }
 
+    public boolean addRight(final RightState right) {
+        // TODO Doubletten verhindern
+        this.rights.add(right);
+        return true;
+    }
+
     @ManyToOne
     public Role getParent() {
         return parent;
