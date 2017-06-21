@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
  */
 public class UserDto {
 
+    private Long entityId;
+
     @NotNull
     private String username;
 
@@ -19,6 +21,14 @@ public class UserDto {
     private String lastname;
 
     private String mailaddress;
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
 
     public String getUsername() {
         return username;
