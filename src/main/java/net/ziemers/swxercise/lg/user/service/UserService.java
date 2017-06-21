@@ -25,6 +25,12 @@ public class UserService {
     @Inject
     private SessionContext sessionContext;
 
+    @Inject
+    private UserDtoToEntityContextService ctxService;
+
+    @Inject
+    private UserDtoToEntityMapper mapper;
+
     /**
      * Meldet den Benutzer im SessionContext an.
      *
@@ -79,16 +85,15 @@ public class UserService {
      * @return die Id des neuen Benutzers, wenn die Erstellung erfolgreich war.
      */
     public Long createUser(final UserDto dto) {
-        // der Benutzer darf natürlich noch nicht existieren :)
-        User user = dao.findByUsername(dto.getUsername());
-        if (user == null) {
-            final Profile profile = new Profile(dto.getUsername(), dto.getPassword());
+        final UserDtoToEntityContext ctx = ctxService.createContext(dto);
+        mapper.map(ctx);
+        return persistUserIfNew(ctx);
+    }
 
-            // wir füllen das User-Objekt mit Method Chaining
-            user = new User(dto.getFirstname(), dto.getLastname())
-                    .withProfile(profile);
-
-            return dao.save(user);
+    private Long persistUserIfNew(final UserDtoToEntityContext ctx) {
+        // nur ein neuer Benutzer hat noch keine oid
+        if (ctx.user.getId() == null) {
+            return dao.save(ctx.user);
         }
         return null;
     }

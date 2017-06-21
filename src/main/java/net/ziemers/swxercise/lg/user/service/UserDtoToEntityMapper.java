@@ -15,7 +15,7 @@ public class UserDtoToEntityMapper {
       ctx.user.setFirstname(ctx.dto.getFirstname());
       ctx.user.setLastname(ctx.dto.getLastname());
       //ctx.user.setProfile(ctx.dto.getProfile());
-      //ctx.user.setAddress(ctx.fto.getAddress());
+      //ctx.user.setAddress(ctx.dto.getAddress());
 
       return ctx;
     }
