@@ -2,6 +2,9 @@ package net.ziemers.swxercise.lg.user.service;
 
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 
+/**
+ * Mapper zur Konvertierung von User-Entities in {@link UserDto}s.
+ */
 public class EntityToUserDtoMapper {
 
     /**

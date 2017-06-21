@@ -2,6 +2,9 @@ package net.ziemers.swxercise.lg.user.service;
 
 import javax.ejb.Stateless;
 
+/**
+ * Mapper zur Konvertierung von {@link UserDto}s in User-Entities.
+ */
 @Stateless
 public class UserDtoToEntityMapper {
 

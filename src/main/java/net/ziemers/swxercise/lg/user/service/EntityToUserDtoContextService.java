@@ -4,6 +4,8 @@ import javax.ejb.Stateless;
 
 /**
  * Service zum Erzeugen eines Mapping-Kontexts. Das Mapping verläuft von {@link User} nach {@link UserDto}.
+ * Diese Klasse dient dazu, einen neuen Kontext zu erstellen, welcher dem {@link EntityToUserDtoMapper} dazu dient,
+ * aus einer User-Entity ein entsprechendes DTO zu bauen.
  */
 @Stateless
 public class EntityToUserDtoContextService {
