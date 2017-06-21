@@ -50,6 +50,10 @@ public class UserDto {
         return firstname;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
     public UserDto withFirstname(final String firstname) {
         this.firstname = firstname;
         return this;
@@ -57,6 +61,10 @@ public class UserDto {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public UserDto withLastname(final String lastname) {
