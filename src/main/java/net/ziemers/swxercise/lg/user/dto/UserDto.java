@@ -11,16 +11,16 @@ public class UserDto {
     private Long entityId;
 
     @NotNull
-    private String username;
+    private String username;    // aus dem Profile
 
     @NotNull
-    private String password;
+    private String password;    // aus dem Profile
 
     private String firstname;
 
     private String lastname;
 
-    private String mailaddress;
+    private String mailaddress; // aus dem Profile
 
     public Long getEntityId() {
         return entityId;

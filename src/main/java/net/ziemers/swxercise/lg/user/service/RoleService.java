@@ -1,6 +1,5 @@
 package net.ziemers.swxercise.lg.user.service;
 
-import com.sun.mail.imap.Rights;
 import net.ziemers.swxercise.db.dao.user.RoleDao;
 import net.ziemers.swxercise.lg.model.user.Role;
 import net.ziemers.swxercise.lg.model.user.User;

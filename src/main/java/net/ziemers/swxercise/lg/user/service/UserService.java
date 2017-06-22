@@ -7,7 +7,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import net.ziemers.swxercise.db.dao.user.UserDao;
-import net.ziemers.swxercise.lg.model.user.Profile;
 import net.ziemers.swxercise.lg.model.user.Role;
 import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
@@ -91,7 +90,7 @@ public class UserService {
     }
 
     private Long persistUserIfNew(final UserDtoToEntityContext ctx) {
-        // nur ein neuer Benutzer hat noch keine oid
+        // nur ein neuer Benutzer hat noch keine Id
         if (ctx.user.getId() == null) {
             return dao.save(ctx.user);
         }

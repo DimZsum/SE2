@@ -1,5 +1,8 @@
 package net.ziemers.swxercise.lg.user.service;
 
+import net.ziemers.swxercise.lg.model.user.User;
+import net.ziemers.swxercise.lg.user.dto.UserDto;
+
 import javax.ejb.Stateless;
 
 /**

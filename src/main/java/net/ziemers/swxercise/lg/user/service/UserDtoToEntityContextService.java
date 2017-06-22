@@ -15,7 +15,7 @@ public class UserDtoToEntityContextService {
     private UserDao dao;
 
     /**
-     * Erzeugt den Aktualisierungskontext zur übergebenen Zielentität.
+     * Erzeugt den Erstellungs-/Aktualisierungskontext zum übergebenen Data Transfer Objekt der Zielentität.
      *
      * @param dto das Benutzer-DTO
      * @return den erzeugten Kontext.
@@ -30,11 +30,11 @@ public class UserDtoToEntityContextService {
         ctx.user = dao.findByUsername(dto.getUsername());
         if (ctx.user == null) {
             // es soll niemals ein Profil ohne Benutzername und Kennwort geben
-            final Profile profile = new Profile(dto.getUsername(), dto.getPassword());
+            ctx.profile = new Profile(dto.getUsername(), dto.getPassword());
 
             // wir füllen das User-Objekt mit Method Chaining
             ctx.user = new User(dto.getFirstname(), dto.getLastname())
-                    .withProfile(profile);
+                    .withProfile(ctx.profile);
         }
         return ctx;
     }

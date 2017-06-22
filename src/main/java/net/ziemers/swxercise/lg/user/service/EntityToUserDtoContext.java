@@ -1,6 +1,7 @@
 package net.ziemers.swxercise.lg.user.service;
 
 import net.ziemers.swxercise.lg.model.user.User;
+import net.ziemers.swxercise.lg.user.dto.UserDto;
 
 /**
  * Mapping-Kontext von {@link User} nach {@link UserDto}. Diese Klasse dient als Hilfe bei der
