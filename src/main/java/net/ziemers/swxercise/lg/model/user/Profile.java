@@ -145,7 +145,7 @@ public class Profile extends BaseEntity {
         return passwordHash;
     }
 
-    private void setPassword(String password) {
+    public void setPassword(String password) {
         // das Klartextkennwort wird niemals gespeichert!
         this.passwordHash = cryptString(password);
     }

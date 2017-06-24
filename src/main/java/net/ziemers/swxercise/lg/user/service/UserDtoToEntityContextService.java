@@ -23,7 +23,7 @@ public class UserDtoToEntityContextService {
     public UserDtoToEntityContext createContext(final UserDto dto) {
         final UserDtoToEntityContext ctx = new UserDtoToEntityContext();
 
-        // das UserDTO in den Kontext füllen
+        // das übergebene UserDto in den Kontext füllen
         ctx.dto = dto;
 
         // einen neuen oder einen bereits existierenden Benutzer in den Kontext füllen
@@ -35,6 +35,9 @@ public class UserDtoToEntityContextService {
             // wir füllen das User-Objekt mit Method Chaining
             ctx.user = new User(dto.getFirstname(), dto.getLastname())
                     .withProfile(ctx.profile);
+        } else {
+            ctx.profile = ctx.user.getProfile();
+            ctx.address = ctx.user.getAddress();
         }
         return ctx;
     }

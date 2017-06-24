@@ -14,7 +14,7 @@ public class UserDto {
     private String username;    // aus dem Profile
 
     @NotNull
-    private String password;    // aus dem Profile
+    private String password = "";    // aus dem Profile
 
     private String firstname;
 

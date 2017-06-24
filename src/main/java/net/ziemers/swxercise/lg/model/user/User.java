@@ -18,7 +18,6 @@ public class User extends BaseEntity {
 
     private String lastname;
 
-    @NotNull
     private Profile profile;
 
     private Address address;

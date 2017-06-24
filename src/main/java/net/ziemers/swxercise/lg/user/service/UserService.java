@@ -123,8 +123,11 @@ public class UserService {
         // ist zurzeit ein Benutzer angemeldet, können wir ihn aktualisieren
         final User user = sessionContext.getUser();
         if (user != null) {
-            // TODO noch zu implementieren
-            return false;
+            // der Benutzername darf sich beim Aktualisieren nicht mehr ändern!
+            dto.withUsername(user.getProfile().getUsername());
+            final UserDtoToEntityContext ctx = ctxService.createContext(dto);
+            mapper.map(ctx);
+            return dao.saveOrUpdate(ctx.user) != null;
         }
         return false;
     }
