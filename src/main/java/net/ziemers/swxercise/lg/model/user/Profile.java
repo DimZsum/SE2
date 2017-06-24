@@ -145,6 +145,11 @@ public class Profile extends BaseEntity {
         return passwordHash;
     }
 
+    /**
+     * Setzt das im Profil hinterlegte Kennwort. Es wird darin sicher verschlüsselt abgelegt.
+     *
+     * @param password das gewünschte Kennwort
+     */
     public void setPassword(String password) {
         // das Klartextkennwort wird niemals gespeichert!
         this.passwordHash = cryptString(password);
@@ -154,6 +159,12 @@ public class Profile extends BaseEntity {
         this.passwordHash = passwordHash;
     }
 
+    /**
+     * Vergleicht das übergebene Kennwort mit dem im Profil hinterlegten.
+     *
+     * @param password das Klartext-Kennwort, mit dem das im Profil hinterlegte verglichen werden soll
+     * @return <code>true</code>, wenn die Kennwörter identisch sind.
+     */
     public boolean isValidPassword(final String password) {
         final String passwordHash = cryptString(password);
 
