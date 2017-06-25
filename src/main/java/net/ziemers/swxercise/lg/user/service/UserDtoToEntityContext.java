@@ -13,6 +13,6 @@ public class UserDtoToEntityContext {
 
     public Profile profile;
 
-    public Address address;
+    public Address address = null;
 
 }

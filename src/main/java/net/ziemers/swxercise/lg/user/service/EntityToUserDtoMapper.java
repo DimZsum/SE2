@@ -9,7 +9,7 @@ import net.ziemers.swxercise.lg.user.dto.UserDto;
 public class EntityToUserDtoMapper {
 
     /**
-     * Erzeugt ein DTO aus dem übergebenem Kontext.
+     * Erzeugt ein Data Transfer Object aus dem übergebenem Kontext.
      *
      * @param ctx der Kontext
      * @return das erzeugte DTO.
@@ -18,15 +18,15 @@ public class EntityToUserDtoMapper {
         final UserDto dto = new UserDto();
 
         if (ctx.user != null) {
-          mapEntityId(ctx, dto);
+          mapUser(ctx, dto);
           mapFirstname(ctx, dto);
           mapLastname(ctx, dto);
         }
         return dto;
     }
 
-    private void mapEntityId(EntityToUserDtoContext ctx, UserDto dto) {
-        dto.setEntityId(ctx.user.getId());
+    private void mapUser(EntityToUserDtoContext ctx, UserDto dto) {
+        dto.setUser(ctx.user);
     }
 
     private void mapFirstname(EntityToUserDtoContext ctx, UserDto dto) {

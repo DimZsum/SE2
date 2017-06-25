@@ -89,9 +89,8 @@ public class UserViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse createUser(UserDto dto) {
-        final Long id = userService.createUser(dto);
-        if (id != null) {
-            return new RestResponse(ResponseState.SUCCESS, String.valueOf(id));
+        if (userService.createUser(dto)) {
+            return new RestResponse();
         }
         return new RestResponse(ResponseState.ALREADY_EXISTING);
     }

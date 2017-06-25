@@ -11,26 +11,30 @@ import javax.ejb.Stateless;
 public class UserDtoToEntityMapper {
 
     /**
-     * Überträgt die Eigenschaften aus dem UserDto sowie dem zusätzlichen Kontext in die Zielentität.
+     * Überträgt die Eigenschaften aus dem UserDto sowie dem zusätzlichen Kontext in die Zielentitäten.
+     * Anzumerken ist, dass der Benutzername einer existierenden Profile-Entität niemals aktualisiert
+     * wird.
      *
      * @param ctx der Kontext mit den Eigenschaften und der Zielentität
      * @return den Kontext.
      */
     public UserDtoToEntityContext map(UserDtoToEntityContext ctx) {
-        // User-Objekt mappen
+        // ins User-Objekt mappen
         ctx.user.setFirstname(ctx.dto.getFirstname());
         ctx.user.setLastname(ctx.dto.getLastname());
 
-        // Profile-Objekt mappen, falls gegeben
+        // ins Profile-Objekt mappen, falls gegeben
         if (ctx.profile != null) {
             ctx.user.setProfile(ctx.profile);
+
+            // eventuell ein neues Kenntwort ins Profile-Objekt mappen
             if(ctx.dto.getPassword().length() > 0) {
                 ctx.profile.setPassword(ctx.dto.getPassword());
             }
             ctx.profile.setMailaddress(ctx.dto.getMailaddress());
         }
 
-        // Address-Objekt mappen, falls gegeben
+        // ins Address-Objekt mappen, falls gegeben
         if (ctx.address != null) {
             ctx.user.setAddress(ctx.address);
         }

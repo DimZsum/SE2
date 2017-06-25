@@ -81,20 +81,17 @@ public class UserService {
      * Zwischen der Groß- und Kleinschreibung wird nicht unterschieden.
      *
      * @param dto das {@link UserDto} enthält die Eigenschaften des zu erstellenden Benutzers
-     * @return die Id des neuen Benutzers, wenn die Erstellung erfolgreich war.
+     * @return <code>true</code>, wenn das Aktualisieren des Benutzers erfolgreich war.
      */
-    public Long createUser(final UserDto dto) {
+    public boolean createUser(final UserDto dto) {
+        // Kontext für den zu erstellenden Benutzer erzeugen; falls bereits ein Benutzer
+        // mit dem selben Benutzernamen existiert, wird kein Benutzerobjekt zurückgeliefert
         final UserDtoToEntityContext ctx = ctxService.createContext(dto);
-        mapper.map(ctx);
-        return persistUserIfNew(ctx);
-    }
-
-    private Long persistUserIfNew(final UserDtoToEntityContext ctx) {
-        // nur ein neuer Benutzer hat noch keine Id
-        if (ctx.user.getId() == null) {
-            return dao.save(ctx.user);
+        if (ctx.user != null) {
+            mapper.map(ctx);
+            return dao.save(ctx.user) != null;
         }
-        return null;
+        return false;
     }
 
     /**
@@ -107,8 +104,12 @@ public class UserService {
     public boolean updateUser(final Long id, final UserDto dto) {
         final User user = dao.findById(id);
         if (user != null) {
-            // TODO noch zu implementieren
-            return false;
+            // auf dieses Benutzerobjekt soll sich die Aktualisierung beziehen
+            dto.setUser(user);
+
+            final UserDtoToEntityContext ctx = ctxService.createContext(dto);
+            mapper.map(ctx);
+            return dao.saveOrUpdate(ctx.user) != null;
         }
         return false;
     }
@@ -120,16 +121,8 @@ public class UserService {
      * @return <code>true</code>, wenn das Aktualisieren des Benutzers erfolgreich war.
      */
     public boolean updateUser(final UserDto dto) {
-        // ist zurzeit ein Benutzer angemeldet, können wir ihn aktualisieren
         final User user = sessionContext.getUser();
-        if (user != null) {
-            // der Benutzername darf sich beim Aktualisieren nicht mehr ändern!
-            dto.withUsername(user.getProfile().getUsername());
-            final UserDtoToEntityContext ctx = ctxService.createContext(dto);
-            mapper.map(ctx);
-            return dao.saveOrUpdate(ctx.user) != null;
-        }
-        return false;
+        return updateUser(user.getId(), dto);
     }
 
     /**

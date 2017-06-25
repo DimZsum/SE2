@@ -1,5 +1,7 @@
 package net.ziemers.swxercise.lg.user.dto;
 
+import net.ziemers.swxercise.lg.model.user.User;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -8,7 +10,7 @@ import javax.validation.constraints.NotNull;
  */
 public class UserDto {
 
-    private Long entityId;
+    private User user = null;
 
     @NotNull
     private String username;    // aus dem Profile
@@ -22,12 +24,12 @@ public class UserDto {
 
     private String mailaddress; // aus dem Profile
 
-    public Long getEntityId() {
-        return entityId;
+    public User getUser() {
+        return user;
     }
 
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getUsername() {
