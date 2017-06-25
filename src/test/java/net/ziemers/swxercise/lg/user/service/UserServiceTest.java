@@ -10,12 +10,14 @@ import net.ziemers.swxercise.lg.user.dto.UserDto;
 
 import static org.junit.Assert.*;
 
+import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
+import org.jglue.cdiunit.InSessionScope;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/*
+/**
  * Testing your Java CDI application with CDI-Unit couldn't be easier.
  * Just specify @RunWith(CdiRunner.class) on your JUnit test class
  * to enable injection directly into the test class.
@@ -25,10 +27,12 @@ import org.junit.runner.RunWith;
  * there, however CDI-Unit has extra support for Mockito @Mock annotations.
  */
 @RunWith(CdiRunner.class)
+@AdditionalClasses(SessionContext.class)
 public class UserServiceTest extends JpaTestUtils {
 
     private static String USERNAME_TEST = "username_test";
     private static String EXISTING_USERNAME_TEST = "username_profile";
+    private static String EXISTING_PASSWORD_TEST = "secret";
     private static Long EXISTING_USER_ID = 2L;
 
     private static boolean dbInitialized;
@@ -52,6 +56,20 @@ public class UserServiceTest extends JpaTestUtils {
         }
     }
 
+//    @Test
+//    @InSessionScope
+//    public void testLoginUserReturnsSuccess() {
+//
+//        given()
+//                .userDto(EXISTING_USERNAME_TEST);
+//
+//        when()
+//                .loginUser(EXISTING_PASSWORD_TEST);
+//
+//        then()
+//                .assertLoginSuccess();
+//    }
+
     @Test
     public void testCreateUserReturnsSuccess() {
 
@@ -66,7 +84,7 @@ public class UserServiceTest extends JpaTestUtils {
     }
 
     @Test
-    public void testCreateUserReturnsFail() {
+    public void testCreateUserReturnsFailure() {
 
         given()
                 .userDto(EXISTING_USERNAME_TEST);
@@ -110,6 +128,12 @@ public class UserServiceTest extends JpaTestUtils {
         return this;
     }
 
+    private UserServiceTest loginUser(final String password) {
+        userDto.withPassword(password);
+        actual = underTest.loginUser(userDto);
+        return this;
+    }
+
     private UserServiceTest createUser() {
         txBegin();
         actual = underTest.createUser(userDto);
@@ -130,6 +154,10 @@ public class UserServiceTest extends JpaTestUtils {
 
     private UserServiceTest then() {
         return this;
+    }
+
+    private void assertLoginSuccess() {
+        assertTrue(actual);
     }
 
     private void assertCreateSuccess() {
