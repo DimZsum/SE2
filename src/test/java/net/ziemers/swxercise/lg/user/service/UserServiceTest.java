@@ -29,12 +29,13 @@ public class UserServiceTest extends JpaTestUtils {
 
     private static String USERNAME_TEST = "username_test";
     private static String EXISTING_USERNAME_TEST = "username_profile";
+    private static Long EXISTING_USER_ID = 2L;
 
     private static boolean dbInitialized;
 
     private UserDto userDto;
 
-    private Long userId;
+    private boolean actual;
 
     @Inject
     private UserDao userDao;
@@ -74,7 +75,20 @@ public class UserServiceTest extends JpaTestUtils {
                 .createUser();
 
         then()
-                .assertCreateFail();
+                .assertCreateFailure();
+    }
+
+    @Test
+    public void testUpdateUserDoesntUpdateUsername() {
+
+        given()
+                .userDto(USERNAME_TEST);
+
+        when()
+                .updateUser(EXISTING_USER_ID);
+
+        then()
+                .assertUpdateSuccess();
     }
 
     // given
@@ -85,7 +99,7 @@ public class UserServiceTest extends JpaTestUtils {
 
     private UserServiceTest userDto(final String username) {
         userDto = new UserDtoTestDataBuilder()
-                .withUsername(USERNAME_TEST)
+                .withUsername(username)
                 .build();
         return this;
     }
@@ -98,7 +112,15 @@ public class UserServiceTest extends JpaTestUtils {
 
     private UserServiceTest createUser() {
         txBegin();
-        userId = underTest.createUser(userDto);
+        actual = underTest.createUser(userDto);
+        txCommit();
+
+        return this;
+    }
+
+    private UserServiceTest updateUser(final Long id) {
+        txBegin();
+        actual = underTest.updateUser(id, userDto);
         txCommit();
 
         return this;
@@ -111,14 +133,20 @@ public class UserServiceTest extends JpaTestUtils {
     }
 
     private void assertCreateSuccess() {
-        // wir suchen den soeben erstellten Benutzer; wenn er existiert, is alles gut
+        // wir suchen den soeben erstellten Benutzer; wenn er existiert, ist alles gut
         final User user = userDao.findByUsername(USERNAME_TEST);
         assertNotNull(user);
     }
 
-    private void assertCreateFail() {
-        // es darf kein neuer Benutzer mit identischem "username" erstellt worden sein
-        assertNull(userId);
+    private void assertCreateFailure() {
+        // es darf kein neuer Benutzer mit identischem Benutzernamen erstellt worden sein
+        assertFalse(actual);
+    }
+
+    private void assertUpdateSuccess() {
+        // wir suchen den soeben aktualisierten Benutzer; wenn sein Benutzername unverändert ist, ist alles gut
+        final User user = userDao.findById(EXISTING_USER_ID);
+        assertEquals(EXISTING_USERNAME_TEST, user.getProfile().getUsername());
     }
 
 }

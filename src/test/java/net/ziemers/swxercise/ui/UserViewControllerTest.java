@@ -1,10 +1,9 @@
 package net.ziemers.swxercise.ui;
 
-import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.testdatabuilder.user.UserDtoTestDataBuilder;
-import net.ziemers.swxercise.lg.testdatabuilder.user.UserTestDataBuilder;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
+import net.ziemers.swxercise.ui.enums.ResponseState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,8 +32,6 @@ public class UserViewControllerTest {
 
     private UserDto userDto;
 
-    private User user;
-
     private RestResponse actual;
 
     @Test
@@ -59,12 +56,54 @@ public class UserViewControllerTest {
 
     @Test
     public void testCreateUserReturnsSuccess() {
-        // TODO Test ist noch zu implementieren
+
+        given()
+                .userDto();
+
+        doing()
+                .createUser(true);
+
+        then()
+                .assertCreateSuccess();
     }
 
     @Test
-    public void testUpdateUserReturnsSuccess() {
-        // TODO Test ist noch zu implementieren
+    public void testCreateUserReturnsFailure() {
+
+        given()
+                .userDto();
+
+        doing()
+                .createUser(false);
+
+        then()
+                .assertCreateFailure();
+    }
+
+    @Test
+    public void testUpdateLoggedInUserReturnsSuccess() {
+
+        given()
+                .userDto();
+
+        doing()
+                .updateUser();
+
+        then()
+                .assertUpdateSuccess();
+    }
+
+    @Test
+    public void testUpdateSpecificUserReturnsSuccess() {
+
+        given()
+                .userDto();
+
+        doing()
+                .updateUser(1L);
+
+        then()
+                .assertUpdateSuccess();
     }
 
     @Test
@@ -81,14 +120,26 @@ public class UserViewControllerTest {
     public void testLoginUserReturnsSuccess() {
 
         given()
-                .userDto()
-                .user();
+                .userDto();
 
         doing()
-                .loginUser();
+                .loginUser(true);
 
         then()
                 .assertLoginSuccess();
+    }
+
+    @Test
+    public void testLoginNonExistingUserReturnsFailure() {
+
+        given()
+                .userDto();
+
+        doing()
+                .loginUser(false);
+
+        then()
+                .assertLoginFailure();
     }
 
     @Test
@@ -112,23 +163,36 @@ public class UserViewControllerTest {
         return this;
     }
 
-    private UserViewControllerTest user() {
-        user = new UserTestDataBuilder().build();
-        return this;
-    }
-
     // doing
 
     private UserViewControllerTest doing() {
         return this;
     }
 
-    private void loginUser() {
+    private void createUser(final boolean result) {
         /*
          * The when().thenReturn() method chain is used to specify
          * a return value for a method call with pre-defined parameters.
          */
-        when(userService.loginUser(userDto)).thenReturn(true);
+        when(userService.createUser(userDto)).thenReturn(result);
+
+        actual = underTest.createUser(userDto);
+    }
+
+    private void updateUser() {
+        when(userService.updateUser(userDto)).thenReturn(true);
+
+        actual = underTest.updateUser(userDto);
+    }
+
+    private void updateUser(final Long id) {
+        when(userService.updateUser(id, userDto)).thenReturn(true);
+
+        actual = underTest.updateUser(id, userDto);
+    }
+
+    private void loginUser(final boolean result) {
+        when(userService.loginUser(userDto)).thenReturn(result);
 
         actual = underTest.loginUser(userDto);
     }
@@ -145,8 +209,28 @@ public class UserViewControllerTest {
         return this;
     }
 
+    private void assertCreateSuccess() {
+        final RestResponse expected = new RestResponse();
+        assertEquals(expected, actual);
+    }
+
+    private void assertCreateFailure() {
+        final RestResponse expected = new RestResponse(ResponseState.ALREADY_EXISTING);
+        assertEquals(expected, actual);
+    }
+
+    private void assertUpdateSuccess() {
+        final RestResponse expected = new RestResponse();
+        assertEquals(expected, actual);
+    }
+
     private void assertLoginSuccess() {
         final RestResponse expected = new RestResponse();
+        assertEquals(expected, actual);
+    }
+
+    private void assertLoginFailure() {
+        final RestResponse expected = new RestResponse(ResponseState.FAILED);
         assertEquals(expected, actual);
     }
 
