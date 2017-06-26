@@ -10,9 +10,8 @@ import net.ziemers.swxercise.lg.user.dto.UserDto;
 
 import static org.junit.Assert.*;
 
-import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
-import org.jglue.cdiunit.InSessionScope;
+import org.jglue.cdiunit.InRequestScope;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,6 @@ import org.junit.runner.RunWith;
  * there, however CDI-Unit has extra support for Mockito @Mock annotations.
  */
 @RunWith(CdiRunner.class)
-@AdditionalClasses(SessionContext.class)
 public class UserServiceTest extends JpaTestUtils {
 
     private static String USERNAME_TEST = "username_test";
@@ -56,19 +54,23 @@ public class UserServiceTest extends JpaTestUtils {
         }
     }
 
-//    @Test
-//    @InSessionScope
-//    public void testLoginUserReturnsSuccess() {
-//
-//        given()
-//                .userDto(EXISTING_USERNAME_TEST);
-//
-//        when()
-//                .loginUser(EXISTING_PASSWORD_TEST);
-//
-//        then()
-//                .assertLoginSuccess();
-//    }
+    /*
+     * In order to inject @SessionScoped beans, one has to annotate the function or class with @InRequestScope
+     * as only this annotation guarantees to have the session scope active always.
+     */
+    @Test
+    @InRequestScope
+    public void testLoginUserReturnsSuccess() {
+
+        given()
+                .userDto(EXISTING_USERNAME_TEST);
+
+        when()
+                .loginUser(EXISTING_PASSWORD_TEST);
+
+        then()
+                .assertLoginSuccess();
+    }
 
     @Test
     public void testCreateUserReturnsSuccess() {
