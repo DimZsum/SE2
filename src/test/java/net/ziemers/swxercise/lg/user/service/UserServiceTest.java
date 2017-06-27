@@ -45,6 +45,9 @@ public class UserServiceTest extends JpaTestUtils {
     private UserDao userDao;
 
     @Inject
+    private SessionContext sessionContext;
+
+    @Inject
     private UserService underTest;
 
     @Before
@@ -75,8 +78,18 @@ public class UserServiceTest extends JpaTestUtils {
     }
 
     @Test
+    @InRequestScope
     public void testLogoutUserSuccess() {
-        // TODO Test ist noch zu implementieren
+
+        given()
+                .userDto(EXISTING_USERNAME_TEST)
+                .loginUser(EXISTING_PASSWORD_TEST);
+
+        when()
+                .logoutUser();
+
+        then()
+                .assertLogoutSuccess();
     }
 
     @Test
@@ -193,6 +206,11 @@ public class UserServiceTest extends JpaTestUtils {
         return this;
     }
 
+    private UserServiceTest logoutUser() {
+        actual = underTest.logoutUser();
+        return this;
+    }
+
     private UserServiceTest createUser() {
         txBegin();
         actual = underTest.createUser(userDto);
@@ -226,7 +244,15 @@ public class UserServiceTest extends JpaTestUtils {
     }
 
     private void assertLoginSuccess() {
+        // die Login-Methode lieferte Erfolg zurück, und es gibt einen angemeldeten Benutzer
         assertTrue(actual);
+        assertNotNull(sessionContext.getUser());
+    }
+
+    private void assertLogoutSuccess() {
+      // die Logout-Methode lieferte Erfolg zurück, und es gibt keinen angemeldeten Benutzer
+        assertTrue(actual);
+        assertNull(sessionContext.getUser());
     }
 
     private void assertFindUserByIdSuccess(final Long expectedId) {
