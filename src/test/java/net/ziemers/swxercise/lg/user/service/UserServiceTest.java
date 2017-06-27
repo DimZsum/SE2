@@ -39,6 +39,8 @@ public class UserServiceTest extends JpaTestUtils {
 
     private boolean actual;
 
+    private User actualUser;
+
     @Inject
     private UserDao userDao;
 
@@ -79,12 +81,27 @@ public class UserServiceTest extends JpaTestUtils {
 
     @Test
     public void testFindUserById() {
-        // TODO Test ist noch zu implementieren
+
+        when()
+                .findUser(EXISTING_USER_ID);
+
+        then()
+                .assertFindUserByIdSuccess(EXISTING_USER_ID);
     }
 
     @Test
+    @InRequestScope
     public void testFindUser() {
-        // TODO Test ist noch zu implementieren
+
+        given()
+                .userDto(EXISTING_USERNAME_TEST)
+                .loginUser(EXISTING_PASSWORD_TEST);
+
+        when()
+                .findUser();
+
+        then()
+                .assertFindUserByIdSuccess(EXISTING_USER_ID);
     }
 
     @Test
@@ -192,6 +209,16 @@ public class UserServiceTest extends JpaTestUtils {
         return this;
     }
 
+    private UserServiceTest findUser(final Long id) {
+        actualUser = underTest.findUser(id);
+        return this;
+    }
+
+    private UserServiceTest findUser() {
+        actualUser = underTest.findUser();
+        return this;
+    }
+
     // then
 
     private UserServiceTest then() {
@@ -200,6 +227,10 @@ public class UserServiceTest extends JpaTestUtils {
 
     private void assertLoginSuccess() {
         assertTrue(actual);
+    }
+
+    private void assertFindUserByIdSuccess(final Long expectedId) {
+        assertEquals(expectedId, actualUser.getId());
     }
 
     private void assertCreateSuccess() {
