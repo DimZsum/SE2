@@ -73,6 +73,26 @@ public class UserServiceTest extends JpaTestUtils {
     }
 
     @Test
+    public void testLogoutUserSuccess() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
+    public void testFindUserById() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
+    public void testFindUser() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
+    public void testFindAllUsers() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
     public void testCreateUserReturnsSuccess() {
 
         given()
@@ -109,6 +129,26 @@ public class UserServiceTest extends JpaTestUtils {
 
         then()
                 .assertUpdateSuccess();
+    }
+
+    @Test
+    public void testDeleteUserByIdReturnsSuccess() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
+    public void testDeleteUserReturnsSuccess() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
+    public void testIsUserAllowedReturnsSuccess() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
+    public void testIsUserAllowedReturnsFailure() {
+        // TODO Test ist noch zu implementieren
     }
 
     // given

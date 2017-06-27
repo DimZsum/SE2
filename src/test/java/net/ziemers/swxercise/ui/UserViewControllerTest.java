@@ -1,9 +1,14 @@
 package net.ziemers.swxercise.ui;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.testdatabuilder.user.UserDtoTestDataBuilder;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 import net.ziemers.swxercise.ui.enums.ResponseState;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,6 +20,9 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserViewControllerTest {
+
+    private static String USER_FIRSTNAME = "Hein";
+    private static Long EXISTING_USER_ID = 2L;
 
     /*
      * You have the @InjectMocks annotation which tries to do constructor,
@@ -34,6 +42,10 @@ public class UserViewControllerTest {
 
     private RestResponse actual;
 
+    private Collection<User> actualCollection;
+
+    private User actualUser;
+
     @Test
     public void testJUnitFrameworkReturnsTrue() {
         assertTrue(true);
@@ -46,12 +58,32 @@ public class UserViewControllerTest {
 
     @Test
     public void testGetAllUsersReturnsUsersJson() {
-        // TODO Test ist noch zu implementieren
+
+        doing()
+                .getAllUsers();
+
+        then()
+                .assertGetAllUsersSuccess();
     }
 
     @Test
     public void testGetUserByIdReturnsUserJson() {
-        // TODO Test ist noch zu implementieren
+
+        doing()
+                .getUserById(EXISTING_USER_ID);
+
+        then()
+                .assertGetUserByIdSuccess();
+    }
+
+    @Test
+    public void testGetUserReturnsUserJson() {
+
+        doing()
+                .getUser();
+
+        then()
+                .assertGetUserSuccess();
     }
 
     @Test
@@ -100,7 +132,7 @@ public class UserViewControllerTest {
                 .userDto();
 
         doing()
-                .updateUser(1L);
+                .updateUser(EXISTING_USER_ID);
 
         then()
                 .assertUpdateSuccess();
@@ -179,6 +211,24 @@ public class UserViewControllerTest {
         actual = underTest.createUser(userDto);
     }
 
+    private void getAllUsers() {
+        when(userService.findAllUsers()).thenReturn(new ArrayList<User>());
+
+        actualCollection = underTest.getAllUsers();
+    }
+
+    private void getUserById(final Long id) {
+        when(userService.findUser(id)).thenReturn(new User(USER_FIRSTNAME, ""));
+
+        actualUser = underTest.getUser(id);
+    }
+
+    private void getUser() {
+        when(userService.findUser()).thenReturn(new User(USER_FIRSTNAME, ""));
+
+        actualUser = underTest.getUser();
+    }
+
     private void updateUser() {
         when(userService.updateUser(userDto)).thenReturn(true);
 
@@ -217,6 +267,19 @@ public class UserViewControllerTest {
     private void assertCreateFailure() {
         final RestResponse expected = new RestResponse(ResponseState.ALREADY_EXISTING);
         assertEquals(expected, actual);
+    }
+
+    private void assertGetAllUsersSuccess() {
+        final Collection<User> expectedCollection = new ArrayList<>();
+        assertEquals(expectedCollection, actualCollection);
+    }
+
+    private void assertGetUserByIdSuccess() {
+        assertEquals(USER_FIRSTNAME, actualUser.getFirstname());
+    }
+
+    private void assertGetUserSuccess() {
+        assertEquals(USER_FIRSTNAME, actualUser.getFirstname());
     }
 
     private void assertUpdateSuccess() {
