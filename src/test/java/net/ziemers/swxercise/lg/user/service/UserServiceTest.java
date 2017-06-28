@@ -1,5 +1,8 @@
 package net.ziemers.swxercise.lg.user.service;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 
 import net.ziemers.swxercise.db.dao.user.UserDao;
@@ -167,18 +170,80 @@ public class UserServiceTest extends JpaTestUtils {
     }
 
     @Test
-    public void testDeleteUserReturnsSuccess() {
+    public void testDeleteUnknownUserByIdReturnsFailure() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
-    public void testIsUserAllowedReturnsSuccess() {
+    public void testDeleteSessionUserReturnsSuccess() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
-    public void testIsUserAllowedReturnsFailure() {
-        // TODO Test ist noch zu implementieren
+    @InRequestScope
+    public void testIsNotLoggedInUserAllowedReturnsSuccess() {
+
+        when()
+                .isUserAllowed(new HashSet<String>(Arrays.asList("NOT_LOGGED_IN")));
+
+        then()
+                .assertIsUserAllowedSuccess();
+    }
+
+    @Test
+    @InRequestScope
+    public void testIsNotLoggedInUserAllowedReturnsFailure() {
+
+        when()
+                .isUserAllowed(new HashSet<String>(Arrays.asList("LOGGED_IN")));
+
+        then()
+                .assertIsUserAllowedFailure();
+    }
+
+    @Test
+    @InRequestScope
+    public void testIsSessionUserAllowedReturnsSuccess() {
+
+        given()
+                .userDto(EXISTING_USERNAME_TEST)
+                .loginUser(EXISTING_PASSWORD_TEST);
+
+        when()
+                .isUserAllowed(new HashSet<String>(Arrays.asList("LOGGED_IN")));
+
+        then()
+                .assertIsUserAllowedSuccess();
+    }
+
+    @Test
+    @InRequestScope
+    public void testIsAdminUserAllowedReturnsSuccess() {
+
+      given()
+              .userDto(EXISTING_USERNAME_TEST)
+              .loginUser(EXISTING_PASSWORD_TEST);
+
+      when()
+              .isUserAllowed(new HashSet<String>(Arrays.asList("ADMIN")));
+
+      then()
+              .assertIsUserAllowedSuccess();
+    }
+
+    @Test
+    @InRequestScope
+    public void testIsUserWithUnknownRoleAllowedReturnsFailure() {
+
+      given()
+              .userDto(EXISTING_USERNAME_TEST)
+              .loginUser(EXISTING_PASSWORD_TEST);
+
+      when()
+              .isUserAllowed(new HashSet<String>(Arrays.asList("UNKNOWN_ROLE")));
+
+      then()
+              .assertIsUserAllowedFailure();
     }
 
     // given
@@ -237,6 +302,11 @@ public class UserServiceTest extends JpaTestUtils {
         return this;
     }
 
+    private UserServiceTest isUserAllowed(final Set<String> rightsSet) {
+        actual = underTest.isUserAllowed(rightsSet);
+        return this;
+    }
+
     // then
 
     private UserServiceTest then() {
@@ -274,6 +344,14 @@ public class UserServiceTest extends JpaTestUtils {
         // wir suchen den soeben aktualisierten Benutzer; wenn sein Benutzername unverändert ist, ist alles gut
         final User user = userDao.findById(EXISTING_USER_ID);
         assertEquals(EXISTING_USERNAME_TEST, user.getProfile().getUsername());
+    }
+
+    private void assertIsUserAllowedSuccess() {
+        assertTrue(actual);
+    }
+
+    private void assertIsUserAllowedFailure() {
+        assertFalse(actual);
     }
 
 }

@@ -77,7 +77,7 @@ public class UserViewControllerTest {
     }
 
     @Test
-    public void testGetUserReturnsUserJson() {
+    public void testGetSessionUserReturnsUserJson() {
 
         doing()
                 .getUser();
@@ -113,7 +113,7 @@ public class UserViewControllerTest {
     }
 
     @Test
-    public void testUpdateLoggedInUserReturnsSuccess() {
+    public void testUpdateSessionUserReturnsSuccess() {
 
         given()
                 .userDto();
@@ -126,7 +126,7 @@ public class UserViewControllerTest {
     }
 
     @Test
-    public void testUpdateSpecificUserReturnsSuccess() {
+    public void testUpdateUserByIdReturnsSuccess() {
 
         given()
                 .userDto();
@@ -140,6 +140,11 @@ public class UserViewControllerTest {
 
     @Test
     public void testDeleteUserByIdReturnsSuccess() {
+        // TODO Test ist noch zu implementieren
+    }
+
+    @Test
+    public void testDeleteUnknownUserByIdReturnsFailure() {
         // TODO Test ist noch zu implementieren
     }
 
@@ -162,7 +167,7 @@ public class UserViewControllerTest {
     }
 
     @Test
-    public void testLoginNonExistingUserReturnsFailure() {
+    public void testLoginUserReturnsFailure() {
 
         given()
                 .userDto();
@@ -195,7 +200,7 @@ public class UserViewControllerTest {
         return this;
     }
 
-    // doing
+    // doing (when)
 
     private UserViewControllerTest doing() {
         return this;
