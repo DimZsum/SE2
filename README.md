@@ -6,15 +6,18 @@ Anmerkung: Dieses Tutorial lebt! Es wird ständig verbessert, um Problemlösunge
 
 - Versionsverwaltungswerkzeug "Git"
 - Installiertes "Java 8 JDK" (mit Dokumentation)
-- Eine Java-Entwicklungsumgebung ("Eclipse", "JetBrains IntelliJ IDEA", "NetBeans" o.ä.)
-- JEE-Application Server "JBoss WildFly Version 8.2.1-final"
 - Build-System "maven" (unter Windows optional)
 - Ein relationales Datenbankverwaltungssystem mit JDBC-Anbindung ("MySQL" empfohlen, oder "MariaDB", "PostgreSQL", "Oracle Express" etc.)
+
+Für die Weiterentwicklung am Projekt in der Veranstaltung SE2 (jedoch nicht für die Implementierung von JUnit-Tests in der Veranstaltung SwQT) sind ferner erforderlich:
+
+- Eine Java-Entwicklungsumgebung ("Eclipse", "JetBrains IntelliJ IDEA", "NetBeans" o.ä.)
+- JEE-Application Server "JBoss WildFly Version 8.2.1-final"
 - Ein REST-Client (empfohlen "Advanced Rest Client Application" für den Chrome Browser)
 
 ## Git installieren
 
-Auf dem Mac ist Git bereits vorhanden, sofern Xcode installiert ist.
+Auf dem Mac ist Git bereits vorhanden, sofern "Xcode" installiert ist.
 
 Unter Linux installiert man Git folgendermaßen:
 
@@ -33,6 +36,8 @@ In einem beliebigen Verzeichnis ausführen:
 Es wird hierbei ein neues Verzeichnis namens "swXercise" erstellt, in dem sich nun das Projekt befindet. Beim Klonen werden etwaige Zertifikatsfehler ignoriert (dies tritt trotz korrekten Zertifikats gelegentlich unter Windows auf).
 
 ## Projekt in die Entwicklungsumgebung integrieren
+
+(Hinweis: Nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
 
 Danach das entstandene Projektverzeichnis "swXercise" in der Entwicklungsumgebung als "existierendes Maven-Projekt" importieren, indem man die im Wurzelverzeichnis des Projekts vorhandene Datei "pom.xml" auswählt:
 
@@ -70,17 +75,21 @@ Es wird zunächst nach dem temporären Kennwort gefragt. Dieses kann/muss geänd
 
 > ALTER USER 'root'@'localhost' IDENTIFIED BY ‘root‘;
 
-Dann müssen die beiden projektspezifischen Datenbanken (für Test und "Produktion") erstellt und mit den nötigen Rechten versehen werden:
-
-> CREATE DATABASE swxercise;
+Dann müssen die beiden projektspezifischen Datenbanken (für "Test" und "Produktion") erstellt und mit den nötigen Rechten versehen werden:
 
 > CREATE DATABASE swxercise_test;
 
-> GRANT ALL PRIVILEGES ON swxercise.* TO 'root'@'localhost' IDENTIFIED BY 'root';
-
 > GRANT ALL PRIVILEGES ON on swxercise_test.* TO 'root'@'localhost' IDENTIFIED BY 'root';
 
+(Hinweis: Das Folgende ist nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
+
+> CREATE DATABASE swxercise;
+
+> GRANT ALL PRIVILEGES ON swxercise.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+
 ## MySQL-Datenbank im WildFly einbinden
+
+(Hinweis: Nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
 
 Zunächst muss der JBoss WildFly Application Server installiert werden. Dies ist betriebssystemspezifisch.
 
@@ -89,6 +98,8 @@ Unter Linux und auf dem Mac einfach das Tar- oder Zip-Archiv mit dem WildFly-Ser
 Unter Windows dem WildFly-Installer von den JBoss-Webseiten herunterladen und installieren.
 
 ### Datei "module.xml" im Verzeichnis "$JBOSS_HOME/modules/system/layers/base/com/mysql/driver/main" erstellen
+
+(Hinweis: Nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
 
 Vermutlich existiert im Verzeichnis "com" schon das Unterverzeichnis "mysql" nicht. Also muss dieses Verzeichnis (und die entsprechenden Unterverzeichnisse ebenfalls) erstellt werden.
 
@@ -110,6 +121,8 @@ Und die jar-datei mit dem angegebenen MySQL-Treiber in dieses Verzeichnis hinein
 
 ### In der Datei "standalone.xml" im Verzeichnis "$JBOSS_HOME/standalone/configuration" folgenden Inhalt unterhalb der WildFly-Beispieldatenbank "com.h2database.h2" ergänzen:
 
+(Hinweis: Nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
+
 Aufgepasst: Der WildFly-Server darf während der Bearbeitung der XML-Datei nicht laufen, da er Ihre Änderungen ansonsten beim späteren Beenden wieder überschreiben würde!!!
 
 ```
@@ -125,6 +138,8 @@ Aufgepasst: Der WildFly-Server darf während der Bearbeitung der XML-Datei nicht
 ## MySQL-Datasource im WildFly definieren
 
 ### In der Datei "standalone.xml" im "Verzeichnis $JBOSS_HOME/standalone/configuration" folgenden Inhalt innerhalb der Datasources ergänzen:
+
+(Hinweis: Nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
 
 Aufgepasst: Der WildFly-Server darf während der Bearbeitung der XML-Datei nicht laufen, da er Ihre Änderungen ansonsten beim späteren Beenden wieder überschreiben würde!!!
 
@@ -156,12 +171,14 @@ Aufgepasst: Der WildFly-Server darf während der Bearbeitung der XML-Datei nicht
 
 ## JBoss WildFly in Eclipse einbinden
 
+(Hinweis: Nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
+
 ### JBoss Tools-Plugin installieren (nur für Eclipse)
 
 - Auswählen "Help -> Eclipse Marketplace..."
-- Find: "JBoss Tools (Neon)" (oder was halt gerade aktuell ist)
-- "Install" klicken
-- Auswählen "JBoss AS, Wildfly & EAP Server Tools"
+- Find: "JBoss Tools"
+- die gefundenen "JBoss Tools" installieren (zum Zeitpunkt des Schreibens dieser Zeilen ist "JBoss Tools 4.4.3 Final" aktuell)
+- Auswählen "JBoss AS, Wildfly & EAP Server Tools" mit allen Unter-Plugins, die dranhängen
 
 Quelle: https://tools.jboss.org/downloads/jbosstools/neon/4.4.3.Final.html
 
@@ -185,6 +202,8 @@ Quelle: https://tools.jboss.org/downloads/jbosstools/neon/4.4.3.Final.html
   - "Add and Remove", das gewünschte Maven-Artefakt "swXercise" auswählen (Finish)
 
 ## JBoss WildFly in IntelliJ IDEA einbinden
+
+(Hinweis: Nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
 
 ### JBoss WildFly-Server initial bekanntmachen (nur für IntelliJ IDEA)
 
