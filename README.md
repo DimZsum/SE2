@@ -79,7 +79,7 @@ Dann müssen die beiden projektspezifischen Datenbanken (für "Test" und "Produk
 
 > CREATE DATABASE swxercise_test;
 
-> GRANT ALL PRIVILEGES ON on swxercise_test.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+> GRANT ALL PRIVILEGES ON swxercise_test.* TO 'root'@'localhost' IDENTIFIED BY 'root';
 
 (Hinweis: Das Folgende ist nicht unbedingt für die Implementierung von JUnit-Tests in der Veranstaltung SwQT erforderlich)
 
