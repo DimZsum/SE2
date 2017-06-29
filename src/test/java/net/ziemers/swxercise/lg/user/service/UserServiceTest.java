@@ -1,6 +1,7 @@
 package net.ziemers.swxercise.lg.user.service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -27,6 +28,8 @@ import org.junit.runner.RunWith;
  * To test classes in isolation we shouldn't be using their dependencies.
  * Instead we should be using a mock. There are many mocking libraries out
  * there, however CDI-Unit has extra support for Mockito @Mock annotations.
+ *
+ * Quelle: http://jglue.org/cdi-unit-user-guide/
  */
 @RunWith(CdiRunner.class)
 public class UserServiceTest extends JpaTestUtils {
@@ -41,6 +44,8 @@ public class UserServiceTest extends JpaTestUtils {
     private UserDto userDto;
 
     private boolean actual;
+
+    private Collection<User> actualUsers;
 
     private User actualUser;
 
@@ -65,10 +70,11 @@ public class UserServiceTest extends JpaTestUtils {
     /*
      * In order to inject @SessionScoped beans, one has to annotate the function or class with @InRequestScope
      * as only this annotation guarantees to have the session scope active always.
+     * Quelle: https://github.com/BrynCooke/cdi-unit/issues/82
      */
     @Test
     @InRequestScope
-    public void testLoginUserReturnsSuccess() {
+    public void testLoginUserSucceeds() {
 
         given()
                 .userDto(EXISTING_USERNAME_TEST);
@@ -77,12 +83,12 @@ public class UserServiceTest extends JpaTestUtils {
                 .loginUser(EXISTING_PASSWORD_TEST);
 
         then()
-                .assertLoginSuccess();
+                .assertLoginUserSucceeded();
     }
 
     @Test
     @InRequestScope
-    public void testLogoutUserSuccess() {
+    public void testLogoutUserSucceeds() {
 
         given()
                 .userDto(EXISTING_USERNAME_TEST)
@@ -92,22 +98,22 @@ public class UserServiceTest extends JpaTestUtils {
                 .logoutUser();
 
         then()
-                .assertLogoutSuccess();
+                .assertLogoutUserSucceeded();
     }
 
     @Test
-    public void testFindUserById() {
+    public void testFindUserByIdSucceeds() {
 
         when()
                 .findUser(EXISTING_USER_ID);
 
         then()
-                .assertFindUserByIdSuccess(EXISTING_USER_ID);
+                .assertFindUserByIdSucceeded(EXISTING_USER_ID);
     }
 
     @Test
     @InRequestScope
-    public void testFindUser() {
+    public void testFindSessionUserSucceeds() {
 
         given()
                 .userDto(EXISTING_USERNAME_TEST)
@@ -117,16 +123,21 @@ public class UserServiceTest extends JpaTestUtils {
                 .findUser();
 
         then()
-                .assertFindUserByIdSuccess(EXISTING_USER_ID);
+                .assertFindUserByIdSucceeded(EXISTING_USER_ID);
     }
 
     @Test
-    public void testFindAllUsers() {
-        // TODO Test ist noch zu implementieren
+    public void testFindAllUsersSucceeds() {
+
+        when()
+                .findAllUsers();
+
+        then()
+                .assertFindAllUsersSucceeded();
     }
 
     @Test
-    public void testCreateUserReturnsSuccess() {
+    public void testCreateUserSucceeds() {
 
         given()
                 .userDto(USERNAME_TEST);
@@ -135,11 +146,11 @@ public class UserServiceTest extends JpaTestUtils {
                 .createUser();
 
         then()
-                .assertCreateSuccess();
+                .assertCreateUserSucceeded();
     }
 
     @Test
-    public void testCreateUserReturnsFailure() {
+    public void testCreateAlreadyExistingUserFails() {
 
         given()
                 .userDto(EXISTING_USERNAME_TEST);
@@ -148,7 +159,7 @@ public class UserServiceTest extends JpaTestUtils {
                 .createUser();
 
         then()
-                .assertCreateFailure();
+                .assertCreateUserFailed();
     }
 
     @Test
@@ -161,49 +172,49 @@ public class UserServiceTest extends JpaTestUtils {
                 .updateUser(EXISTING_USER_ID);
 
         then()
-                .assertUpdateSuccess();
+                .assertUpdateUserSucceeded();
     }
 
     @Test
-    public void testDeleteUserByIdReturnsSuccess() {
+    public void testDeleteUserByIdSucceeds() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
-    public void testDeleteUnknownUserByIdReturnsFailure() {
+    public void testDeleteUnknownUserByIdFails() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
-    public void testDeleteSessionUserReturnsSuccess() {
+    public void testDeleteSessionUserSucceeds() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
     @InRequestScope
-    public void testIsNotLoggedInUserAllowedReturnsSuccess() {
+    public void testIsNotLoggedInUserAllowedWithNotLoggedInRightSucceeds() {
 
         when()
                 .isUserAllowed(new HashSet<String>(Arrays.asList("NOT_LOGGED_IN")));
 
         then()
-                .assertIsUserAllowedSuccess();
+                .assertIsUserAllowedSucceeded();
     }
 
     @Test
     @InRequestScope
-    public void testIsNotLoggedInUserAllowedReturnsFailure() {
+    public void testIsNotLoggedInUserAllowedWithLoggedInRightFails() {
 
         when()
                 .isUserAllowed(new HashSet<String>(Arrays.asList("LOGGED_IN")));
 
         then()
-                .assertIsUserAllowedFailure();
+                .assertIsUserAllowedFailed();
     }
 
     @Test
     @InRequestScope
-    public void testIsSessionUserAllowedReturnsSuccess() {
+    public void testIsSessionUserAllowedWithLoggedInRightSucceeds() {
 
         given()
                 .userDto(EXISTING_USERNAME_TEST)
@@ -213,12 +224,27 @@ public class UserServiceTest extends JpaTestUtils {
                 .isUserAllowed(new HashSet<String>(Arrays.asList("LOGGED_IN")));
 
         then()
-                .assertIsUserAllowedSuccess();
+                .assertIsUserAllowedSucceeded();
     }
 
     @Test
     @InRequestScope
-    public void testIsAdminUserAllowedReturnsSuccess() {
+    public void testIsSessionUserAllowedWithNotLoggedInRightFails() {
+
+        given()
+                .userDto(EXISTING_USERNAME_TEST)
+                .loginUser(EXISTING_PASSWORD_TEST);
+
+        when()
+                .isUserAllowed(new HashSet<String>(Arrays.asList("NOT_LOGGED_IN")));
+
+        then()
+                .assertIsUserAllowedFailed();
+    }
+
+    @Test
+    @InRequestScope
+    public void testIsAdminUserAllowedWithAdminRightSucceeds() {
 
       given()
               .userDto(EXISTING_USERNAME_TEST)
@@ -228,12 +254,12 @@ public class UserServiceTest extends JpaTestUtils {
               .isUserAllowed(new HashSet<String>(Arrays.asList("ADMIN")));
 
       then()
-              .assertIsUserAllowedSuccess();
+              .assertIsUserAllowedSucceeded();
     }
 
     @Test
     @InRequestScope
-    public void testIsUserWithUnknownRoleAllowedReturnsFailure() {
+    public void testIsUserWithUnknownRoleAllowedFails() {
 
       given()
               .userDto(EXISTING_USERNAME_TEST)
@@ -243,7 +269,7 @@ public class UserServiceTest extends JpaTestUtils {
               .isUserAllowed(new HashSet<String>(Arrays.asList("UNKNOWN_ROLE")));
 
       then()
-              .assertIsUserAllowedFailure();
+              .assertIsUserAllowedFailed();
     }
 
     // given
@@ -302,6 +328,11 @@ public class UserServiceTest extends JpaTestUtils {
         return this;
     }
 
+    private UserServiceTest findAllUsers() {
+        actualUsers = underTest.findAllUsers();
+        return this;
+    }
+
     private UserServiceTest isUserAllowed(final Set<String> rightsSet) {
         actual = underTest.isUserAllowed(rightsSet);
         return this;
@@ -313,44 +344,50 @@ public class UserServiceTest extends JpaTestUtils {
         return this;
     }
 
-    private void assertLoginSuccess() {
+    private void assertLoginUserSucceeded() {
         // die Login-Methode lieferte Erfolg zurück, und es gibt einen angemeldeten Benutzer
         assertTrue(actual);
         assertNotNull(sessionContext.getUser());
     }
 
-    private void assertLogoutSuccess() {
+    private void assertLogoutUserSucceeded() {
       // die Logout-Methode lieferte Erfolg zurück, und es gibt keinen angemeldeten Benutzer
         assertTrue(actual);
         assertNull(sessionContext.getUser());
     }
 
-    private void assertFindUserByIdSuccess(final Long expectedId) {
+    private void assertFindUserByIdSucceeded(final Long expectedId) {
         assertEquals(expectedId, actualUser.getId());
     }
 
-    private void assertCreateSuccess() {
+    private void assertFindAllUsersSucceeded() {
+        // in unseren Testdaten befinden sich zwei Benutzer
+        final int EXISTING_USERS_COUNT = 2;
+        assertEquals(EXISTING_USERS_COUNT, actualUsers.size());
+    }
+
+    private void assertCreateUserSucceeded() {
         // wir suchen den soeben erstellten Benutzer; wenn er existiert, ist alles gut
         final User user = userDao.findByUsername(USERNAME_TEST);
         assertNotNull(user);
     }
 
-    private void assertCreateFailure() {
+    private void assertCreateUserFailed() {
         // es darf kein neuer Benutzer mit identischem Benutzernamen erstellt worden sein
         assertFalse(actual);
     }
 
-    private void assertUpdateSuccess() {
+    private void assertUpdateUserSucceeded() {
         // wir suchen den soeben aktualisierten Benutzer; wenn sein Benutzername unverändert ist, ist alles gut
         final User user = userDao.findById(EXISTING_USER_ID);
         assertEquals(EXISTING_USERNAME_TEST, user.getProfile().getUsername());
     }
 
-    private void assertIsUserAllowedSuccess() {
+    private void assertIsUserAllowedSucceeded() {
         assertTrue(actual);
     }
 
-    private void assertIsUserAllowedFailure() {
+    private void assertIsUserAllowedFailed() {
         assertFalse(actual);
     }
 

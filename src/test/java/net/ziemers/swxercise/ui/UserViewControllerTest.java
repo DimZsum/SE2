@@ -47,10 +47,13 @@ public class UserViewControllerTest {
     private User actualUser;
 
     @Test
-    public void testJUnitFrameworkReturnsTrue() {
+    public void testJUnitFrameworkSucceeds() {
         assertTrue(true);
     }
 
+    /**
+     * Hier sieht man eine erwartete Exception
+     */
     @Test(expected = AssertionError.class)
     public void testJUnitFrameworkThrowsException() {
         assertTrue(false);
@@ -63,7 +66,7 @@ public class UserViewControllerTest {
                 .getAllUsers();
 
         then()
-                .assertGetAllUsersSuccess();
+                .assertGetAllUsersSucceeded();
     }
 
     @Test
@@ -73,21 +76,21 @@ public class UserViewControllerTest {
                 .getUserById(EXISTING_USER_ID);
 
         then()
-                .assertGetUserByIdSuccess();
+                .assertGetUserByIdSucceeded();
     }
 
     @Test
-    public void testGetSessionUserReturnsUserJson() {
+    public void testGetSessionUserReturnsSessionUserJson() {
 
         doing()
                 .getUser();
 
         then()
-                .assertGetUserSuccess();
+                .assertGetUserSucceeded();
     }
 
     @Test
-    public void testCreateUserReturnsSuccess() {
+    public void testCreateUserSucceeds() {
 
         given()
                 .userDto();
@@ -96,11 +99,11 @@ public class UserViewControllerTest {
                 .createUser(true);
 
         then()
-                .assertCreateSuccess();
+                .assertCreateUserSucceeded();
     }
 
     @Test
-    public void testCreateUserReturnsFailure() {
+    public void testCreateUserFails() {
 
         given()
                 .userDto();
@@ -109,11 +112,11 @@ public class UserViewControllerTest {
                 .createUser(false);
 
         then()
-                .assertCreateFailure();
+                .assertCreateUserFailed();
     }
 
     @Test
-    public void testUpdateSessionUserReturnsSuccess() {
+    public void testUpdateSessionUserSucceeds() {
 
         given()
                 .userDto();
@@ -122,11 +125,11 @@ public class UserViewControllerTest {
                 .updateUser();
 
         then()
-                .assertUpdateSuccess();
+                .assertUpdateUserSucceeded();
     }
 
     @Test
-    public void testUpdateUserByIdReturnsSuccess() {
+    public void testUpdateUserByIdSucceeds() {
 
         given()
                 .userDto();
@@ -135,26 +138,26 @@ public class UserViewControllerTest {
                 .updateUser(EXISTING_USER_ID);
 
         then()
-                .assertUpdateSuccess();
+                .assertUpdateUserSucceeded();
     }
 
     @Test
-    public void testDeleteUserByIdReturnsSuccess() {
+    public void testDeleteUserByIdSucceeds() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
-    public void testDeleteUnknownUserByIdReturnsFailure() {
+    public void testDeleteUnknownUserByIdFails() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
-    public void testDeleteSessionUserReturnsSuccess() {
+    public void testDeleteSessionUserSucceeds() {
         // TODO Test ist noch zu implementieren
     }
 
     @Test
-    public void testLoginUserReturnsSuccess() {
+    public void testLoginUserSucceeds() {
 
         given()
                 .userDto();
@@ -163,11 +166,11 @@ public class UserViewControllerTest {
                 .loginUser(true);
 
         then()
-                .assertLoginSuccess();
+                .assertLoginUserSucceeded();
     }
 
     @Test
-    public void testLoginUserReturnsFailure() {
+    public void testLoginUserFails() {
 
         given()
                 .userDto();
@@ -176,17 +179,17 @@ public class UserViewControllerTest {
                 .loginUser(false);
 
         then()
-                .assertLoginFailure();
+                .assertLoginUserFailed();
     }
 
     @Test
-    public void testLogoutUserReturnsSuccess() {
+    public void testLogoutUserSucceeds() {
 
         doing()
                 .logoutUser();
 
         then()
-                .assertLogoutSuccess();
+                .assertLogoutUserSucceeded();
     }
 
     // given
@@ -264,45 +267,45 @@ public class UserViewControllerTest {
         return this;
     }
 
-    private void assertCreateSuccess() {
+    private void assertCreateUserSucceeded() {
         final RestResponse expected = new RestResponse();
         assertEquals(expected, actual);
     }
 
-    private void assertCreateFailure() {
+    private void assertCreateUserFailed() {
         final RestResponse expected = new RestResponse(ResponseState.ALREADY_EXISTING);
         assertEquals(expected, actual);
     }
 
-    private void assertGetAllUsersSuccess() {
+    private void assertGetAllUsersSucceeded() {
         final Collection<User> expectedCollection = new ArrayList<>();
         assertEquals(expectedCollection, actualCollection);
     }
 
-    private void assertGetUserByIdSuccess() {
+    private void assertGetUserByIdSucceeded() {
         assertEquals(USER_FIRSTNAME, actualUser.getFirstname());
     }
 
-    private void assertGetUserSuccess() {
+    private void assertGetUserSucceeded() {
         assertEquals(USER_FIRSTNAME, actualUser.getFirstname());
     }
 
-    private void assertUpdateSuccess() {
+    private void assertUpdateUserSucceeded() {
         final RestResponse expected = new RestResponse();
         assertEquals(expected, actual);
     }
 
-    private void assertLoginSuccess() {
+    private void assertLoginUserSucceeded() {
         final RestResponse expected = new RestResponse();
         assertEquals(expected, actual);
     }
 
-    private void assertLoginFailure() {
+    private void assertLoginUserFailed() {
         final RestResponse expected = new RestResponse(ResponseState.FAILED);
         assertEquals(expected, actual);
     }
 
-    private void assertLogoutSuccess() {
+    private void assertLogoutUserSucceeded() {
         final RestResponse expected = new RestResponse();
         assertEquals(expected, actual);
     }

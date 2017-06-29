@@ -222,4 +222,14 @@ Quelle: https://tools.jboss.org/downloads/jbosstools/neon/4.4.3.Final.html
 
 ## Projekt verwenden
 
-Beim Deployen des Projekts auf den Application Server wird automatisch der Benutzer "admin" mit dem Kennwort "admin" erstellt und diesem die Rolle "Adminrolle" zugewiesen. Mit ihm kann man sich anmelden und erste Übungen vornehmen.
+In der Entwicklungsumgebung:
+
+Beim Deployen des Projekts auf den Application Server wird durch einen Data Bootstrapping-Mechanismus automatisch der Benutzer "admin" mit dem Kennwort "admin" erstellt und diesem die Rolle "Adminrolle" zugewiesen. Mit ihm kann man sich anmelden und erste Übungen vornehmen. Hierzu verwendet man den REST-Client "Advanced Rest Client Application" für den Chrome Browser.
+
+Nach der Implementierung von JUnit-Tests auf der Kommandozeile:
+
+> mvn clean install
+
+Das Projekt wird gebaut und die Tests werden ausgeführt. Möchte man die Tests gelegentlich mal nicht ausführen, macht man:
+
+> mvn clean install -DskipTests
