@@ -10,7 +10,9 @@ import net.ziemers.swxercise.lg.model.user.User;
 @SessionScoped
 public class SessionContext implements java.io.Serializable {
 
-    private User user = null;
+	private static final long serialVersionUID = 8624253586553865146L;
+
+	private User user = null;
 
     public User getUser() {
         return user;

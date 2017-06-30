@@ -3,8 +3,6 @@ package net.ziemers.swxercise.lg.testdatabuilder.user;
 import net.ziemers.swxercise.lg.testdatabuilder.AbstractTestDataBuilder;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 
-import javax.persistence.EntityManager;
-
 public class UserDtoTestDataBuilder extends AbstractTestDataBuilder<UserDto> {
 
     private String username = "hein";

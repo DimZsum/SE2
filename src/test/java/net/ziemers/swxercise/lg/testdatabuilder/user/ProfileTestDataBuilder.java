@@ -5,7 +5,7 @@ import net.ziemers.swxercise.lg.testdatabuilder.AbstractTestDataBuilder;
 
 import javax.persistence.EntityManager;
 
-public class ProfileTestDataBuilder extends AbstractTestDataBuilder {
+public class ProfileTestDataBuilder extends AbstractTestDataBuilder<Profile> {
 
     private String username = "hbloed";
 

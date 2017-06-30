@@ -34,7 +34,8 @@ public enum RightState {
         return name;
     }
 
-    private void setName(String name) {
+    @SuppressWarnings("unused")
+	private void setName(String name) {
         this.name = name;
     }
 

@@ -1,7 +1,6 @@
 package net.ziemers.swxercise.lg.model.user;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import net.ziemers.swxercise.db.BaseEntity;
 

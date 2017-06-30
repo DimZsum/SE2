@@ -2,6 +2,8 @@
 	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
+	<!-- Eclipse warnt hier: Multiple persistence units specified - only the first will be recognized -->
+	<!-- Diese Warnung kann ignoriert werden (in "IntelliJ IDEA" tritt sie gar nicht erst auf) -->
 	<persistence-unit name="swXercisePU" transaction-type="JTA">
 		<jta-data-source>java:jboss/datasources/swXerciseDS</jta-data-source>
 		<properties>

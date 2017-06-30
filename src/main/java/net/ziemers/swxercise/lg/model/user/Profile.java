@@ -155,7 +155,8 @@ public class Profile extends BaseEntity {
         this.passwordHash = cryptString(password);
     }
 
-    private void setPasswordHash(String passwordHash) {
+    @SuppressWarnings("unused")
+	private void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
 
@@ -176,7 +177,8 @@ public class Profile extends BaseEntity {
         return hashAlgorithm;
     }
 
-    private void setHashAlgorithm(PasswordHashAlgorithm hashAlgorithm) {
+    @SuppressWarnings("unused")
+	private void setHashAlgorithm(PasswordHashAlgorithm hashAlgorithm) {
         this.hashAlgorithm = hashAlgorithm;
     }
 

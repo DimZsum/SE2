@@ -2,7 +2,6 @@ package net.ziemers.swxercise.db.dao.user;
 
 import net.ziemers.swxercise.db.dao.GenericDao;
 import net.ziemers.swxercise.lg.model.user.Role;
-import net.ziemers.swxercise.lg.model.user.User;
 
 import javax.ejb.Stateless;
 
