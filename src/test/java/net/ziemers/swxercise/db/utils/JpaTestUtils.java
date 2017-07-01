@@ -74,6 +74,7 @@ public class JpaTestUtils {
         return em;
     }
 
+    @SuppressWarnings("unused")
     protected void clearEm() {
         em = null;
     }
@@ -118,16 +119,17 @@ public class JpaTestUtils {
         return emf;
     }
 
-    public void txBegin() {
+    protected void txBegin() {
         tx = getEm().getTransaction();
         tx.begin();
     }
 
-    public void txCommit() {
+    protected void txCommit() {
         tx.commit();
     }
 
-    public void txRollback() {
+    @SuppressWarnings("unused")
+    protected void txRollback() {
         tx.rollback();
     }
 
@@ -151,7 +153,8 @@ public class JpaTestUtils {
             resourceAsStream = JpaTestUtils.class.getClassLoader().getResourceAsStream(NET_ZIEMERS_SWXERCISE_PKG + resourceName);
             dataSet = flatXmlDataSetBuilder.build(resourceAsStream);
         } catch (Exception e) {
-            throw e;
+            logger.warn("Exception while reading test data definitions file named \"{}\". If your tests fail, check existence of file!", resourceName);
+            // throw e;
         } finally {
             if (dtdStream != null) {
                 dtdStream.close();
@@ -171,20 +174,22 @@ public class JpaTestUtils {
      * @throws Exception wenn dabei etwas schiefläuft
      */
     protected void initDbWith(String resourceName) throws Exception {
-        IDataSet dataset = readDataset(resourceName);
-        try {
-            SessionImpl delegate = (SessionImpl) this.getEm().getDelegate();
-            DatabaseConnection connection = new DatabaseConnection(delegate.connection());
-            IMetadataHandler mysqlHandler = new MySqlMetadataHandler();
-            IDataTypeFactory mySqlDataTypeFactory = new MySqlDataTypeFactory();
-            connection.getConfig().setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, mysqlHandler);
-            connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, mySqlDataTypeFactory);
-            DatabaseOperation.INSERT.execute(connection, dataset);
-        } catch (DatabaseUnitException qe) {
-            logger.warn("Database entries already inserted. If your tests fail, check your sql inserts for constraint violations!");
-            logger.warn(qe.getMessage());
-            logger.warn(qe.getMessage(), qe);
-            throw qe;
+        final IDataSet dataset = readDataset(resourceName);
+        if (dataset != null) {
+            try {
+                SessionImpl delegate = (SessionImpl) this.getEm().getDelegate();
+                DatabaseConnection connection = new DatabaseConnection(delegate.connection());
+                IMetadataHandler mysqlHandler = new MySqlMetadataHandler();
+                IDataTypeFactory mySqlDataTypeFactory = new MySqlDataTypeFactory();
+                connection.getConfig().setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, mysqlHandler);
+                connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, mySqlDataTypeFactory);
+                DatabaseOperation.INSERT.execute(connection, dataset);
+            } catch (DatabaseUnitException qe) {
+                logger.warn("Database entries already inserted. If your tests fail, check your sql inserts for constraint violations!");
+                logger.warn(qe.getMessage());
+                logger.warn(qe.getMessage(), qe);
+                throw qe;
+            }
         }
     }
 
@@ -193,7 +198,7 @@ public class JpaTestUtils {
      *
      * @throws Exception Wirft eventuelle SQL- und I/O-Exceptions
      */
-    public void cleanDb() throws Exception {
+    protected void cleanDb() throws Exception {
         String schema = getCurrentSchema();
         List<String> tables = getTableNamesToBeEmptied();
         getEm().getTransaction().begin();
@@ -219,7 +224,7 @@ public class JpaTestUtils {
         return null;
     }
 
-    public List<String> getTableNamesToBeEmptied() throws Exception {
+    private List<String> getTableNamesToBeEmptied() throws Exception {
         return showTablesNotEmpty(getCurrentSchema());
     }
 
@@ -240,7 +245,7 @@ public class JpaTestUtils {
      *
      * @return eine Liste der zu ignorierenden Tabellen
      */
-    public List<String> getSkippingTables() {
+    private List<String> getSkippingTables() {
         return Arrays.asList(
                 "hibernate_sequence",
                 "schema_version"); // FlywayDB Metatable
@@ -255,7 +260,7 @@ public class JpaTestUtils {
         return result;
     }
 
-    public String getTruncateStatement(String schema, String table) {
+    private String getTruncateStatement(String schema, String table) {
         return String.format("DELETE FROM %s.%s;", schema, table);
     }
 
