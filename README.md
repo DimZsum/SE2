@@ -27,6 +27,30 @@ Unter Linux installiert man Git folgendermaßen:
 
 Unter Windows muss der Git-Installer aus dem Internet heruntergeladen und installiert werden.
 
+## Maven installieren
+
+Unter Linux wird Maven einfach folgendermaßen installiert:
+
+> sudo apt-get update
+
+> sudo apt-get install maven
+
+Für den Mac wird Maven von der Herstellerseite "https://maven.apache.org/download.cgi" heruntergeladen und die Archivdatei in einem beliebigen Verzeichnis ausgepackt (konventionsgemäß in "/Library/Maven").
+
+Dann wird die Datei ".profile" im Home-Verzeichnis des Benutzer erweitert (oder diese erstellt, falls noch nicht vorhanden):
+
+```
+export M2_HOME="/Library/Maven/apache-maven-3.5.0"
+export MYSQL_HOME="/usr/local/mysql"
+export PATH="$PATH:$M2_HOME/bin:$MYSQL_HOME/bin"
+```
+
+Hinweis: es wird bei dieser Gelegenheit auch gleich der MySQL-Pfad angepasst.
+
+Natürlich müssen die Verzeichnispfade von Maven und MySQL angepasst werden, wie es den tatsächlichen Installationsorten entspricht. 
+
+Unter Windows muss der Maven-Installer aus dem Internet heruntergeladen und installiert werden.
+
 ## Java-Projekt herunterladen
 
 In einem beliebigen Verzeichnis ausführen:
@@ -226,7 +250,7 @@ In der Entwicklungsumgebung:
 
 Beim Deployen des Projekts auf den Application Server wird durch einen Data Bootstrapping-Mechanismus automatisch der Benutzer "admin" mit dem Kennwort "admin" erstellt und diesem die Rolle "Adminrolle" zugewiesen. Mit ihm kann man sich anmelden und erste Übungen vornehmen. Hierzu verwendet man den REST-Client "Advanced Rest Client Application" für den Chrome Browser.
 
-Nach der Implementierung von JUnit-Tests auf der Kommandozeile:
+Nach der Implementierung von JUnit-Tests auf der Kommandozeile, und zwar in demjenigen Verzeichnis des Projekts, in dem sich die Datei "pom.xml" befindet (das ist wichtig!):
 
 > mvn clean install
 
