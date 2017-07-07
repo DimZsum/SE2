@@ -47,7 +47,7 @@ export PATH="$PATH:$M2_HOME/bin:$MYSQL_HOME/bin"
 
 Hinweis: es wird bei dieser Gelegenheit auch gleich der MySQL-Pfad angepasst.
 
-Natürlich müssen die Verzeichnispfade von Maven und MySQL angepasst werden, wie es den tatsächlichen Installationsorten entspricht. 
+Natürlich müssen die Verzeichnispfade von Maven und MySQL angepasst werden, wie es den tatsächlichen Installationsorten entspricht.
 
 Unter Windows muss der Maven-Installer aus dem Internet heruntergeladen und installiert werden.
 
@@ -110,6 +110,10 @@ Dann müssen die beiden projektspezifischen Datenbanken (für "Test" und "Produk
 > CREATE DATABASE swxercise;
 
 > GRANT ALL PRIVILEGES ON swxercise.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+
+## MySQL-Datenbank im Projekt konfigurieren
+
+Heißt die Testdatenbank bei Ihnen anders als "swxercise_test", haben Sie andere Zugangsdaten gewählt als "root"/"root", befindet sich die Datenbank nicht auf Ihrem lokalen Rechner oder lauscht sie auf einem anderen Port als 3306, dann müssen in der Datei "pom.xml" (im Projekt-Hauptverzeichnis) die Properties entsprechend angepasst werden.
 
 ## MySQL-Datenbank im WildFly einbinden
 
@@ -192,6 +196,8 @@ Aufgepasst: Der WildFly-Server darf während der Bearbeitung der XML-Datei nicht
   </datasource>
 </datasources>
 ```
+
+Passen Sie die Angaben "connection-url" (Host, Port und Datenbankname), "user-name" und "password" entsprechend der Konfiguration Ihrer MySQL-Datenbank an.
 
 ## JBoss WildFly in Eclipse einbinden
 
