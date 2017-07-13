@@ -157,8 +157,10 @@ public class UserViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.ADMIN)
     public RestResponse deleteUser(@PathParam("id") Long id) {
-        userService.deleteUser(id);
-        return new RestResponse();
+        if (userService.deleteUser(id) != null) {
+            return new RestResponse();
+        }
+        return new RestResponse(ResponseState.FAILED);
     }
 
     /**
