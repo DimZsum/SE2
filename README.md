@@ -1,4 +1,6 @@
-# Ein Java-Beispielprojekt für die Lehrveranstaltungen "Software Engineering 2" (SE2) und "Softwarequalität und Test" (SwQT).
+# Ein Java-Beispielprojekt für die Lehrveranstaltungen "Software Engineering 2" (SE2), "Softwarequalität und Test" (SwQT) sowie "Webentwicklung".
+
+Achtung! Das Durcharbeiten dieses Tutorials ist nicht erforderlich, wenn Sie das Disk-Image für die virtuelle Maschine unter "http://www.ziemers.de/static/swXercise/" heruntergeladen haben. In dieser Maschine sind alle Komponenten bereits installiert.
 
 Anmerkung: Dieses Tutorial lebt! Es wird ständig verbessert, um Problemlösungen noch genauer zu beschreiben. Bitte melden Sie auftretende Probleme deshalb.
 
