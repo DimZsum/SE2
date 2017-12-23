@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test WebSockets</title>
+</head>
+<body>
+    <script>
+        var url = "ws://localhost:8080/swxercise/ws/api/v1/test";
+        var webSocket = new WebSocket(url);
+
+        // Callback-Methoden für die WebSocket-Kommunikation
+        webSocket.onopen = function(e) { onWebSocketOpen(e) };
+        webSocket.onclose = function(e) { onWebSocketClose(e) };
+        webSocket.onmessage = function(e) { onWebSocketMessage(e) };
+        webSocket.onerror = function(e) { onWebSocketError(e) };
+
+        function onWebSocketOpen(e) {
+            console.log("WebSocket has been opened.");
+        }
+
+        function onWebSocketClose(e) {
+            console.log("WebSocket has been closed.");
+        }
+
+        function onWebSocketMessage(e) {
+            console.log("WebSocket Message '" + e.data + "' has been received.");
+        }
+
+        function onWebSocketError(e) {
+            alert("WebSocket Error " + e + " has been thrown!");
+        }
+
+        function sendWebSocketMessage() {
+            if (webSocket.send('Hello World!'))
+                console.log("WebSocket Message sent.");
+            else
+                alert("WebSocket Message not sent!");
+        }
+    </script>
+    <button onclick="sendWebSocketMessage()">Klick mich.</button>
+</body>
+</html>
