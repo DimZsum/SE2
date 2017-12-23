@@ -24,6 +24,7 @@
 		<slf4j-version>1.7.25</slf4j-version>
         <jglue-version>3.1.4</jglue-version>
 		<jackson-version>2.8.8.1</jackson-version>
+		<jetty-version>9.4.8.v20171121</jetty-version>
 
 		<!-- Substituiert die Platzhalter in der "persistence.xml" -->
 		<TEST_SCHEMA_NAME>swxercise_test</TEST_SCHEMA_NAME>
@@ -97,6 +98,24 @@
             <version>${jglue-version}</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+			<version>${jetty-version}</version>
+			<scope>provided</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>javax-websocket-server-impl</artifactId>
+			<version>${jetty-version}</version>
+			<scope>provided</scope>
+		</dependency>
         <!-- Sorgt für eine schnellere Verwaltung der JSON-Umwandlung im REST-Kontext -->
 		<!-- dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -123,6 +142,11 @@
 					<source>${java-version}</source>
 					<target>${java-version}</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty-version}</version>
 			</plugin>
 		</plugins>
 	</build>

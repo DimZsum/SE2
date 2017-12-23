@@ -6,7 +6,7 @@
 </head>
 <body>
     <script>
-        var url = "ws://localhost:8080/swxercise/ws/api/v1/test";
+        var url = "ws://localhost:8080/swxercise/ws/api/v1/anEndpoint";
         var webSocket = new WebSocket(url);
 
         // Callback-Methoden für die WebSocket-Kommunikation
@@ -32,10 +32,8 @@
         }
 
         function sendWebSocketMessage() {
-            if (webSocket.send('Hello World!'))
-                console.log("WebSocket Message sent.");
-            else
-                alert("WebSocket Message not sent!");
+            webSocket.send('Hello World!');
+            console.log("Tried to send WebSocket Message.");
         }
     </script>
     <button onclick="sendWebSocketMessage()">Klick mich.</button>
