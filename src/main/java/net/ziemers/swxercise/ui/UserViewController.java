@@ -14,6 +14,8 @@ import net.ziemers.swxercise.lg.model.user.User;
 import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 import net.ziemers.swxercise.ui.enums.ResponseState;
+import net.ziemers.swxercise.ui.utils.RestResponse;
+import org.slf4j.Logger;
 
 /**
  * REST-Methoden für die Benutzerverwaltung.
@@ -23,6 +25,13 @@ import net.ziemers.swxercise.ui.enums.ResponseState;
 public class UserViewController {
 
     static final String webContextPath = "/";
+
+    /*
+     * SLF4J: "Simple Logging Facade for Java"
+     * Dependency Injection erfolgt mit dem {@link net.ziemers.swxercise.lg.utils.LoggerProducer}
+     */
+    @Inject
+    private Logger logger;
 
     @Inject
     private UserService userService;
@@ -72,7 +81,9 @@ public class UserViewController {
     @Path("v1/user")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.LOGGED_IN)
-    public User getUser() { return userService.findUser(); }
+    public User getUser() {
+        logger.info("Trying to get user's profile info.");
+        return userService.findUser(); }
 
     /**
      * Erstellt ein neues User-Objekt mit den gewünschten Eigenschaften, welche mittels {@link UserDto} definiert werden.
@@ -197,6 +208,7 @@ public class UserViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.NOT_LOGGED_IN)
     public RestResponse loginUser(UserDto dto) {
+        logger.info("Trying to log-in user '{}'.", dto.getUsername());
         if (userService.loginUser(dto)) {
             return new RestResponse();
         }
@@ -216,6 +228,7 @@ public class UserViewController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.LOGGED_IN)
     public RestResponse logoutUser() {
+        logger.info("Trying to log-out user.");
         if (userService.logoutUser()) {
             return new RestResponse();
         }

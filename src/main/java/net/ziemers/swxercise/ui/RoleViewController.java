@@ -5,6 +5,7 @@ import net.ziemers.swxercise.lg.user.dto.RoleDto;
 import net.ziemers.swxercise.lg.user.enums.RightState;
 import net.ziemers.swxercise.lg.user.service.RoleService;
 import net.ziemers.swxercise.ui.enums.ResponseState;
+import net.ziemers.swxercise.ui.utils.RestResponse;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;

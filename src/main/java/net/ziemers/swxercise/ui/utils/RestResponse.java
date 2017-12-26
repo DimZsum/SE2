@@ -1,4 +1,4 @@
-package net.ziemers.swxercise.ui;
+package net.ziemers.swxercise.ui.utils;
 
 import net.ziemers.swxercise.ui.enums.ResponseState;
 

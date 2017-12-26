@@ -1,4 +1,4 @@
-package net.ziemers.swxercise.ui;
+package net.ziemers.swxercise.ui.utils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DenyAll;

@@ -9,11 +9,13 @@ import net.ziemers.swxercise.lg.user.dto.UserDto;
 import net.ziemers.swxercise.lg.user.service.UserService;
 import net.ziemers.swxercise.ui.enums.ResponseState;
 
+import net.ziemers.swxercise.ui.utils.RestResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.slf4j.Logger;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -30,6 +32,10 @@ public class UserViewControllerTest {
      */
     @InjectMocks
     private UserViewController underTest;
+
+    // das Logging interessiert uns nicht; deshalb mocken wir es weg
+    @Mock
+    private Logger logger;
 
     /*
      * Mockito allows to configure the return values of its mocks via a fluent API.

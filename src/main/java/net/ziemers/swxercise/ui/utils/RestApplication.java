@@ -1,4 +1,4 @@
-package net.ziemers.swxercise.ui;
+package net.ziemers.swxercise.ui.utils;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
