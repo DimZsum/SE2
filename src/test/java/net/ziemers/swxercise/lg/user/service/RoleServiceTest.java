@@ -3,11 +3,13 @@ package net.ziemers.swxercise.lg.user.service;
 import net.ziemers.swxercise.db.dao.user.UserDao;
 import net.ziemers.swxercise.db.utils.JpaTestUtils;
 import org.jglue.cdiunit.CdiRunner;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.naming.InitialContext;
 
 /**
  * Testing your Java CDI application with CDI-Unit couldn't be easier.
@@ -33,11 +35,28 @@ public class RoleServiceTest extends JpaTestUtils {
 
     @Before
     public void setUp() throws Exception {
+        // wird vor jedem Test ausgeführt
+
         if (!dbInitialized) {
             cleanDb();
             initDbWith("RoleServiceTestData.xml");
             dbInitialized = true;
         }
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        // wird nach jedem Test ausgeführt
+
+        /*
+         * java.lang.IllegalStateException: WELD-ENV-002000: Weld SE container STATIC_INSTANCE is already running!
+         *
+         * Jetty initialisiert einen eigenen Weld SE Container, der mit demjenigen
+         * vom CDI-Runner kollidiert. Wir müssen ihn deshalb hier entfernen.
+         * Quelle: https://groups.google.com/forum/#!topic/cdi-unit/2e-XnyduXcs
+         */
+        InitialContext initialContext = new InitialContext();
+        initialContext.unbind("java:comp/BeanManager");
     }
 
     @Test

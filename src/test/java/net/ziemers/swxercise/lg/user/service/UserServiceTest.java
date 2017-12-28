@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.naming.InitialContext;
 
 import net.ziemers.swxercise.db.dao.user.UserDao;
 import net.ziemers.swxercise.db.utils.JpaTestUtils;
@@ -16,6 +17,7 @@ import static org.junit.Assert.*;
 
 import org.jglue.cdiunit.CdiRunner;
 import org.jglue.cdiunit.InRequestScope;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,11 +62,28 @@ public class UserServiceTest extends JpaTestUtils {
 
     @Before
     public void setUp() throws Exception {
+        // wird vor jedem Test ausgeführt
+
         if (!dbInitialized) {
             cleanDb();
             initDbWith("UserServiceTestData.xml");
             dbInitialized = true;
         }
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        // wird nach jedem Test ausgeführt
+
+        /*
+         * java.lang.IllegalStateException: WELD-ENV-002000: Weld SE container STATIC_INSTANCE is already running!
+         *
+         * Jetty initialisiert einen eigenen Weld SE Container, der mit demjenigen
+         * vom CDI-Runner kollidiert. Wir müssen ihn deshalb hier entfernen.
+         * Quelle: https://groups.google.com/forum/#!topic/cdi-unit/2e-XnyduXcs
+         */
+        InitialContext initialContext = new InitialContext();
+        initialContext.unbind("java:comp/BeanManager");
     }
 
     /*
