@@ -1,41 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Test WebSockets</title>
-</head>
-<body>
-    <script>
-        var url = "ws://localhost:8080/swxercise/ws/api/v1/anEndpoint/4711";
-        var webSocket = new WebSocket(url);
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test WebSockets</title>
+    </head>
 
-        // Callback-Methoden für die WebSocket-Kommunikation
-        webSocket.onopen = function(e) { onWebSocketOpen(e) };
-        webSocket.onclose = function(e) { onWebSocketClose(e) };
-        webSocket.onmessage = function(e) { onWebSocketMessage(e) };
-        webSocket.onerror = function(e) { onWebSocketError(e) };
+    <body>
+        <script>
+            var url = "ws://localhost:8080/swxercise/ws/api/v1/anEndpoint/4711";
+            var webSocket = new WebSocket(url);
 
-        function onWebSocketOpen(e) {
-            console.log("WebSocket has been opened.");
-        }
+            // Callback-Methoden für die WebSocket-Kommunikation
+            webSocket.onopen = function(e) { onWebSocketOpen(e) };
+            webSocket.onclose = function(e) { onWebSocketClose(e) };
+            webSocket.onmessage = function(e) { onWebSocketMessage(e) };
+            webSocket.onerror = function(e) { onWebSocketError(e) };
 
-        function onWebSocketClose(e) {
-            console.log("WebSocket has been closed.");
-        }
+            function onWebSocketOpen(e) {
+                console.log("WebSocket has been opened.");
+            }
 
-        function onWebSocketMessage(e) {
-            console.log("WebSocket Message '" + e.data + "' has been received.");
-        }
+            function onWebSocketClose(e) {
+                console.log("WebSocket has been closed.");
+            }
 
-        function onWebSocketError(e) {
-            alert("WebSocket Error " + e + " has been thrown!");
-        }
+            function onWebSocketMessage(e) {
+                // JSON-String in ein JavaScript-Objekt konvertieren
+                var json = JSON.parse(e.data);
 
-        function sendWebSocketMessage() {
-            webSocket.send('Hello World!');
-            console.log("Tried to send WebSocket Message.");
-        }
-    </script>
-    <button onclick="sendWebSocketMessage()">Klick mich.</button>
-</body>
+                console.log("WebSocket Message '" + json.message + "' has been received.");
+            }
+
+            function onWebSocketError(e) {
+                alert("WebSocket Error " + e + " has been thrown!");
+            }
+
+            function sendWebSocketMessage() {
+                var json = {
+                    "username": "admin",
+                    "message": "Hello World!"
+                }
+
+                // JavaScript-Objekt in einen JSON-String konvertieren
+                webSocket.send(JSON.stringify(json));
+
+                console.log("Tried to send WebSocket Message.");
+            }
+        </script>
+        <button onclick="sendWebSocketMessage()">Klick mich.</button>
+    </body>
 </html>

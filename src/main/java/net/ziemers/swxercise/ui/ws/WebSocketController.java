@@ -4,7 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.websocket.*;
+import javax.websocket.CloseReason;
+import javax.websocket.EncodeException;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -15,16 +21,18 @@ import java.util.Set;
 /**
  * Stub für die WebSocket-Unterstützung.
  *
- * Muss bei Bedarf noch um ein JSON-Marshalling erweitert werden.
- *
  * Aufgepasst: Mittels CDI kann nur @ApplicationScoped injiziert werden,
  * da während eines WebSocket-Callbacks kein Session-Kontext aktiv ist.
  */
-@ServerEndpoint(WebSocketController.serverEndpointPath)
+@ServerEndpoint(value = WebSocketController.serverEndpointPath,
+        encoders = { WebSocketJson.MessageEncoder.class },
+        decoders = { WebSocketJson.MessageDecoder.class } )
 public class WebSocketController {
 
     static final String serverEndpointPath = "/ws/api/v1/anEndpoint/{aParameter}";
 
+    // Eine Verknüpfung zwischen der WebSocket-Session und dem SessionContext des per REST
+    // angemeldeten Benutzers muss irgendwie auch noch realisiert werden. :)
     private static Set<Session> peers = Collections.synchronizedSet(new HashSet<>());
 
     private Logger logger;
@@ -48,15 +56,18 @@ public class WebSocketController {
     /**
      * Callback-Methode, die den Empfang einer neuen WebSocket-Nachricht signalisiert.
      *
-     * @param message der Inhalt der WebSocket-Nachricht
+     * @param json der JSON-strukturierte Inhalt der WebSocket-Nachricht
      * @param session das {@link Session}-Objekt der sendenden WebSocket-Verbindung
      */
     @OnMessage
-    public void onMessage(String message, Session session, @PathParam("aParameter") String param) {
-        logger.info("WebSocket Message '{}/{}' received by session id #{}", message, param, session.getId());
+    public void onMessage(WebSocketJson json,
+                          Session session,
+                          @PathParam("aParameter") String param) throws IOException, EncodeException {
+        logger.info("WebSocket Message '{}/{}' received by session id #{}",
+                json.getMessage(), param, session.getId());
         try {
-            // wir senden die empfangene Nachricht gleich wieder zurück
-            session.getBasicRemote().sendText(String.format("%s/%s", message, param));
+            // Wir senden die empfangene Nachricht gleich wieder zurück. Das Marshalling geschieht automatisch.
+            session.getBasicRemote().sendObject(json);
         } catch (IOException e) {
             e.printStackTrace();
         }
