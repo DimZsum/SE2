@@ -1,22 +1,38 @@
 package net.ziemers.swxercise.ui.ws;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Stub für die WebSocket-Unterstützung.
+ *
+ * Muss bei Bedarf noch um ein JSON-Marshalling erweitert werden.
+ *
+ * Aufgepasst: Mittels CDI kann nur @ApplicationScoped injiziert werden,
+ * da während eines WebSocket-Callbacks kein Session-Kontext aktiv ist.
  */
-@ApplicationScoped
 @ServerEndpoint(WebSocketController.serverEndpointPath)
 public class WebSocketController {
 
-    static final String serverEndpointPath = "/ws/api/v1/anEndpoint";
+    static final String serverEndpointPath = "/ws/api/v1/anEndpoint/{aParameter}";
+
+    private static Set<Session> peers = Collections.synchronizedSet(new HashSet<>());
+
+    private Logger logger;
+
+    @PostConstruct
+    private void init() {
+        logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+    }
 
     /**
      * Callback-Methode für das Öffnen einer neuen WebSocket-Verbindung.
@@ -25,7 +41,8 @@ public class WebSocketController {
      */
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println("WebSocket opened with session id #" + session.getId());
+        logger.info("WebSocket opened with session id #{}", session.getId());
+        peers.add(session);
     }
 
     /**
@@ -35,13 +52,24 @@ public class WebSocketController {
      * @param session das {@link Session}-Objekt der sendenden WebSocket-Verbindung
      */
     @OnMessage
-    public void onMessage(String message, Session session) {
-        System.out.println("WebSocket Message '" + message + "' received by session id #" + session.getId());
+    public void onMessage(String message, Session session, @PathParam("aParameter") String param) {
+        logger.info("WebSocket Message '{}/{}' received by session id #{}", message, param, session.getId());
         try {
-            session.getBasicRemote().sendText(message);
+            // wir senden die empfangene Nachricht gleich wieder zurück
+            session.getBasicRemote().sendText(String.format("%s/%s", message, param));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Callback-Methode, wenn in der WebSocket ein Problem auftrat.
+     *
+     * @param t die Exception
+     */
+    @OnError
+    public void onError(Throwable t) {
+        logger.error("WebSocket Error '{}' occured!", t.getMessage());
     }
 
     /**
@@ -52,7 +80,8 @@ public class WebSocketController {
      */
     @OnClose
     public void onClose(CloseReason reason, Session session) {
-        System.out.println("Closing WebSocket due to " + reason.getReasonPhrase() + " by id #" + session.getId());
+        logger.info("Closing WebSocket due to '{}' by session id #{}", reason.getReasonPhrase(), session.getId());
+        peers.remove(session);
     }
 
 }
