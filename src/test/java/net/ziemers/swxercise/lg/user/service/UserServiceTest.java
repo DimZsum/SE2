@@ -1,6 +1,6 @@
 package net.ziemers.swxercise.lg.user.service;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -214,7 +214,7 @@ public class UserServiceTest extends JpaTestUtils {
     public void testIsNotLoggedInUserAllowedWithNotLoggedInRightSucceeds() {
 
         when()
-                .isUserAllowed(new HashSet<String>(Arrays.asList("NOT_LOGGED_IN")));
+                .isUserAllowed(new HashSet<>(Collections.singletonList("NOT_LOGGED_IN")));
 
         then()
                 .assertIsUserAllowedSucceeded();
@@ -225,7 +225,7 @@ public class UserServiceTest extends JpaTestUtils {
     public void testIsNotLoggedInUserAllowedWithLoggedInRightFails() {
 
         when()
-                .isUserAllowed(new HashSet<String>(Arrays.asList("LOGGED_IN")));
+                .isUserAllowed(new HashSet<>(Collections.singletonList("LOGGED_IN")));
 
         then()
                 .assertIsUserAllowedFailed();
@@ -240,7 +240,7 @@ public class UserServiceTest extends JpaTestUtils {
                 .loginUser(EXISTING_PASSWORD_TEST);
 
         when()
-                .isUserAllowed(new HashSet<String>(Arrays.asList("LOGGED_IN")));
+                .isUserAllowed(new HashSet<>(Collections.singletonList("LOGGED_IN")));
 
         then()
                 .assertIsUserAllowedSucceeded();
@@ -255,7 +255,7 @@ public class UserServiceTest extends JpaTestUtils {
                 .loginUser(EXISTING_PASSWORD_TEST);
 
         when()
-                .isUserAllowed(new HashSet<String>(Arrays.asList("NOT_LOGGED_IN")));
+                .isUserAllowed(new HashSet<>(Collections.singletonList("NOT_LOGGED_IN")));
 
         then()
                 .assertIsUserAllowedFailed();
@@ -270,7 +270,7 @@ public class UserServiceTest extends JpaTestUtils {
               .loginUser(EXISTING_PASSWORD_TEST);
 
       when()
-              .isUserAllowed(new HashSet<String>(Arrays.asList("ADMIN")));
+              .isUserAllowed(new HashSet<>(Collections.singletonList("ADMIN")));
 
       then()
               .assertIsUserAllowedSucceeded();
@@ -285,7 +285,7 @@ public class UserServiceTest extends JpaTestUtils {
               .loginUser(EXISTING_PASSWORD_TEST);
 
       when()
-              .isUserAllowed(new HashSet<String>(Arrays.asList("UNKNOWN_ROLE")));
+              .isUserAllowed(new HashSet<>(Collections.singletonList("UNKNOWN_ROLE")));
 
       then()
               .assertIsUserAllowedFailed();
