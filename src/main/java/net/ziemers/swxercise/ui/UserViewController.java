@@ -5,7 +5,9 @@ import java.util.Collection;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import net.ziemers.swxercise.lg.user.enums.RightState;
@@ -83,6 +85,7 @@ public class UserViewController {
     @RolesAllowed(RightState.Constants.LOGGED_IN)
     public User getUser() {
         logger.info("Trying to get user's profile info.");
+
         return userService.findUser(); }
 
     /**
@@ -199,6 +202,7 @@ public class UserViewController {
      * Aufruf:
      * POST http://localhost:8080/swxercise/rest/v1/user/login
      *
+     * @param request das {@link HttpServletRequest}-Objekt des augenblicklichen HTTP-Requests
      * @param dto das mittels der als JSON-Objekt übergebenenen Eigenschaften zu füllende {@link UserDto}
      * @return ein {@link ResponseState}-Objekt mit den Ergebnisinformationen des Aufrufs.
      */
@@ -207,10 +211,14 @@ public class UserViewController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.NOT_LOGGED_IN)
-    public RestResponse loginUser(UserDto dto) {
-        logger.info("Trying to log-in user '{}'.", dto.getUsername());
-        if (userService.loginUser(dto)) {
-            return new RestResponse();
+    public RestResponse loginUser(@Context HttpServletRequest request, UserDto dto) {
+        // wir benötigen die Session-Id später, um REST-Zugriffe mit WebSockets in Bezug zu bringen
+        String sessionId = request.getSession(false).getId();
+
+        logger.info("Trying to log-in user '{}' with session id #{}.", dto.getUsername(), sessionId);
+
+        if (userService.loginUser(dto, sessionId)) {
+            return new RestResponse(sessionId);
         }
         return new RestResponse(ResponseState.FAILED);
     }
@@ -229,6 +237,7 @@ public class UserViewController {
     @RolesAllowed(RightState.Constants.LOGGED_IN)
     public RestResponse logoutUser() {
         logger.info("Trying to log-out user.");
+
         if (userService.logoutUser()) {
             return new RestResponse();
         }

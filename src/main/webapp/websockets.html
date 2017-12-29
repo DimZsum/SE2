@@ -7,7 +7,10 @@
 
     <body>
         <script>
-            var url = "ws://localhost:8080/swxercise/ws/api/v1/anEndpoint/4711";
+            // sei "4711" die in einer vorangegangenen REST-Authentifizierung ermittelte "restSessionId"
+            var restSessionId = 4711;
+
+            var url = "ws://localhost:8080/swxercise/ws/api/v1/anEndpoint/" + restSessionId;
             var webSocket = new WebSocket(url);
 
             // Callback-Methoden für die WebSocket-Kommunikation

@@ -34,11 +34,14 @@ public class UserService {
      * Meldet den Benutzer im SessionContext an.
      *
      * @param dto das {@link UserDto} enthält die Eigenschaften des anzumeldenden Benutzers
+     * @param sessionId die Session-Id, über die diese Benutzer-Authentifizierung erfolgt
      * @return <code>true</code>, wenn die Anmeldung erfolgreich war.
      */
-    public boolean loginUser(UserDto dto) {
+    public boolean loginUser(UserDto dto, String sessionId) {
         final User user = dao.findByUsername(dto.getUsername());
-        return user != null && user.getProfile().isValidPassword(dto.getPassword()) && sessionContext.login(user);
+        return user != null
+                && user.getProfile().isValidPassword(dto.getPassword())
+                && sessionContext.login(user, sessionId);
     }
 
     /**

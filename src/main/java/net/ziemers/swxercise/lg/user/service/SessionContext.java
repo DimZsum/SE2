@@ -14,6 +14,8 @@ public class SessionContext implements java.io.Serializable {
 
 	private User user = null;
 
+	private String sessionId = "";
+
     public User getUser() {
         return user;
     }
@@ -22,9 +24,21 @@ public class SessionContext implements java.io.Serializable {
         this.user = user;
     }
 
-    public boolean login(final User user) {
+    public String getSessionId() { return sessionId; }
+
+    private void setSessionId(String sessionId) { this.sessionId = sessionId; }
+
+    /**
+     * Meldet einen Benutzer in diesem Session-Kontext an.
+     *
+     * @param user das {@link User}-Objekt des Benutzers dieses Session-Kontexts
+     * @param sessionId die Session-Id dieser Benutzer-Session
+     * @return Liefert <code>true</code> zurück, wenn der Benutzer am Session-Kontext angemeldet werden konnte.
+     */
+    public boolean login(final User user, final String sessionId) {
         if (getUser() == null) {
             setUser(user);
+            setSessionId(sessionId);
             return true;
         }
         return false;

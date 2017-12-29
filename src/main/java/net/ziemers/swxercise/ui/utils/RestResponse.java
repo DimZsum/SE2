@@ -21,6 +21,11 @@ public class RestResponse {
         this.message = message;
     }
 
+    public RestResponse(final String message) {
+        this();
+        this.message = message;
+    }
+
     public int getResponseCode() {
         return responseState.getResponseCode();
     }

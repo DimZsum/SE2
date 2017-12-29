@@ -15,8 +15,8 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Stub für die WebSocket-Unterstützung.
@@ -29,11 +29,9 @@ import java.util.Set;
         decoders = { WebSocketJson.MessageDecoder.class } )
 public class WebSocketController {
 
-    static final String serverEndpointPath = "/ws/api/v1/anEndpoint/{aParameter}";
+    static final String serverEndpointPath = "/ws/api/v1/anEndpoint/{restSessionid}";
 
-    // Eine Verknüpfung zwischen der WebSocket-Session und dem SessionContext des per REST
-    // angemeldeten Benutzers muss irgendwie auch noch realisiert werden. :)
-    private static Set<Session> peers = Collections.synchronizedSet(new HashSet<>());
+    private static Map<Session, String> peers = Collections.synchronizedMap(new HashMap<>());
 
     private Logger logger;
 
@@ -43,31 +41,37 @@ public class WebSocketController {
     }
 
     /**
-     * Callback-Methode für das Öffnen einer neuen WebSocket-Verbindung.
+     * Callback-Methode für das Öffnen einer neuen WebSocket-Verbindung. <code>restSessionId</code>
+     * wird benötigt, um die WebSocket-Verbindung mit einer REST-Authentifizierung in Bezug bringen
+     * zu können.
      *
-     * @param session das {@link Session}-Objekt der neuen WebSocket-Verbindung
+     * @param wsSession das {@link Session}-Objekt der neuen WebSocket-Verbindung
+     * @param restSessionId die Session-Id einer vorangegangenen REST-Authentifizierung
      */
     @OnOpen
-    public void onOpen(Session session) {
-        logger.info("WebSocket opened with session id #{}", session.getId());
-        peers.add(session);
+    public void onOpen(Session wsSession, @PathParam("restSessionid") String restSessionId) {
+        logger.info("WebSocket {} opened with session id #{}", restSessionId, wsSession.getId());
+
+        // wir können später über die gegebene WebSocket-Session die REST-Session-Id dieses WebSockets ermitteln
+        peers.putIfAbsent(wsSession, restSessionId);
     }
 
     /**
      * Callback-Methode, die den Empfang einer neuen WebSocket-Nachricht signalisiert.
      *
      * @param json der JSON-strukturierte Inhalt der WebSocket-Nachricht
-     * @param session das {@link Session}-Objekt der sendenden WebSocket-Verbindung
+     * @param wsSession das {@link Session}-Objekt der sendenden WebSocket-Verbindung
      */
     @OnMessage
-    public void onMessage(WebSocketJson json,
-                          Session session,
-                          @PathParam("aParameter") String param) throws IOException, EncodeException {
-        logger.info("WebSocket Message '{}/{}' received by session id #{}",
-                json.getMessage(), param, session.getId());
+    public void onMessage(WebSocketJson json, Session wsSession) throws IOException, EncodeException {
+        // die Map liefert uns zur gegebenen WebSocket-Session die REST-Session-Id zurück
+        String restSessionId = peers.get(wsSession);
+
+        logger.info("WebSocket {} Message '{}' received by session id #{}",
+                restSessionId, json.getMessage(), wsSession.getId());
         try {
-            // Wir senden die empfangene Nachricht gleich wieder zurück. Das Marshalling geschieht automatisch.
-            session.getBasicRemote().sendObject(json);
+            // Wir senden die empfangene Nachricht gleich wieder zurück. Das JSON-Marshalling geschieht automatisch.
+            wsSession.getBasicRemote().sendObject(json);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,12 +91,12 @@ public class WebSocketController {
      * Callback-Methode für das Schließen einer geöffneten WebSocket-Verbindung.
      *
      * @param reason die Ursache für das Schließen der WebSocket-Verbindung
-     * @param session das {@link Session}-Objekt der geschlossenen WebSocket-Verbindung
+     * @param wsSession das {@link Session}-Objekt der geschlossenen WebSocket-Verbindung
      */
     @OnClose
-    public void onClose(CloseReason reason, Session session) {
-        logger.info("Closing WebSocket due to '{}' by session id #{}", reason.getReasonPhrase(), session.getId());
-        peers.remove(session);
+    public void onClose(CloseReason reason, Session wsSession) {
+        logger.info("Closing WebSocket due to '{}' by session id #{}", reason.getReasonPhrase(), wsSession.getId());
+        peers.remove(wsSession);
     }
 
 }
