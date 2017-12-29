@@ -311,8 +311,10 @@ public class UserServiceTest extends JpaTestUtils {
     }
 
     private UserServiceTest loginUser(final String password) {
+        final String SESSION_ID = "testSessionId";
+
         userDto.withPassword(password);
-        actual = underTest.loginUser(userDto);
+        actual = underTest.loginUser(userDto, SESSION_ID);
         return this;
     }
 

@@ -17,6 +17,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -43,6 +46,12 @@ public class UserViewControllerTest {
      */
     @Mock
     private UserService userService;
+
+    @Mock
+    private HttpServletRequest request;
+
+    @Mock
+    private HttpSession session;
 
     private UserDto userDto;
 
@@ -256,9 +265,15 @@ public class UserViewControllerTest {
     }
 
     private void loginUser(final boolean result) {
-        when(userService.loginUser(userDto)).thenReturn(result);
+        final String SESSION_ID = "testSessionId";
 
-        actual = underTest.loginUser(userDto);
+        when(userService.loginUser(userDto, SESSION_ID)).thenReturn(result);
+
+        // während der Tests besitzen wir keinen HTTP-Request, also mocken wir ihn weg
+        when(request.getSession(false)).thenReturn(session);
+        when(session.getId()).thenReturn(SESSION_ID);
+
+        actual = underTest.loginUser(request, userDto);
     }
 
     private void logoutUser() {
