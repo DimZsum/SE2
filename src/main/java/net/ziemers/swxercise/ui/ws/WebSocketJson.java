@@ -23,21 +23,18 @@ public class WebSocketJson {
     public static class MessageEncoder implements Encoder.Text<WebSocketJson> {
 
         @Override
-        public void init(EndpointConfig config) {
-        }
+        public void init(EndpointConfig config) {}
 
         @Override
         public String encode(WebSocketJson message) throws EncodeException {
             return Json.createObjectBuilder()
-                    .add("username", message.getUsername())
                     .add("message", message.getMessage())
                     .build()
                     .toString();
         }
 
         @Override
-        public void destroy() {
-        }
+        public void destroy() {}
 
     }
 
@@ -49,8 +46,7 @@ public class WebSocketJson {
         private JsonReaderFactory factory = Json.createReaderFactory(Collections.emptyMap());
 
         @Override
-        public void init(EndpointConfig config) {
-        }
+        public void init(EndpointConfig config) {}
 
         @Override
         public WebSocketJson decode(String str) throws DecodeException {
@@ -58,7 +54,6 @@ public class WebSocketJson {
             JsonReader reader = factory.createReader(new StringReader(str));
             JsonObject json = reader.readObject();
 
-            message.setUsername(json.getString("username"));
             message.setMessage(json.getString("message"));
 
             return message;
@@ -70,27 +65,16 @@ public class WebSocketJson {
         }
 
         @Override
-        public void destroy() {
-        }
+        public void destroy() {}
 
     }
 
     /*
      * Payload der JSON-Nachricht
      */
-    private String username;
-
     private String message;
 
     private WebSocketJson() {}
-
-    public String getUsername() {
-        return username;
-    }
-
-    private void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getMessage() {
         return message;

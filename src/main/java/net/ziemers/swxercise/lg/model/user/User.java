@@ -46,6 +46,11 @@ public class User extends BaseEntity {
         this.lastname = lastname;
     }
 
+    @Transient
+    public String getFullName() {
+        return String.format("%s %s", getFirstname(), getLastname());
+    }
+
     @OneToOne(cascade = {CascadeType.ALL})
     public Profile getProfile() {
         return profile;

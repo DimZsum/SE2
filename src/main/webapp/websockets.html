@@ -7,45 +7,64 @@
 
     <body>
         <script>
-            // sei "4711" die in einer vorangegangenen REST-Authentifizierung ermittelte "restSessionId"
-            var restSessionId = 4711;
+            // Anmelden und REST-Session-Id erhalten
+            var restUrl = "http://localhost:8080/swxercise/rest/v1/user/login";
+            var method = "POST";
+            var jsObject = { "username": "admin", "password": "admin" };
+            var xmlHttpRequest = new XMLHttpRequest();
 
-            var url = "ws://localhost:8080/swxercise/ws/api/v1/anEndpoint/" + restSessionId;
-            var webSocket = new WebSocket(url);
+            xmlHttpRequest.open(method, restUrl);
+            xmlHttpRequest.setRequestHeader("Content-type", "application/json");
+            xmlHttpRequest.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    var jsResponse = JSON.parse(this.responseText);
 
-            // Callback-Methoden für die WebSocket-Kommunikation
-            webSocket.onopen = function(e) { onWebSocketOpen(e) };
-            webSocket.onclose = function(e) { onWebSocketClose(e) };
-            webSocket.onmessage = function(e) { onWebSocketMessage(e) };
-            webSocket.onerror = function(e) { onWebSocketError(e) };
+                    establishWebSocket(jsResponse.message);
 
-            function onWebSocketOpen(e) {
-                console.log("WebSocket has been opened.");
-            }
+                    console.log("REST-Session-Id is '" + jsResponse.message + "'.");
+                }
+            };
+            xmlHttpRequest.send(JSON.stringify(jsObject));
 
-            function onWebSocketClose(e) {
-                console.log("WebSocket has been closed.");
-            }
+            // WebSocket-Verbindung etablieren
+            var webSocket;
 
-            function onWebSocketMessage(e) {
-                // JSON-String in ein JavaScript-Objekt konvertieren
-                var json = JSON.parse(e.data);
+            function establishWebSocket(restSessionId) {
+                var wsUrl = "ws://localhost:8080/swxercise/ws/api/v1/anEndpoint/" + restSessionId;
 
-                console.log("WebSocket Message '" + json.message + "' has been received.");
-            }
+                webSocket = new WebSocket(wsUrl);
 
-            function onWebSocketError(e) {
-                alert("WebSocket Error " + e + " has been thrown!");
+                // Callback-Methoden für die WebSocket-Kommunikation
+                webSocket.onopen = function(e) { onWebSocketOpen(e) };
+                webSocket.onclose = function(e) { onWebSocketClose(e) };
+                webSocket.onmessage = function(e) { onWebSocketMessage(e) };
+                webSocket.onerror = function(e) { onWebSocketError(e) };
+
+                function onWebSocketOpen(e) {
+                    console.log("WebSocket has been opened.");
+                }
+
+                function onWebSocketClose(e) {
+                    console.log("WebSocket has been closed.");
+                }
+
+                function onWebSocketMessage(e) {
+                    // JSON-String in ein JavaScript-Objekt konvertieren
+                    var json = JSON.parse(e.data);
+
+                    console.log("WebSocket Message '" + json.message + "' has been received.");
+                }
+
+                function onWebSocketError(e) {
+                    alert("WebSocket Error " + e + " has been thrown!");
+                }
             }
 
             function sendWebSocketMessage() {
-                var json = {
-                    "username": "admin",
-                    "message": "Hello World!"
-                }
+                var jsonPayload = { "message": "Hello World!" };
 
                 // JavaScript-Objekt in einen JSON-String konvertieren
-                webSocket.send(JSON.stringify(json));
+                webSocket.send(JSON.stringify(jsonPayload));
 
                 console.log("Tried to send WebSocket Message.");
             }

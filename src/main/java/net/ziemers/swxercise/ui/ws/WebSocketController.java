@@ -1,5 +1,7 @@
 package net.ziemers.swxercise.ui.ws;
 
+import net.ziemers.swxercise.lg.model.user.User;
+import net.ziemers.swxercise.lg.user.service.SessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +56,8 @@ public class WebSocketController {
 
         // wir können später über die gegebene WebSocket-Session die REST-Session-Id dieses WebSockets ermitteln
         peers.putIfAbsent(wsSession, restSessionId);
+
+        getUserBySession(wsSession);
     }
 
     /**
@@ -64,11 +68,10 @@ public class WebSocketController {
      */
     @OnMessage
     public void onMessage(WebSocketJson json, Session wsSession) throws IOException, EncodeException {
-        // die Map liefert uns zur gegebenen WebSocket-Session die REST-Session-Id zurück
-        String restSessionId = peers.get(wsSession);
+        logger.info("WebSocket Message '{}' received by session id #{}", json.getMessage(), wsSession.getId());
 
-        logger.info("WebSocket {} Message '{}' received by session id #{}",
-                restSessionId, json.getMessage(), wsSession.getId());
+        getUserBySession(wsSession);
+
         try {
             // Wir senden die empfangene Nachricht gleich wieder zurück. Das JSON-Marshalling geschieht automatisch.
             wsSession.getBasicRemote().sendObject(json);
@@ -97,6 +100,22 @@ public class WebSocketController {
     public void onClose(CloseReason reason, Session wsSession) {
         logger.info("Closing WebSocket due to '{}' by session id #{}", reason.getReasonPhrase(), wsSession.getId());
         peers.remove(wsSession);
+    }
+
+    private User getUserBySession(final Session wsSession) {
+        // die Map liefert uns zur WebSocket-Session gegebenenfalls die REST-Session-Id zurück;
+        // und mit dieser schließen wir auf den authentifizierten REST-Benutzer
+        String restSessionId = WebSocketController.peers.get(wsSession);
+        SessionContext ctx = SessionContext.getInstanceByRestSessionId(restSessionId);
+
+        if (ctx != null) {
+            User user = ctx.getUser();
+
+            logger.info("Detected WebSocket User '{}'", user.getFullName());
+
+            return user;
+        }
+        return null;
     }
 
 }
