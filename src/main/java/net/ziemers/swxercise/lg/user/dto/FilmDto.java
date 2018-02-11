@@ -1,11 +1,13 @@
 package net.ziemers.swxercise.lg.user.dto;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Das Data Transfer Object im Kontext der Rollen- und Rechteverwaltung. Es wird unter anderem auch aus einem
  * JSON-Objekt des {@link net.ziemers.swxercise.ui.RoleViewController}s gefüllt.
  */
-public class FilmDto {
-	
+public class FilmDto {	
+	@NotNull
 	private String name;
 	private boolean verfuegbar;
 	private int fsk;
