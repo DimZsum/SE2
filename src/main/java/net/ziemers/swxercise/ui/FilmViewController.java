@@ -45,8 +45,8 @@ public class FilmViewController {
     @Path("v1/film/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(RightState.Constants.ADMIN)
-    public Film findFilm(@PathParam("id") long id) {
-        return filmService.findFilmById(id);
+    public Film findFilm(@PathParam("id") String id) {
+        return filmService.findFilm(id);
     }
 
 }

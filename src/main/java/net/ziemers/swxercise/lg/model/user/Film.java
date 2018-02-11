@@ -16,6 +16,7 @@ public class Film extends BaseEntity {
 	private boolean verfuegbar;
 	private int fsk;
 	
+	public Film() {}
 	
 	public Film(String name){
 		super();
